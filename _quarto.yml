@@ -1,0 +1,28 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Soil Organic Carbon map of Cote d'Ivoire"
+  date: last-modified
+  chapters:
+    - index.qmd
+    - 11_general_framework.qmd
+    - 21_soil_data.qmd
+    - part: 30_ancillary_data.qmd
+      chapters:
+        - 31_climate.qmd
+        - 32_soilgrids.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+    code-fold: true
+    number-depth: -1
+
+editor: visual
+
+# execute:
+#   cache: true

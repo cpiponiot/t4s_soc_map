@@ -49,6 +49,7 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 
-# other files 
+# other files
 Modelisation_SCO_RF_cache/
 Modelisation_SCO_RF_files/
+/.quarto/

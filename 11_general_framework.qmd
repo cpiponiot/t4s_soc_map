@@ -1,0 +1,14 @@
+```{r setup}
+#| message: false
+#| warning: false
+```
+
+# General framework {.unnumbered}
+
+## Context and motivation
+
+
+## Research questions
+
+
+## Methodological approach

@@ -1,0 +1,38 @@
+[![](https://www.repostatus.org/badges/latest/wip.svg)](#0)
+
+# Introduction {.unnumbered}
+
+**t4_soc_map** is part of the [terri4sol project](https://www.terri4sol.org/).
+
+All **t4_soc_map** analyses rely on the quarto documents (`files.qmd`) that can be run with R and associated environment defined with renv.
+
+## Project
+
+**t4_soc_map** includes:
+
+-   Analyse of the data with associated documentation and figures:
+    -   Reproducible analyses in `files.qmd`
+    -   Resulting pages in `docs/`
+    -   Document structure definition in `_quarto.yml`
+-   Data in `data/`
+-   R scripts with functions in `r/`
+-   Intermediary files in `outputs/`
+-   Figures in `figures/`
+-   R environment definition with [renv](https://rstudio.github.io/renv/articles/renv.html) in `renv/` and `renv/lock`
+-   Git and GitHub files (`.gitignore` , `.github/`)
+-   Project documentation (`README.qmd` , `README.md` , `LICENSE`)
+
+## Help
+
+Please preferentially create an issue on GitHub for any questions, bugs or help needed regarding **t4_soc_map**: [https://github.com/cpiponiot/t4s_soc_map/issues](https://github.com/cpiponiot/t4s_soc_map/issues){.uri}. However, you can contact us by email through people in the core group (see below).
+
+## Core group
+
+-   Bienvenu H. K. Amani (bienvenuh.amani\@gmail.com)
+-   Camille Piponiot (camille.piponiot-laroche\@cirad.fr)
+-   Blandine Ahou Koffi
+-   Evans Ehouman
+-   Clovis Grinand
+-   Beatriz Bellon
+-   Larissa Houphouet
+-   Bruno Herault
