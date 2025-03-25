@@ -1,0 +1,1166 @@
+---
+title: "Modelisation (RF) du carbone du sol"
+output: html_document
+date: today
+---
+
+```{r setup, include=FALSE}
+#rm(list = ls())
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+# Loading Packages
+
+```{r loading packages, echo=FALSE}
+library(readxl)
+library(readr)
+library(dplyr)
+library(stringr)
+library(lubridate)
+library(tidyr)
+library(gridExtra)
+library(caret)
+library(ggRandomForests)
+library(randomForest) 
+library(CAST)
+library(raster)
+library(terra)
+library(usdm)
+library(rstan)
+library(sf)
+library(sp)
+library(stringr)
+library(skimr)
+library(corrplot)
+library(caret)
+library(ggRandomForests)
+library(CAST)
+library(pROC)
+library(GGally)
+```
+
+# Loading data set
+
+```{r data set loading, warning=FALSE, echo=FALSE}
+data_T4s_final <- read.csv2("data/data_T4s_final.csv", row.names=1) %>%
+  rename("BIO1_Annual_Mean_Temperature" = "bio1",
+         "BIO2_Mean_Diurnal_Range" = "bio2",
+         "BIO3_Isothermality" = "bio3",
+         "BIO4_Temperature_Seasonality" = "bio4",
+         "BIO5_Max_Temperature_of_Warmest_Month" = "bio5",
+         "BIO6_Min_Temperature_of_Coldest_Month" = "bio6",
+         "BIO7_Temperature_Annual_Range" = "bio7",
+         "BIO8_Mean_Temperature_of_Wettest_Quarter" = "bio8",
+         "BIO9_Mean_Temperature_of_Driest_Quarter" = "bio9",
+         "BIO10_Mean_Temperature_of_Warmest_Quarter" = "bio10",
+         "BIO11_Mean_Temperature_of_Coldest_Quarter" = "bio11",
+         "BIO12_Annual_Precipitation" = "bio12",
+         "BIO13_Precipitation_of_Wettest_Month" = "bio13",
+         "BIO14_Precipitation_of_Driest_Month" = "bio14",
+         "BIO15_Precipitation_Seasonality" = "bio15",
+         "BIO16_Precipitation_of_Wettest_Quarter" = "bio16",
+         "BIO17_Precipitation_of_Driest_Quarter" = "bio17",
+         "BIO18_Precipitation_of_Warmest_Quarter" = "bio18",
+         "BIO19_Precipitation_of_Coldest_Quarter" = "bio19")
+```
+
+# Formation de différents groupe de variable
+
+## Variables non spatialisées
+
+Ce sont des variables collectées in situ
+
+- present_landuse : la culture presente pendant les prélèvements du sol dans la parcelle,
+- age_landuse : la durée de la culture presente pendant les prélèvements du sol dans la parcelle.
+
+## Variables spacialisées
+
+Ce sont des variables téléchargées dans des bases de données internationales
+
+### Variables climatiques
+
+1) Température
+
+- BIO1_Annual_Mean_Temperature,
+- BIO2_Mean_Diurnal_Range,
+- BIO3_Isothermality,
+- BIO4_Temperature_Seasonality,
+- BIO5_Max_Temperature_of_Warmest_Month,
+- BIO6_Min_Temperature_of_Coldest_Month,
+- BIO7_Temperature_Annual_Range,
+- BIO8_Mean_Temperature_of_Wettest_Quarter,
+- BIO9_Mean_Temperature_of_Driest_Quarter,
+- BIO10_Mean_Temperature_of_Warmest_Quarter,
+- BIO11_Mean_Temperature_of_Coldest_Quarter.
+
+2) Pluviométrie
+
+- BIO12_Annual_Precipitation,
+- BIO13_Precipitation_of_Wettest_Month,
+- BIO14_Precipitation_of_Driest_Month,
+- BIO15_Precipitation_Seasonality,
+- BIO16_Precipitation_of_Wettest_Quarter,
+- BIO17_Precipitation_of_Driest_Quarter,
+- BIO18_Precipitation_of_Warmest_Quarter,
+- BIO19_Precipitation_of_Coldest_Quarter.
+
+### Variables du sol
+
+1) Propriétés physiques du sol
+
+- bulk,
+- carbon,
+- clay,
+- sand, 
+- silt.
+
+2) Propriétés chimique du sol
+
+- Ph water (in ph*10), à 0-5 cm, 5-15 cm et 15-30 cm de profondeur,
+- Cation exchange capacity (cec) at ph 7, à 0-5 cm, 5-15 cm et 15-30 cm de profondeur.
+
+### Climat Water Deficit (CDW)
+
+# Correlation entre les groupes de variables
+
+## Variables non spatialisées
+
+```{r correlation entre variables non spatialisées, warning=FALSE, echo=FALSE}
+data_T4s_final$age_landuse <- as.numeric(data_T4s_final$age_landuse)
+ggplot(data_T4s_final %>% filter(!is.na(present_landuse) & !is.na(age_landuse)), aes(x = present_landuse, y = age_landuse)) +
+  geom_boxplot(fill = "skyblue", color = "black") +
+  labs(title = "Distribution of Age by Land Use Category",
+       x = "Present Land Use",
+       y = "Age of Land Use") +
+  theme_minimal()
+```
+## Variables spatialisées
+
+* Climat 
+
+1) Température
+
+```{r correlation entre variables climat temperature, warning=FALSE, echo=FALSE}
+ggcorr(data_T4s_final %>%
+        dplyr::  select(BIO1_Annual_Mean_Temperature, BIO2_Mean_Diurnal_Range, BIO3_Isothermality, BIO4_Temperature_Seasonality, BIO5_Max_Temperature_of_Warmest_Month, BIO6_Min_Temperature_of_Coldest_Month, BIO7_Temperature_Annual_Range, BIO8_Mean_Temperature_of_Wettest_Quarter, BIO9_Mean_Temperature_of_Driest_Quarter, BIO10_Mean_Temperature_of_Warmest_Quarter, BIO11_Mean_Temperature_of_Coldest_Quarter), 
+         palette = "RdBu", label = TRUE)
+```
+
+2) Pluviométrie
+
+```{r correlation entre variables climat pluviometrie, warning=FALSE, echo=FALSE}
+ggcorr(data_T4s_final %>%
+        dplyr:: select(BIO12_Annual_Precipitation, BIO13_Precipitation_of_Wettest_Month, BIO14_Precipitation_of_Driest_Month, BIO15_Precipitation_Seasonality, BIO16_Precipitation_of_Wettest_Quarter, BIO17_Precipitation_of_Driest_Quarter, BIO18_Precipitation_of_Warmest_Quarter, BIO19_Precipitation_of_Coldest_Quarter), 
+         palette = "RdBu", label = TRUE)
+```
+
+* Sol
+
+1) Propriétés physiques
+
+```{r correlation entre variables sol physique, warning=FALSE, echo=FALSE}
+ggcorr(data_T4s_final %>%
+        dplyr:: select(bulk, carbon, clay, coarse, sand, silt), 
+         palette = "RdBu", label = TRUE)
+```
+2) Propriétés chimiques
+
+```{r correlation entre variables sol chimique, warning=FALSE, echo=FALSE}
+ggcorr(data_T4s_final %>%
+        dplyr:: select(ph_0_5, ph_5_15, ph_15_30, cec_0_5, cec_5_15, cec_15_30), 
+         palette = "RdBu", label = TRUE)
+```
+
+# Selection des variables important par groupe
+
+- **Méthode VIF (Variance Inflation Factor)** 
+
+La fonction `vifstep` en R permet de détecter et de supprimer la multicolinéarité entre les variables prédictives en calculant le facteur d'inflation de la variance (VIF). La multicolinéarité survient lorsque des variables prédictives sont fortement corrélées, ce qui peut engendrer des problèmes dans les modèles de régression.
+
+En utilisant `vifstep` sur un jeu de données, avec un seuil défini (par exemple, th=10), la fonction calcule le VIF pour chaque variable. Si une variable dépasse ce seuil, elle est jugée trop corrélée aux autres et est retirée du jeu de données. Ce processus est répétitif : après chaque suppression, les VIF sont recalculés pour les variables restantes, jusqu'à ce qu'aucune variable n'ait un VIF supérieur au seuil établi.
+
+
+## Variables non spatialisées
+
+Il s'agit de "present_landuse" et de "age_landuse". Non applicable car non spatialisées.
+
+## Variables spatialisées
+
+### Climat
+
+#### Température
+
+- **Méthode VIF (Variance Inflation Factor)** 
+
+```{r selection de variable climat temperature vif, warning=FALSE, echo=FALSE, message=FALSE}
+temp <- data_T4s_final %>%
+  dplyr:: select(site, plot, T_stock, BIO1_Annual_Mean_Temperature, BIO2_Mean_Diurnal_Range, BIO3_Isothermality, BIO4_Temperature_Seasonality, BIO5_Max_Temperature_of_Warmest_Month, BIO6_Min_Temperature_of_Coldest_Month, BIO7_Temperature_Annual_Range, BIO8_Mean_Temperature_of_Wettest_Quarter, BIO9_Mean_Temperature_of_Driest_Quarter, BIO10_Mean_Temperature_of_Warmest_Quarter, BIO11_Mean_Temperature_of_Coldest_Quarter)
+
+set.seed(1000)
+
+# To know what variable is correlatitudeed with each axis
+# identify collinear variables that should be excluded
+temp_var  <- temp %>%
+  dplyr::select(-site, -plot, -T_stock)
+
+# check NA values
+# Remove all missing values	:  na.omit(df) or
+# Raplace by the mean df$x[is.na(df$x)] <- mean(df$x, na.rm = TRUE) or
+# replace navalue by 0 
+
+temp_var_select <- vifstep(temp_var, th=10)
+
+
+####################################################################################################################################### Slection de variables importantes
+# copy ViF_scor to excel (see Rstudio Notebook output)
+temp_vif <- exclude(temp, temp_var_select) # exclude the collinear variables that were identified in the previous step
+temp_var_select <- names(temp_vif)
+temp_var <- temp %>%
+  dplyr::select(site, plot, T_stock, all_of (temp_var_select))
+```
+
+Après application du VIF sur les variables de température, les variables sélectionnées qui ne présentent pas de problème de collinéarité et qui seront à nouveau évaluées pour leur pertinence sont :
+
+
+| Variables                                     | VIF       |
+|-----------------------------------------------|-----------|
+| BIO5_Max_Temperature_of_Warmest_Month         | 3.077165  |
+| BIO6_Min_Temperature_of_Coldest_Month         | 1.337476  |
+| BIO8_Mean_Temperature_of_Wettest_Quarter      | 5.176443  |
+| BIO9_Mean_Temperature_of_Driest_Quarter       | 6.673420  |
+| BIO11_Mean_Temperature_of_Coldest_Quarter     | 8.153171  |
+
+
+- **Méthode FFS (Forward Feature Selection)** 
+
+La méthode de Forward Feature Selection (FFS), appliquée via la fonction ffs, est une technique de sélection de variables utilisée en machine learning et en statistiques pour identifier les sous-ensembles de variables (caractéristiques) les plus pertinentes pour la construction d'un modèle prédictif.
+Fonctionnement de la Forward Feature Selection (FFS) :
+
+    Initialisation :
+        La méthode commence avec un modèle simple, généralement sans aucune variable explicative (ou avec seulement la constante dans le cas d'une régression).
+    Ajout Progressif des Variables :
+        À chaque itération, la méthode examine l'ajout de chaque variable non encore sélectionnée au modèle actuel.
+        La variable qui améliore le plus la performance du modèle, selon un critère spécifique (par exemple, l'augmentation du R², la réduction de l'erreur quadratique moyenne, etc.), est ajoutée au modèle.
+    Validation :
+        La performance du modèle est souvent validée à chaque étape en utilisant une technique de validation croisée pour éviter le surapprentissage (overfitting).
+    Critère d'Arrêt :
+        Le processus continue jusqu'à ce qu'il n'y ait plus d'amélioration significative de la performance du modèle en ajoutant de nouvelles variables.
+        Un seuil de performance peut être prédéfini pour déterminer quand arrêter d'ajouter des variables.
+    Résultat Final :
+        À la fin du processus, le modèle retient les variables qui ont été sélectionnées au fil des itérations comme les plus importantes pour la prédiction.
+        
+##### Effect des variables rétenues sur les prédictions de stock de carbone
+
+```{r selection de variable climat temperature fff, warning=FALSE, echo=FALSE, cache=TRUE, message=FALSE, results="hide"}
+set.seed(1000)
+
+# partitiontion data in train/validation
+temp_var <- temp_var %>%
+  drop_na() %>%
+  mutate(plot_ext = row_number()) # Creer une nouvelle colonne 'plot_ext' numerote de 1 à n = nombre de ligne et supprimer les NA
+
+in_train_temp_var <-  createDataPartition(temp_var$plot_ext, p = 0.9, list=FALSE)
+
+train_temp <- temp_var %>%
+  filter(row_number() %in% in_train_temp_var)
+
+
+
+
+indices_temp <- CreateSpacetimeFolds(train_temp, spacevar = "plot_ext",k=10)
+
+valid_temp <- trainControl(method="CV",number=10,
+                      index = indices_temp$index,
+                      savePredictions = TRUE)
+
+
+
+######################################################################################################################## fff pour une dernière selection des variables importantes
+
+caret_temp = ffs(train_temp %>% dplyr:: select(-site, -plot, -T_stock, -plot_ext), train_temp$T_stock,
+           method = "rf",
+           metric = "Rsquared",
+           trControl = valid_temp, importance = TRUE, seed = 1000)
+
+# get list of predictor
+vselect_temp  <- caret_temp$selectedvars
+
+# plot(varImp(caret_temp, scale = T))
+
+train_temp <- train_temp %>%
+  dplyr:: select(T_stock, all_of(vselect_temp))
+
+###################################################################################################################### Dernier training
+rf_temp <- randomForest(T_stock ~ .,
+             data = train_temp, ntree=500,
+             importance=T)
+
+
+# # varimp
+# gg_Tstock_temp <- gg_vimp(rf_temp)
+# plot(gg_Tstock_temp)
+gg_Tstock_temp <- gg_variable(rf_temp)
+plot(gg_Tstock_temp, panel=TRUE)
+```
+
+##### Importance des variables retenues
+
+```{r importance des variable climat temperature fff, warning=FALSE, echo=FALSE}
+##################################################################### Extraire l'importance des variables
+importance_vars <- varImp(caret_temp, scale = FALSE)
+#print(importance_vars)
+#plot(importance_vars)
+
+
+# Convertir les données en un format adéquat pour ggplot2
+importance_df <- as.data.frame(importance_vars$importance)
+importance_df$Variable <- rownames(importance_df)
+colnames(importance_df) <- c("Importance", "Variable")
+
+# Créer le graphique avec des couleurs distinctes
+importance_plot <- ggplot(importance_df, aes(x = reorder(Variable, Importance), y = Importance, fill = Variable)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  scale_fill_viridis_d() +  # Utiliser une palette de couleurs viridis
+  xlab("Variables") +
+  ylab("Importance") +
+  ggtitle("Importance des Variables") +
+  theme_minimal() +  # Utiliser un thème minimal pour un aspect plus épuré
+  theme(legend.position = "none")  # Cacher la légende si elle n'est pas nécessaire
+print(importance_plot)
+```
+
+##### Performance métrique
+
+```{r performance métrique des variable climat temperature fff, warning=FALSE, echo=FALSE}
+##################################################################### Visualiser les Métriques de Performance 
+# Extraire et préparer les données pour le graphique
+results_df <- caret_temp$results
+# Convertir les données en format long pour ggplot2
+results_long <- results_df %>%
+  pivot_longer(cols = c(RMSE, Rsquared, MAE),
+               names_to = "Metric",
+               values_to = "Value")
+
+bar_plot <- ggplot(results_long, aes(x = Metric, y = Value, fill = Metric)) +
+  geom_bar(stat = "identity", position = "dodge") +  # Barres côte à côte
+  xlab("Métrique") +
+  ylab("Valeur") +
+  ggtitle("Valeur des Métriques de Performance") +
+  scale_fill_brewer(palette = "Set1") +  # Utiliser une palette de couleurs distinctes
+  theme_minimal()
+
+# Afficher le graphique
+print(caret_temp$results)
+print(bar_plot)
+```
+
+##### Observavtions VS Prédictions 
+
+```{r  Observavtions VS Prédictions des variable climat temperature fff, warning=FALSE, echo=FALSE}
+########################################################################################## map pred vs obs
+#caret_temp$pred
+# Créer un graphique des prédictions vs. valeurs observées
+pred_vs_obs_plot <- ggplot(caret_temp$pred, aes(x = obs, y = pred)) +
+  geom_point(aes(color = Resample), alpha = 0.5) +  # Points avec transparence pour éviter le chevauchement
+  geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dashed") +  # Ligne d'identité
+  xlab("Valeurs Observées") +
+  ylab("Valeurs Prédites") +
+  ggtitle("Prédictions vs. Valeurs Observées") +
+  theme_minimal()
+
+# Afficher le graphique
+print(pred_vs_obs_plot)
+
+
+# Save varselected
+save(vselect_temp, file = "outputs/vselect_temp.Rdata")
+#load("outputs/select_temp.Rdata")
+
+# Save model
+save(caret_temp,file = "outputs/caret_temp.RData")
+#load("outputs/caret_temp.RData")
+```
+
+
+
+#### Pluviométrie
+
+- **Méthode VIF (Variance Inflation Factor)** 
+
+```{r selection de variable climat pluviometrie vif, warning=FALSE, echo=FALSE}
+pluvio <- data_T4s_final %>%
+  dplyr:: select(site, plot, T_stock, BIO12_Annual_Precipitation, BIO13_Precipitation_of_Wettest_Month, BIO14_Precipitation_of_Driest_Month, BIO15_Precipitation_Seasonality, BIO16_Precipitation_of_Wettest_Quarter, BIO17_Precipitation_of_Driest_Quarter, BIO18_Precipitation_of_Warmest_Quarter, BIO19_Precipitation_of_Coldest_Quarter)
+
+# To know what variable is correlatitudeed with each axis
+# identify collinear variables that should be excluded
+pluvio_var  <- pluvio %>%
+  dplyr::select(-site, -plot, -T_stock)
+
+# check NA values
+# Remove all missing values	:  na.omit(df) or
+# Raplace by the mean df$x[is.na(df$x)] <- mean(df$x, na.rm = TRUE) or
+# replace navalue by 0 
+
+set.seed(1000)
+
+pluvio_var_select <- vifstep(pluvio_var, th=10)
+
+
+####################################################################################################################################### Slection de variables importantes
+# copy ViF_scor to excel (see Rstudio Notebook output)
+pluvio_vif <- exclude(pluvio, pluvio_var_select) # exclude the collinear variables that were identified in the previous step
+pluvio_var_select <- names(pluvio_vif)
+pluvio_var <- pluvio %>%
+  dplyr::select(site, plot, T_stock, all_of (pluvio_var_select))
+```
+
+Après application du VIF sur les variables de pluviométrie, les variables sélectionnées qui ne présentent pas de problème de collinéarité et qui seront à nouveau évaluées pour leur pertinence sont :
+
+| Variables                              | VIF       |
+|----------------------------------------|-----------|
+| BIO14_Precipitation_of_Driest_Month    | 1.306140  |
+| BIO15_Precipitation_Seasonality        | 1.644094  |
+| BIO18_Precipitation_of_Warmest_Quarter | 1.929225  |
+| BIO19_Precipitation_of_Coldest_Quarter | 1.160393  |
+
+
+- **Méthode FFS (Forward Feature Selection)** 
+
+##### Effect des variables rétenues sur les prédictions de stock de carbone
+
+```{r selection de variable climat pluviometrie fff, warning=FALSE, echo=FALSE, cache=TRUE, message=FALSE, results="hide"}
+set.seed(1000)
+
+
+# partitiontion data in train/validation
+pluvio_var <- pluvio_var %>%
+  drop_na() %>%
+  mutate(plot_ext = row_number()) # Creer une nouvelle colonne 'plot_ext' numerote de 1 à n = nombre de ligne et supprimer les NA
+
+in_train_pluvio_var <-  createDataPartition(pluvio_var$plot_ext, p = 0.9, list=FALSE)
+
+train_pluvio <- pluvio_var %>%
+  filter(row_number() %in% in_train_pluvio_var)
+
+
+# test_pluvio <- pluvio_var %>%
+#   slice(-in_train_pluvio_var)
+
+
+indices_pluvio <- CreateSpacetimeFolds(train_pluvio, spacevar = "plot_ext",k=10)
+
+valid_pluvio <- trainControl(method="CV",number=10,
+                      index = indices_pluvio$index,
+                      savePredictions = TRUE)
+
+
+######################################################################################################################## fff pour une dernière selection des variables importantes
+
+caret_pluvio = ffs(train_pluvio %>% dplyr:: select(-site, -plot, -T_stock, -plot_ext), train_pluvio$T_stock,
+           method = "rf",
+           metric = "Rsquared",
+           trControl = valid_pluvio, importance = TRUE, seed = 1000)
+
+# get list of predictor
+vselect_pluvio  <- caret_pluvio$selectedvars
+
+#plot(varImp(caret_pluvio, scale = T))
+
+train_pluvio <- train_pluvio %>%
+  dplyr:: select(T_stock, all_of(vselect_pluvio))
+
+###################################################################################################################### Dernier training
+rf_pluvio <- randomForest(T_stock ~ .,
+             data = train_pluvio, ntree=500,
+             importance=T)
+
+
+# # varimp
+# gg_Tstock_pluvio <- gg_vimp(rf_pluvio)
+# plot(gg_Tstock_pluvio)
+
+gg_Tstock_pluvio <- gg_variable(rf_pluvio)
+plot(gg_Tstock_pluvio, panel=TRUE)
+```
+
+
+##### Importance des variables retenues
+
+```{r importance des variables retenues climat pluviometrie fff, warning=FALSE, echo=FALSE, cache=TRUE, message=FALSE}
+##################################################################### Extraire l'importance des variables
+importance_vars <- varImp(caret_pluvio, scale = FALSE)
+# print(importance_vars)
+# plot(importance_vars)
+
+
+# Convertir les données en un format adéquat pour ggplot2
+importance_df <- as.data.frame(importance_vars$importance)
+importance_df$Variable <- rownames(importance_df)
+colnames(importance_df) <- c("Importance", "Variable")
+
+# Créer le graphique avec des couleurs distinctes
+importance_plot <- ggplot(importance_df, aes(x = reorder(Variable, Importance), y = Importance, fill = Variable)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  scale_fill_viridis_d() +  # Utiliser une palette de couleurs viridis
+  xlab("Variables") +
+  ylab("Importance") +
+  ggtitle("Importance des Variables") +
+  theme_minimal() +  # Utiliser un thème minimal pour un aspect plus épuré
+  theme(legend.position = "none")  # Cacher la légende si elle n'est pas nécessaire
+print(importance_plot)
+```
+
+##### Performance métrique
+
+```{r performance métrique des variables retenues climat pluviometrie fff, warning=FALSE, echo=FALSE, cache=TRUE, message=FALSE}
+##################################################################### Visualiser les Métriques de Performance 
+# Extraire et préparer les données pour le graphique
+results_df <- caret_pluvio$results
+# Convertir les données en format long pour ggplot2
+results_long <- results_df %>%
+  pivot_longer(cols = c(RMSE, Rsquared, MAE),
+               names_to = "Metric",
+               values_to = "Value")
+
+bar_plot <- ggplot(results_long, aes(x = Metric, y = Value, fill = Metric)) +
+  geom_bar(stat = "identity", position = "dodge") +  # Barres côte à côte
+  xlab("Métrique") +
+  ylab("Valeur") +
+  ggtitle("Valeur des Métriques de Performance") +
+  scale_fill_brewer(palette = "Set1") +  # Utiliser une palette de couleurs distinctes
+  theme_minimal()
+
+# Afficher le graphique
+caret_pluvio$results
+print(bar_plot)
+```
+
+
+
+##### Observavtions VS Prédictions
+
+```{r Observavtions VS Prédictions des variables retenues climat pluviometrie fff, warning=FALSE, echo=FALSE, cache=TRUE, message=FALSE}
+########################################################################################## map pred vs obs
+#caret_pluvio$pred
+# Créer un graphique des prédictions vs. valeurs observées
+pred_vs_obs_plot <- ggplot(caret_pluvio$pred, aes(x = obs, y = pred)) +
+  geom_point(aes(color = Resample), alpha = 0.5) +  # Points avec transparence pour éviter le chevauchement
+  geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dashed") +  # Ligne d'identité
+  xlab("Valeurs Observées") +
+  ylab("Valeurs Prédites") +
+  ggtitle("Prédictions vs. Valeurs Observées") +
+  theme_minimal()
+
+# Afficher le graphique
+print(pred_vs_obs_plot)
+
+
+# Save varselected
+save(vselect_pluvio, file = "outputs/vselect_pluvio.Rdata")
+#load("outputs/select_temp.Rdata")
+
+
+# save model
+save(caret_pluvio,file = "outputs/caret_pluvio.RData")
+#load("outputs/caret_pluvio.RData")
+```
+
+
+
+### Soil
+
+#### Physique
+
+- **Méthode VIF (Variance Inflation Factor)** 
+
+```{r selection de variable soil physique vif, warning=FALSE, echo=FALSE}
+physiq <- data_T4s_final %>%
+  dplyr:: select(site, plot, T_stock, carbon, clay, coarse, sand, silt)
+
+
+# To know what variable is correlatitudeed with each axis
+# identify collinear variables that should be excluded
+physiq_var  <- physiq %>%
+  dplyr::select(-site, -plot, -T_stock)
+
+# check NA values
+# Remove all missing values	:  na.omit(df) or
+# Raplace by the mean df$x[is.na(df$x)] <- mean(df$x, na.rm = TRUE) or
+# replace navalue by 0 
+
+
+set.seed(1000)
+
+physiq_var_select <- vifstep(physiq_var, th=10)
+
+
+####################################################################################################################################### Slection de variables importantes
+# copy ViF_scor to excel (see Rstudio Notebook output)
+physiq_vif <- exclude(physiq, physiq_var_select) # exclude the collinear variables that were identified in the previous step
+physiq_var_select <- names(physiq_vif)
+physiq_var <- physiq %>%
+  dplyr::select(site, plot, T_stock, all_of (physiq_var_select))
+```
+
+Après application du VIF sur les variables de pluviométrie, les variables sélectionnées qui ne présentent pas de problème de collinéarité et qui seront à nouveau évaluées pour leur pertinence sont les suivantes, ici aucune variable n'a été exclues :
+
+| Variables | VIF       |
+|-----------|-----------|
+| carbon    | 1.164577  |
+| clay      | 1.384532  |
+| coarse    | 1.117133  |
+| sand      | 1.806816  |
+| silt      | 1.708765  |
+
+
+- **Méthode FFS (Forward Feature Selection)** 
+
+##### Effect des variables rétenues sur les prédictions de stock de carbone
+
+```{r selection de variable soil physique fff, warning=FALSE, echo=FALSE, cache=TRUE, message=FALSE, results="hide"}
+set.seed(1000)
+
+
+# partitiontion data in train/validation
+physiq_var <- physiq_var %>%
+  drop_na() %>%
+  mutate(plot_ext = row_number()) # Creer une nouvelle colonne 'plot_ext' numerote de 1 à n = nombre de ligne et supprimer les NA
+
+in_train_physiq_var <-  createDataPartition(physiq_var$plot_ext, p = 0.9, list=FALSE)
+
+train_physiq <- physiq_var %>%
+  filter(row_number() %in% in_train_physiq_var)
+
+
+# test_physiq <- physiq_var %>%
+#   slice(-in_train_physiq_var)
+
+
+indices_physiq <- CreateSpacetimeFolds(train_physiq, spacevar = "plot_ext",k=10)
+
+valid_physiq <- trainControl(method="CV",number=10,
+                      index = indices_physiq$index,
+                      savePredictions = TRUE)
+
+
+######################################################################################################################## fff pour une dernière selection des variables importantes
+
+caret_physiq = ffs(train_physiq %>% dplyr:: select(-site, -plot, -T_stock, -plot_ext), train_physiq$T_stock,
+           method = "rf",
+           metric = "Rsquared",
+           trControl = valid_physiq, importance = TRUE, seed = 1000)
+
+# get list of predictor
+vselect_physiq  <- caret_physiq$selectedvars
+
+#plot(varImp(caret_physiq, scale = T))
+
+train_physiq <- train_physiq %>%
+  dplyr:: select(T_stock, all_of(vselect_physiq))
+
+###################################################################################################################### Dernier training
+rf_physiq <- randomForest(T_stock ~ .,
+             data = train_physiq, ntree=500,
+             importance=T)
+
+
+# varimp
+# gg_Tstock_physiq <- gg_vimp(rf_physiq)
+# plot(gg_Tstock_physiq)
+
+gg_Tstock_physiq <- gg_variable(rf_physiq)
+plot(gg_Tstock_physiq, panel=TRUE)
+```
+
+##### Importance des variables retenues
+
+```{r importance des variables retenues soil physique fff, warning=FALSE, echo=FALSE, cache=TRUE, message=FALSE}
+##################################################################### Extraire l'importance des variables
+importance_vars <- varImp(caret_physiq, scale = FALSE)
+
+# Convertir les données en un format adéquat pour ggplot2
+importance_df <- as.data.frame(importance_vars$importance)
+importance_df$Variable <- rownames(importance_df)
+colnames(importance_df) <- c("Importance", "Variable")
+
+# Créer le graphique avec des couleurs distinctes
+importance_plot <- ggplot(importance_df, aes(x = reorder(Variable, Importance), y = Importance, fill = Variable)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  scale_fill_viridis_d() +  # Utiliser une palette de couleurs viridis
+  xlab("Variables") +
+  ylab("Importance") +
+  ggtitle("Importance des Variables") +
+  theme_minimal() +  # Utiliser un thème minimal pour un aspect plus épuré
+  theme(legend.position = "none")  # Cacher la légende si elle n'est pas nécessaire
+print(importance_plot)
+```
+
+##### Performance métrique
+
+```{r performance métrique du modele retenues soil physique fff, warning=FALSE, echo=FALSE, cache=TRUE, message=FALSE}
+##################################################################### Visualiser les Métriques de Performance 
+#caret_physiq$results
+# Extraire et préparer les données pour le graphique
+results_df <- caret_physiq$results
+# Convertir les données en format long pour ggplot2
+results_long <- results_df %>%
+  pivot_longer(cols = c(RMSE, Rsquared, MAE),
+               names_to = "Metric",
+               values_to = "Value")
+
+bar_plot <- ggplot(results_long, aes(x = Metric, y = Value, fill = Metric)) +
+  geom_bar(stat = "identity", position = "dodge") +  # Barres côte à côte
+  xlab("Métrique") +
+  ylab("Valeur") +
+  ggtitle("Valeur des Métriques de Performance") +
+  scale_fill_brewer(palette = "Set1") +  # Utiliser une palette de couleurs distinctes
+  theme_minimal()
+
+# Afficher le graphique
+caret_physiq$results
+print(bar_plot)
+```
+
+
+##### Observavtions VS Prédictions
+
+```{r Observavtions VS Prédictions du modele retenues soil physique fff, warning=FALSE, echo=FALSE, cache=TRUE, message=FALSE}
+########################################################################################## map pred vs obs
+#caret_physiq$pred
+# Créer un graphique des prédictions vs. valeurs observées
+pred_vs_obs_plot <- ggplot(caret_physiq$pred, aes(x = obs, y = pred)) +
+  geom_point(aes(color = Resample), alpha = 0.5) +  # Points avec transparence pour éviter le chevauchement
+  geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dashed") +  # Ligne d'identité
+  xlab("Valeurs Observées") +
+  ylab("Valeurs Prédites") +
+  ggtitle("Prédictions vs. Valeurs Observées") +
+  theme_minimal()
+
+# Afficher le graphique
+print(pred_vs_obs_plot)
+
+
+# Save varselected
+save(vselect_physiq, file = "outputs/vselect_physiq.Rdata")
+#load("outputs/vselect_physiq.Rdata")
+
+# save model
+save(caret_physiq,file = "outputs/caret_physiq.RData")
+#load("outputs/caret_physiq.RData")
+```
+
+
+
+
+
+#### Chimique
+
+- **Méthode VIF (Variance Inflation Factor)** 
+
+```{r selection de variable soil chimique, warning=FALSE, echo=FALSE}
+chimiq <- data_T4s_final %>%
+  dplyr:: select(site, plot, T_stock, ph_0_5, ph_5_15, ph_15_30, cec_0_5, cec_5_15, cec_15_30)
+
+
+# To know what variable is correlatitudeed with each axis
+# identify collinear variables that should be excluded
+chimiq_var  <- chimiq %>%
+  dplyr::select(-site, -plot, -T_stock)
+
+# check NA values
+# Remove all missing values	:  na.omit(df) or
+# Raplace by the mean df$x[is.na(df$x)] <- mean(df$x, na.rm = TRUE) or
+# replace navalue by 0 
+
+#corrplot(cor(chimiq_var),method="circle")
+#ggpairs(land)
+
+chimiq_var_select <- vifstep(chimiq_var, th=10)
+
+
+####################################################################################################################################### Slection de variables importantes
+# copy ViF_scor to excel (see Rstudio Notebook output)
+chimiq_vif <- exclude(chimiq, chimiq_var_select) # exclude the collinear variables that were identified in the previous step
+chimiq_var_select <- names(chimiq_vif)
+chimiq_var <- chimiq %>%
+  dplyr::select(site, plot, T_stock, all_of (chimiq_var_select))
+
+
+set.seed(1000)
+
+
+# partitiontion data in train/validation
+chimiq_var <- chimiq_var %>%
+  drop_na() %>%
+  mutate(plot_ext = row_number()) # Creer une nouvelle colonne 'plot_ext' numerote de 1 à n = nombre de ligne et supprimer les NA
+
+in_train_chimiq_var <-  createDataPartition(chimiq_var$plot_ext, p = 0.9, list=FALSE)
+
+train_chimiq <- chimiq_var %>%
+  filter(row_number() %in% in_train_chimiq_var)
+
+
+
+
+# get list of predictor
+vselect_chimiq  <- c("ph_0_5", "cec_0_5")
+
+#plot(varImp(caret_physiq, scale = T))
+
+train_chimiq <- train_chimiq %>%
+  dplyr:: select(T_stock, all_of(vselect_chimiq))
+
+###################################################################################################################### Dernier training
+rf_chimiq <- randomForest(T_stock ~ .,
+             data = train_chimiq, ntree=500,
+             importance=T)
+
+
+# varimp
+gg_Tstock_chimiq <- gg_vimp(rf_chimiq)
+plot(gg_Tstock_chimiq)
+
+gg_Tstock_chimiq <- gg_variable(rf_chimiq)
+plot(gg_Tstock_chimiq, panel=TRUE)
+```
+
+
+Après application de la méthode VIF sur les variables chimiques du sol, il apparaît que les deux variables, `ph_0_5` et `cec_0_5`, ne présentent aucun problème de collinéarité. Elles seront donc testées lors de la prochaine sélection par FFS. Cependant, comme la méthode FFS nécessite au moins trois variables, ces deux variables seront finalement retenues sans passer par cette sélection.
+
+
+
+# Effets des modèles avec l'ensemble des variables retenues dans les diiférents groupes (sans carbon)
+
+## Modèle sans les variables non spatialisées
+
+### Importances des variables
+
+```{r modele sans les variables non spatialisees, warning=FALSE, echo=FALSE, message=FALSE, cache=TRUE, results="hide"}
+sans_var_spat <- data_T4s_final %>%
+  dplyr:: select(site, plot, T_stock, BIO8_Mean_Temperature_of_Wettest_Quarter, BIO11_Mean_Temperature_of_Coldest_Quarter, BIO15_Precipitation_Seasonality, BIO19_Precipitation_of_Coldest_Quarter, bulk, sand, silt, clay, coarse, ph_0_5, cec_0_5, CWD)
+                         
+
+set.seed(1000)
+# To know what variable is correlatitudeed with each axis
+
+# identify collinear variables that should be excluded
+sans_var_spat_1  <- sans_var_spat %>%
+  dplyr::select(-site, -plot, -T_stock)
+
+# check NA values
+# Remove all missing values	:  na.omit(df) or
+# Raplace by the mean df$x[is.na(df$x)] <- mean(df$x, na.rm = TRUE) or
+# replace navalue by 0 
+
+#corrplot(cor(sans_var_spat_1),method="circle")
+#ggpairs(land)
+
+sans_var_spat_var_select <- vifstep(sans_var_spat_1, th=10)
+
+
+####################################################################################################################################### Slection de variables importantes
+# copy ViF_scor to excel (see Rstudio Notebook output)
+sans_var_spat_vif <- exclude(sans_var_spat, sans_var_spat_var_select) # exclude the collinear variables that were identified in the previous step
+sans_var_spat_var_select <- names(sans_var_spat_vif)
+sans_var_spat_1 <- sans_var_spat %>%
+  dplyr::select(site, plot, T_stock, all_of (sans_var_spat_var_select))
+
+
+
+
+# partitiontion data in train/validation
+sans_var_spat_1 <- sans_var_spat_1 %>%
+  drop_na() %>%
+  mutate(plot_ext = row_number()) # Creer une nouvelle colonne 'plot_ext' numerote de 1 à n = nombre de ligne et supprimer les NA
+
+in_train_sans_var_spat_var <-  createDataPartition(sans_var_spat_1$plot_ext, p = 0.9, list=FALSE)
+
+train_sans_var_spat <- sans_var_spat_1 %>%
+  filter(row_number() %in% in_train_sans_var_spat_var)
+
+
+# test_sans_var_spat <- sans_var_spat_1 %>%
+#   slice(-in_train_sans_var_spat_var)
+
+
+indices_sans_var_spat <- CreateSpacetimeFolds(train_sans_var_spat, spacevar = "plot_ext",k=10)
+
+valid_sans_var_spat <- trainControl(method="CV",number=10,
+                      index = indices_sans_var_spat$index,
+                      savePredictions = TRUE)
+######################################################################################################################## fff pour une dernière selection des variables importantes (impossible ici car il n'y a que 2 variables)
+
+caret_sans_var_spat = ffs(train_sans_var_spat %>% dplyr:: select(-site, -plot, -T_stock, -plot_ext), train_sans_var_spat$T_stock,
+           method = "rf",
+           metric = "Rsquared",
+           trControl = valid_sans_var_spat, importance = TRUE, seed = 1000)
+
+
+
+# # # get list of predictor
+vselect_sans_var_spat <- caret_sans_var_spat$selectedvars
+#vselect_sans_var_spat
+
+#plot(varImp(caret_physiq, scale = T))
+
+train_sans_var_spat <- train_sans_var_spat %>%
+  dplyr:: select(T_stock, all_of(vselect_sans_var_spat))
+
+###################################################################################################################### Dernier training
+rf_sans_var_spat <- randomForest(T_stock ~ .,
+             data = train_sans_var_spat, ntree=500,
+             importance=T)
+
+##################################################################### Extraire l'importance des variables
+importance_vars <- varImp(caret_sans_var_spat, scale = FALSE)
+# print(importance_vars)
+# plot(importance_vars)
+
+
+
+# Convertir les données en un format adéquat pour ggplot2
+importance_df <- as.data.frame(importance_vars$importance)
+importance_df$Variable <- rownames(importance_df)
+colnames(importance_df) <- c("Importance", "Variable")
+
+importance_df <- importance_df %>%
+  mutate(type = case_when(
+    Variable == "BIO11_Mean_Temperature_of_Coldest_Quarter" ~ "Température",
+    Variable %in% c("BIO15_Precipitation_Seasonality", "BIO19_Precipitation_of_Coldest_Quarter") ~ "Pluviométrie",
+    Variable %in% c("sand", "clay", "bulk") ~ "Sol",
+    Variable == "CWD" ~ "Hydrologie",
+    TRUE ~ "Autre"
+  )) %>%
+  filter(type != "Autre") # Supprimer les lignes avec "Autre"
+
+
+
+importance_plot <- ggplot(importance_df, aes(x = reorder(Variable, Importance), y = Importance, fill = type)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  scale_fill_viridis_d(name = "Type de variable") +  # Légende pour les types
+  xlab("Variables") +
+  ylab("Importance") +
+  ggtitle("Importance des Variables") +
+  theme_minimal()
+
+print(importance_plot)
+```
+
+
+### Performance métrique
+
+```{r performance métrique modele sans les variables non spatialisees, warning=FALSE, echo=FALSE, message=FALSE}
+##################################################################### Visualiser les Métriques de Performance 
+#caret_sans_var_spat$results
+# Extraire et préparer les données pour le graphique
+results_df <- caret_sans_var_spat$results
+# Convertir les données en format long pour ggplot2
+results_long <- results_df %>%
+  pivot_longer(cols = c(RMSE, Rsquared, MAE),
+               names_to = "Metric",
+               values_to = "Value")
+
+# Créer le graphique des résultats
+results_plot <- ggplot(results_long, aes(x = mtry, y = Value, color = Metric)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ Metric, scales = "free_y") +  # Créer un graphique séparé pour chaque métrique
+  xlab("Nombre de Variables à Tester (mtry)") +
+  ylab("Valeur") +
+  ggtitle("Performance du Modèle en Fonction des Métriques") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+
+bar_plot <- ggplot(results_long, aes(x = Metric, y = Value, fill = Metric)) +
+  geom_bar(stat = "identity", position = "dodge") +  # Barres côte à côte
+  xlab("Métrique") +
+  ylab("Valeur") +
+  ggtitle("Valeur des Métriques de Performance") +
+  scale_fill_brewer(palette = "Set1") +  # Utiliser une palette de couleurs distinctes
+  theme_minimal()
+
+# Afficher le graphique
+caret_sans_var_spat$results
+print(results_plot)
+print(bar_plot)
+
+# Save varselected
+save(vselect_sans_var_spat, file = "outputs/vselect_sans_var_spat.Rdata")
+#load("outputs/vvselect_sans_var_spat.Rdata")
+
+
+# save model
+save(caret_sans_var_spat,file = "outputs/caret_sans_var_spat.RData")
+#load("outputs/caret_physiq.RData")
+```
+
+
+# Carte de prédiction du stock de carbone
+
+Les variables locales n'etant pas spatialisée, la prédiction du carbone du sol se fera uniquement avec les variables pédoclimatiques selectionnées. A savoir : 
+
+**- Température :`BIO11_Mean_Temperature_of_Coldest_Quarter`**
+**- Pluviométrie :`BIO15_Precipitation_Seasonality` et `BIO19_Precipitation_of_Coldest_Quarter`**
+**- Proprietés physique du sol :`sand`, `clay` et `bulk`**
+**- Climat Water Deficit**
+
+
+```{r preparation des donnees pour carte, warning=FALSE, echo=FALSE}
+# Sélectionner les couches "sand" et "silt" par nom
+soil_selected <- subset(soil_ci, c("bulk", "clay", "sand"))
+bioclim_selected <- subset(bioclim_ci, c("bio11", "bio15", "bio19"))
+
+# Convertir a la même résolution
+
+soil_selected_aggr <- resample(soil_selected, bioclim_selected, method = "bilinear") 
+cwd_selected_aggr <- resample(CWD_ci, bioclim_selected, method = "bilinear")
+
+data_f_clim <- as.data.frame(bioclim_selected, xy = TRUE)
+data_f_soil <- as.data.frame(soil_selected_aggr, xy = TRUE)
+data_f_cwd <- as.data.frame(cwd_selected_aggr, xy = TRUE)
+
+pedo_clim_data <- merge(data_f_clim, data_f_soil, by = c("x", "y"))
+data_f_carte <- merge(pedo_clim_data, data_f_cwd, by = c("x", "y"))
+```
+
+```{r carte prediction 1, warning=FALSE, echo=FALSE}
+# 1. Séparation des données en ensembles d'entraînement et de test (80% - 20%)
+set.seed(1000)  # Pour garantir que la partition soit reproductible
+trainIndex <- createDataPartition(sans_var_spat_1$T_stock, p = 0.8, list = FALSE)
+
+# Ensemble d'entraînement (80%)
+train_data <- sans_var_spat_1[trainIndex, ]
+
+
+# Ensemble de test (20%)
+test_data <- sans_var_spat_1[-trainIndex, ]
+
+# 2. Entraînement du modèle Random Forest sur l'ensemble d'entraînement
+# vselect_no_landuse <- vselect_top_variable_var[!grepl("landuse", vselect_top_variable_var)]
+rf_model <- randomForest(T_stock ~ ., data = train_data %>%
+  dplyr:: select(T_stock, all_of(vselect_sans_var_spat)), ntree = 500, importance = TRUE)
+
+
+# Renommer les colonnes de data_f_carte
+data_f_carte <- data_f_carte %>%
+  rename(
+    x = x,
+    y = y,
+    BIO11_Mean_Temperature_of_Coldest_Quarter = bio11,
+    BIO15_Precipitation_Seasonality = bio15,
+    BIO19_Precipitation_of_Coldest_Quarter = bio19,
+    bulk=bulk,
+    sand = sand,
+    clay = clay,
+    CWD = CWD
+  )
+# 3. Obtenir les prédictions de tous les arbres pour chaque observation
+tree_predictions <- predict(rf_model, newdata = data_f_carte, predict.all = TRUE)
+
+# Moyenne des prédictions (déjà disponible dans data_f_carte$cpred)
+data_f_carte$cpred <- tree_predictions$aggregate
+
+# Calculer l'écart-type des prédictions comme une mesure d'incertitude
+data_f_carte$uncertainty <- apply(tree_predictions$individual, 1, sd)
+
+# 4. Rasteriser les prédictions et incertitudes
+
+# Rasteriser les prédictions moyennes (cpred)
+raster_cpred <- rasterize(
+  data_f_carte[, c("x", "y")],
+  bioclim_ci,
+  field = data_f_carte$cpred,
+  fun = mean
+)
+
+# Rasteriser les incertitudes (uncertainty)
+raster_uncertainty <- rasterize(
+  data_f_carte[, c("x", "y")],
+  bioclim_ci,
+  field = data_f_carte$uncertainty,
+  fun = mean
+)
+
+# Empiler les rasters pour obtenir un RasterStack
+data_f_carte_rast <- stack(raster_cpred, raster_uncertainty)
+
+
+# Tracer la carte de cpred
+plot(data_f_carte_rast$layer.1, main = "Carte des Prédictions Moyennes du Carbone du Sol en Côte d'Ivoire", col = terrain.colors(100))
+
+# Tracer la carte de uncertainty
+plot(data_f_carte_rast$layer.2, main = "Carte des Incertitudes Associées du Carbone du Sol en Côte d'Ivoire", col = viridis::viridis(100))
+```
+
+```{r carte prediction 2, warning=FALSE, echo=FALSE}
+# Convertir les rasters en data frames
+cpred_df <- as.data.frame(data_f_carte_rast$layer.1, xy = TRUE, na.rm = TRUE)
+uncertainty_df <- as.data.frame(data_f_carte_rast$layer.2, xy = TRUE, na.rm = TRUE)
+
+# Carte de cpred
+ggplot(cpred_df, aes(x = x, y = y, fill = layer.1)) +
+  geom_raster() +
+  scale_fill_viridis_c(option = "cividis", name = "Carbone Organique du Sol (t/ha)") +
+  geom_point(data = coords_data, aes(x = lon, y = lat), 
+             inherit.aes = FALSE,                  
+             color = "red", size = 2) +
+  coord_equal() +
+  theme_minimal() +
+  labs(title = "Carte des Prédictions Moyennes", x = "Longitude", y = "Latitude")
+
+# Carte de uncertainty
+ggplot(uncertainty_df, aes(x = x, y = y, fill = layer.2)) +
+  geom_raster() +
+  scale_fill_viridis_c(option = "inferno", name = "Incertitudes Associées\nau Carbone Organique du Sol") + 
+  geom_point(data = coords_data, aes(x = lon, y = lat), 
+             inherit.aes = FALSE,                  
+             color = "red", size = 2) +
+  coord_equal() +
+  theme_minimal() +
+  labs(title = "Carte des Incertitudes", x = "Longitude", y = "Latitude") 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
