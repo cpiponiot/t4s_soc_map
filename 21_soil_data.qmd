@@ -1,6 +1,55 @@
 ```{r setup}
 #| message: false
 #| warning: false
+
+library(tidyverse)
+library(maps)
+library(knitr)
 ```
 
 # Soil dataset {.unnumbered}
+
+```{r}
+data_soil <- read.csv2("data/data_T4s_final.csv", row.names=1) |> 
+  select(1:9) |> 
+  mutate(site = gsub("_n", "", site))
+```
+
+## Site location
+
+```{r}
+map_data("world") |> 
+  subset(region == "Ivory Coast") |> 
+  ggplot() +
+  geom_polygon(aes(x=long, y = lat), fill = "white") + 
+  geom_point(data = data_soil, aes(lon, lat, col = site)) +
+  theme(axis.title = element_blank()) +
+  coord_equal() 
+```
+
+## Dataset size 
+
+```{r}
+data_soil |> 
+  group_by(site) |> 
+  summarise(n = n()) |> 
+  kable(col.names = c("Site", "Number of plots"))
+
+data_soil |> 
+  subset(!is.na(present_landuse)) |> 
+  group_by(present_landuse) |> 
+  summarise(n = n()) |> 
+  kable(col.names = c("Landuse", "Number of plots"))
+```
+
+
+## Distribution of soil organic carbon stocks
+
+```{r}
+data_soil |> 
+  ggplot(aes(x = T_stock)) + 
+  geom_histogram() +
+  labs(x = expression("Soil organic carbon stocks [ Mg."*ha^-1*" ]")) +
+  theme_classic()
+```
+
