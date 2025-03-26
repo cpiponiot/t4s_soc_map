@@ -1,6 +1,87 @@
 ```{r setup}
 #| message: false
 #| warning: false
+
+library(terra)
+library(tidyverse)
+library(ggcorrplot)
+library(ggfortify)
 ```
 
 ## Climate data {.unnumbered}
+
+The climate data was retrieved from [Climatologies at high resolution for the earth's land surface areas (CHELSA)](https://chelsa-climate.org/).
+
+```{r download-chelsa}
+# function to download and crop CHELSA data
+dl_chelsa <- function(
+    file,
+    dir_chelsa,
+    dir_local = "CHELSA",
+    box = NULL
+) {
+  url <- paste(
+    "https://os.zhdk.cloud.switch.ch/chelsav2/GLOBAL",
+    dir_chelsa, file,
+    sep = "/"
+  )
+  destfile <- paste(dir_local, file, sep = "/")
+  # download raster from url (if it doesn't already exist in the folder)
+  if (!file.exists(destfile)) {
+    utils::download.file(url, destfile, method = "curl")
+    ## crop to reduce memory usage
+    if (!is.null(box)) {
+      destfile |> 
+        terra::rast() |> 
+        terra::crop(terra::ext(box)) |> 
+        terra::writeRaster(file = destfile, overwrite = TRUE) 
+    }
+  }
+}
+
+if (! dir.exists("data/CHELSA")) dir.create("data/CHELSA")
+for (i in 1:19) {
+  dl_chelsa(file = paste0("CHELSA_bio", i, "_1981-2010_V.2.1.tif"), 
+            dir_chelsa = "climatologies/1981-2010/bio", 
+            dir_local = "data/CHELSA",
+            box = c(-9, -2, 4, 11))
+}
+```
+
+The values of all Bioclimatic variables are then extracted at the location of all terri4sol plots. 
+
+```{r extract-chelsa}
+# extract values for all t4s plots
+data_soil <- read.csv2("data/data_T4s_final.csv", row.names=1) |> 
+  select(1:9) |> 
+  mutate(site = gsub("_n", "", site))
+
+climate_data <- 
+  list.files("data/CHELSA", pattern = "tif$", full.names = TRUE) |> 
+  rast() |> 
+  terra::extract(data_soil[, c("lon", "lat")]) |> 
+  rename_with( ~ gsub(pattern = "CHELSA_|_1981-2010_V.2.1", replacement = "", x = .x)) |> 
+  select(contains("bio")) |> 
+  bind_cols(data_soil[, c("site", "plot")])
+```
+
+Below is the result of a Principal Component Analysis with all bioclimatic variables. 
+
+```{r}
+climate_data |> 
+  select(contains("bio")) |> 
+  prcomp(scale. = TRUE) |> 
+  autoplot(loadings = TRUE, loadings.label = TRUE, 
+           data = climate_data, colour = "site") +
+  theme_minimal()
+```
+
+We can also plot the pairwise correlation of all climate variables. 
+
+```{r}
+climate_data |> 
+  select(contains("bio")) |> 
+  cor() |> 
+  ggcorrplot()
+```
+
