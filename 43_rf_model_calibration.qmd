@@ -1,0 +1,91 @@
+```{r setup}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(randomForest)
+library(usdm)
+```
+
+## Random forest model {.unnumbered}
+
+### Partition data by site
+
+```{r}
+data <- read.csv2("data/data_T4s_final.csv", row.names=1) %>%
+  select(1:9) %>% 
+  mutate(site = gsub("_n", "", site)) %>% 
+  merge(read.csv("data/climate_data.csv")) %>% 
+  merge(read.csv("data/soilgrids_data.csv")) 
+
+# partition data in train/validation
+# randomly select 20% of sites for validation
+validation_sites <- data %>%
+  group_by(site) %>%
+  summarise(type = c("cal", "val")[1+rbinom(1, 1, 0.2)])
+
+data <- data %>%
+  drop_na() %>%
+  merge(validation_sites)
+```
+
+### All variables
+
+```{r}
+rf_nosel <- data |> 
+  select(!contains("plot"), - site, -type, -lon, -lat, -T_stock) |> 
+  randomForest(
+    data$T_stock,
+    subset = (data$type == "cal"),
+    ntree=500,
+    importance=TRUE
+  )
+```
+
+```{r}
+importance_nosel <- importance(rf_nosel, type=1) |> 
+  as.data.frame() |> 
+  arrange(`%IncMSE`)
+importance_nosel$variable <- rownames(importance_nosel)
+
+importance_nosel |> ggplot(
+    aes(x = variable, y = `%IncMSE`, fill = `%IncMSE`)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  xlab("Variables") +
+  ylab("Increase in OOB Measn Square Error (%)") +
+  theme_minimal()
+```
+
+
+### Only spatial variables - Prior variable selection based on VIF
+
+```{r}
+all_vif <- data |> 
+   select(contains("bio"), contains("cm")) |> 
+  vifstep(th=10)
+
+rf_spat_vif <- data |> 
+  select(all_vif@results$Variables) |> 
+  randomForest(
+    data$T_stock,
+    subset = (data$type == "cal"),
+    ntree=500,
+    importance=TRUE
+  )
+```
+
+```{r}
+importance_spat_vif <- importance(rf_spat_vif, type=1) |> 
+  as.data.frame() |> 
+  arrange(`%IncMSE`)
+importance_spat_vif$variable <- rownames(importance_spat_vif)
+
+importance_spat_vif |> ggplot(
+    aes(x = variable, y = `%IncMSE`, fill = `%IncMSE`)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  xlab("Variables") +
+  ylab("Mean decrease in accuracy (%)") +
+  theme_minimal()
+```
