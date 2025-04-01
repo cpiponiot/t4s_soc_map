@@ -13,6 +13,9 @@ book:
       chapters:
         - 31_climate.qmd
         - 32_soilgrids.qmd
+    - part: 40_rf_model.qmd
+      chapters:
+        - 41_variable_selection.qmd
 
 bibliography: references.bib
 

@@ -1,0 +1,108 @@
+```{r setup}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(usdm)
+library(knitr)
+```
+
+## Variable selection {.unnumbered}
+
+### Based on Variance Inflation Factor (VIF) 
+
+The `vifstep` function in R detects and removes multicollinearity between predictor variables by calculating the variance inflation factor (VIF). Multicollinearity occurs when predictor variables are highly correlated, which can lead to problems in regression models.
+
+Using `vifstep` on a dataset, with a defined threshold (e.g. th=10), the function calculates the VIF for each variable. If a variable exceeds this threshold, it is deemed too correlated with the others and is removed from the dataset. This process is repetitive: after each deletion, the VIFs are recalculated for the remaining variables, until no variable has a VIF above the set threshold.
+
+### Climate
+
+After applying the VIF on the **temperature** variables, the selected variables that do not present a collinearity problem and that will be evaluated again for their relevance are :
+
+```{r}
+temp <- read.csv2("data/data_T4s_final.csv", row.names=1) %>% 
+  select(1:9) %>% 
+  mutate(site = gsub("_n", "", site)) %>% 
+  merge(read.csv("data/climate_data.csv")) %>% 
+  select(site, plot, T_stock, paste0("bio", 1:11))
+
+temp_vif <- temp |> select(contains("bio")) |> vifstep(th=10)
+temp_vif@results |> kable()
+```
+
+After applying the VIF on the **precipitation** variables, the selected variables that do not present a collinearity problem and that will be evaluated again for their relevance are :
+
+```{r}
+prec <- read.csv2("data/data_T4s_final.csv", row.names=1) %>% 
+  select(1:9) %>% 
+  mutate(site = gsub("_n", "", site)) %>% 
+  merge(read.csv("data/climate_data.csv")) %>% 
+  select(site, plot, T_stock, paste0("bio", 12:19))
+
+prec_vif <- prec |> select(contains("bio")) |> vifstep(th=10)
+prec_vif@results |> kable()
+```
+
+### Soil 
+
+After applying the VIF on the soil **physical properties**, the selected variables that do not present a collinearity problem and that will be evaluated again for their relevance are :
+
+```{r}
+phys <- read.csv2("data/data_T4s_final.csv", row.names=1) %>% 
+  select(1:9) %>% 
+  mutate(site = gsub("_n", "", site)) %>% 
+  merge(read.csv("data/soilgrids_data.csv")) %>%
+  select(site, plot, T_stock, 
+         paste0(c("bdod", "cfvo", "clay", "sand", "silt"), "_0.5cm"))
+
+phys_vif <- phys |> select(-site, -plot, -T_stock) |> vifstep(th=10)
+phys_vif@results |> kable()
+```
+
+After applying the VIF on the soil **chemical properties**, the selected variables that do not present a collinearity problem and that will be evaluated again for their relevance are :
+
+```{r}
+chem <- read.csv2("data/data_T4s_final.csv", row.names=1) %>% 
+  select(1:9) %>% 
+  mutate(site = gsub("_n", "", site)) %>% 
+  merge(read.csv("data/soilgrids_data.csv")) %>%
+  select(site, plot, T_stock, 
+         paste0(c("cec", "nitrogen", "phh2o"), "_0.5cm"))      
+
+chem_vif <- chem |> select(-site, -plot, -T_stock) |> vifstep(th=10)
+chem_vif@results |> kable()
+```
+
+### All variables
+
+After applying the VIF all variables together, the selected variables that do not present a collinearity problem and that could be evaluated again for their relevance are :
+
+```{r}
+all <- read.csv2("data/data_T4s_final.csv", row.names=1) %>% 
+  select(1:9) %>% 
+  mutate(site = gsub("_n", "", site)) %>% 
+  merge(read.csv("data/climate_data.csv")) %>% 
+  merge(read.csv("data/soilgrids_data.csv")) %>%
+  select(site, plot, T_stock, contains("bio"), contains("cm"))      
+
+all_vif <- all |> select(-site, -plot, -T_stock) |> vifstep(th=10)
+all_vif@results |> kable()
+```
+
+## Based on Forward Feature Selection (FFS)
+
+The Forward Feature Selection (FFS) method, applied via the `ffs` function, is a variable selection technique used in machine learning and statistics to identify the subsets of variables (features) most relevant to the construction of a predictive model.
+
+How Forward Feature Selection (FFS) works:
+
+- **Initialization**: The method starts with a simple model, generally without any explanatory variables (or with only the constant in the case of regression).
+
+- **Progressive addition of variables**: At each iteration, the method examines the addition of each variable not yet selected to the current model. The variable that most improves model performance, according to a specific criterion (e.g. increasing R², reducing mean squared error, etc.), is added to the model.
+
+- **Validation** : Model performance is often validated at each stage using a cross-validation technique to avoid overlearning (overfitting).
+
+- **Stop criterion**: The process continues until there is no further significant improvement in model performance by adding new variables. A performance threshold can be predefined to determine when to stop adding variables.
+
+- **Final result**: At the end of the process, the model retains the variables that have been selected over the iterations as the most important for prediction.
+
+
