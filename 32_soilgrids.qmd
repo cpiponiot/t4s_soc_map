@@ -11,7 +11,7 @@ library(ggfortify)
 
 ## Soilgrids data {.unnumbered}
 
-The Soilgrids data was retrieved from the [ISRIC website](https://soilgrids.org/), using SoilGrids 2.0 [@Poggio2021]. Variables codes are described [here](https://www.isric.org/explore/soilgrids/faq-soilgrids#What_do_the_filename_codes_mean). 
+The Soilgrids data was retrieved from the [ISRIC website](https://soilgrids.org/), using SoilGrids 2.0 [@Poggio2021]. Variables codes are described [here](https://www.isric.org/explore/soilgrids/faq-soilgrids#What_do_the_filename_codes_mean).
 
 ```{r download-soilgrids}
 # function to download and crop CHELSA data
@@ -59,7 +59,7 @@ for (v in c("bdod", "cec", "cfvo", "clay", "nitrogen", "phh2o", "sand", "silt"))
 }
 ```
 
-The values of SoilGrids variables (for now, at 0-5 cm depth) are then extracted at the location of all terri4sol plots. 
+The values of SoilGrids variables (for now, at 0-5 cm depth) are then extracted at the location of all terri4sol plots.
 
 ```{r extract-soilgrids}
 #| results: 'hide'
@@ -76,10 +76,13 @@ soilgrids_data <-
   terra::extract(data_soil[, c("lon", "lat")]) |> 
   rename_with( ~ gsub(pattern = "_mean", replacement = "", x = .x)) |> 
   select(contains("cm")) |> 
-  bind_cols(data_soil[, c("site", "plot")])
+  bind_cols(data_soil[, c("site", "plot")])|> 
+  relocate(site, plot)
+
+write.csv(soilgrids_data, file = "data/soilgrids_data.csv", row.names = FALSE)
 ```
 
-The following plots have NAs in at least one Soilgrids variable. 
+The following plots have NAs in at least one Soilgrids variable.
 
 ```{r}
 soilgrids_data |> 
@@ -87,7 +90,7 @@ soilgrids_data |>
   relocate(site, plot)
 ```
 
-Below is the result of a Principal Component Analysis with all Soilgrids variables. 
+Below is the result of a Principal Component Analysis with all Soilgrids variables.
 
 ```{r}
 data_pca <- soilgrids_data |> 
@@ -101,7 +104,7 @@ data_pca |>
   theme_minimal()
 ```
 
-We can also plot the pairwise correlation of all Soilgrids variables. 
+We can also plot the pairwise correlation of all Soilgrids variables.
 
 ```{r}
 soilgrids_data |>  
@@ -110,4 +113,3 @@ soilgrids_data |>
   cor() |> 
   ggcorrplot()
 ```
-

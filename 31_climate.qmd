@@ -62,7 +62,10 @@ climate_data <-
   terra::extract(data_soil[, c("lon", "lat")]) |> 
   rename_with( ~ gsub(pattern = "CHELSA_|_1981-2010_V.2.1", replacement = "", x = .x)) |> 
   select(contains("bio")) |> 
-  bind_cols(data_soil[, c("site", "plot")])
+  bind_cols(data_soil[, c("site", "plot")]) |> 
+  relocate(site, plot)
+
+write.csv(climate_data, file = "data/climate_data.csv", row.names = FALSE)
 ```
 
 Below is the result of a Principal Component Analysis with all bioclimatic variables. 
