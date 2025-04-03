@@ -1,6 +1,6 @@
 [![](https://www.repostatus.org/badges/latest/wip.svg)](#0)
 
-# Introduction {.unnumbered}
+# Introduction
 
 **t4_soc_map** is part of the [terri4sol project](https://www.terri4sol.org/).
 
