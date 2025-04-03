@@ -10,46 +10,44 @@ library(knitr)
 # Soil dataset {.unnumbered}
 
 ```{r}
-data_soil <- read.csv2("data/data_T4s_final.csv", row.names=1) |> 
-  select(1:9) |> 
-  mutate(site = gsub("_n", "", site))
+data_stocks <- read.csv("data/data_T4s_final.csv")
 ```
 
 ## Site location
 
 ```{r}
+#| warning: false
+
 map_data("world") |> 
   subset(region == "Ivory Coast") |> 
   ggplot() +
   geom_polygon(aes(x=long, y = lat), fill = "white") + 
-  geom_point(data = data_soil, aes(lon, lat, col = site)) +
+  geom_point(data = data_stocks, aes(lon, lat, col = site)) +
   theme(axis.title = element_blank()) +
   coord_equal() 
 ```
 
-## Dataset size 
+## Dataset size
 
 ```{r}
-data_soil |> 
+data_stocks |> 
   group_by(site) |> 
   summarise(n = n()) |> 
   kable(col.names = c("Site", "Number of plots"))
 
-data_soil |> 
+data_stocks |> 
   subset(!is.na(present_landuse)) |> 
   group_by(present_landuse) |> 
   summarise(n = n()) |> 
   kable(col.names = c("Landuse", "Number of plots"))
 ```
 
-
 ## Distribution of soil organic carbon stocks
 
 ```{r}
-data_soil |> 
+data_stocks |> 
   ggplot(aes(x = T_stock)) + 
   geom_histogram() +
   labs(x = expression("Soil organic carbon stocks [ Mg."*ha^-1*" ]")) +
   theme_classic()
 ```
-

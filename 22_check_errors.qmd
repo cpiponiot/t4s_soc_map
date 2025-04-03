@@ -1,0 +1,35 @@
+```{r setup}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(knitr)
+```
+
+## Error checks {.unnumbered}
+
+```{r}
+data_t4s <- read.csv("data/t4s_0.1.4.csv")
+```
+
+
+The following sites have missing coordinates:
+
+```{r}
+data_t4s |> 
+  subset(is.na(lon) | is.na(lat)) |> 
+  group_by(site) |> 
+  summarise(n()) |> 
+  kable(col.names = c("site", "number of plots"))
+```
+
+
+Plot information is missing in the following sites: 
+
+```{r}
+data_t4s |> 
+  subset(is.na(plot)) |> 
+  group_by(site) |> 
+  summarise(n()) |> 
+  kable(col.names = c("site", "number of plots"))
+```
