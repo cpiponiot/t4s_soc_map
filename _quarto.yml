@@ -8,7 +8,11 @@ book:
   chapters:
     - index.qmd
     - 11_general_framework.qmd
-    - 21_soil_data.qmd
+    - part: 20_terri4sol_database.qmd
+      chapters:
+        - 21_prepare_raw_data.qmd
+        - 22_check_errors.qmd
+        - 23_visualize_data.qmd
     - part: 30_ancillary_data.qmd
       chapters:
         - 31_climate.qmd

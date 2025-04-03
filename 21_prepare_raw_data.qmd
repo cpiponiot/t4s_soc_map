@@ -12,9 +12,9 @@ data_t4s <- read.csv("data/t4s_0.1.4.csv")
 summary(data_t4s)
 ```
 
-Soil organic carbon stocks were estimated as 
+Soil organic carbon stocks were estimated as
 
-$$ stock = C \cdot (\Delta d \cdot area) \cdot fine \cdot bd$$ 
+$$ stock = C \cdot (\Delta d \cdot area) \cdot fine \cdot bd$$
 
 where $C$ is the soil organic carbon content, $\Delta d$ is the measurement depth (0.1 m), $area$ is the standardisation area (1 ha = $10^4$ m), $fine$ is the fine fraction of the soil, and $bd$ is the bulk density of the fine fraction (in Mg m$^3$).
 
@@ -29,7 +29,7 @@ We then sum the carbon stocks over all depths at each site to get the total carb
 data_stocks <- data_t4s |> 
   filter(!is.na(plot)) |> 
   group_by(site, plot) |> 
-  summarise(ndepth = n(), T_stock = sum(stock))
+  summarise(T_stock = sum(stock))
 data_plot <- data_t4s |> 
   filter(!is.na(plot)) |> 
   select(site, contains("plot"), contains("landuse"),  toposequence, lon, lat) |> 
@@ -38,5 +38,3 @@ data_plot <- data_t4s |>
 merge(data_stocks, data_plot, by = c("site", "plot")) |> 
   write.csv("data/data_T4s_final.csv", row.names = FALSE)
 ```
-
-
