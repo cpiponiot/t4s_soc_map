@@ -65,18 +65,16 @@ The values of SoilGrids variables (for now, at 0-5 cm depth) are then extracted 
 #| results: 'hide'
 
 # extract values for all t4s plots
-data_soil <- read.csv2("data/data_T4s_final.csv", row.names=1) |> 
-  select(1:9) |> 
-  mutate(site = gsub("_n", "", site))
+data_stocks <- read.csv("data/data_T4s_final.csv")
 
 soilgrids_data <- 
   list.files("data/ISRIC", pattern = "tif$", full.names = TRUE) |> 
   rast() |> 
   project("EPSG: 4326") |> 
-  terra::extract(data_soil[, c("lon", "lat")]) |> 
+  terra::extract(data_stocks[, c("lon", "lat")]) |> 
   rename_with( ~ gsub(pattern = "_mean", replacement = "", x = .x)) |> 
   select(contains("cm")) |> 
-  bind_cols(data_soil[, c("site", "plot")])|> 
+  bind_cols(data_stocks[, c("site", "plot")])|> 
   relocate(site, plot)
 
 write.csv(soilgrids_data, file = "data/soilgrids_data.csv", row.names = FALSE)

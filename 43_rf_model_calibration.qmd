@@ -12,9 +12,7 @@ library(usdm)
 ### Partition data by site
 
 ```{r}
-data <- read.csv2("data/data_T4s_final.csv", row.names=1) %>%
-  select(1:9) %>% 
-  mutate(site = gsub("_n", "", site)) %>% 
+data <- read.csv("data/data_T4s_final.csv") %>% 
   merge(read.csv("data/climate_data.csv")) %>% 
   merge(read.csv("data/soilgrids_data.csv")) 
 
@@ -56,7 +54,6 @@ importance_nosel |> ggplot(
   ylab("Increase in OOB Measn Square Error (%)") +
   theme_minimal()
 ```
-
 
 ### Only spatial variables - Prior variable selection based on VIF
 

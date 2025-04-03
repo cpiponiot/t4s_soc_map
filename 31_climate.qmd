@@ -48,38 +48,47 @@ for (i in 1:19) {
 }
 ```
 
-The values of all Bioclimatic variables are then extracted at the location of all terri4sol plots. 
+The values of all Bioclimatic variables are then extracted at the location of all terri4sol plots.
 
 ```{r extract-chelsa}
 # extract values for all t4s plots
-data_soil <- read.csv2("data/data_T4s_final.csv", row.names=1) |> 
-  select(1:9) |> 
-  mutate(site = gsub("_n", "", site))
+data_stocks <- read.csv("data/data_T4s_final.csv")
 
 climate_data <- 
   list.files("data/CHELSA", pattern = "tif$", full.names = TRUE) |> 
   rast() |> 
-  terra::extract(data_soil[, c("lon", "lat")]) |> 
+  terra::extract(data_stocks[, c("lon", "lat")]) |> 
   rename_with( ~ gsub(pattern = "CHELSA_|_1981-2010_V.2.1", replacement = "", x = .x)) |> 
   select(contains("bio")) |> 
-  bind_cols(data_soil[, c("site", "plot")]) |> 
+  bind_cols(data_stocks[, c("site", "plot")]) |> 
   relocate(site, plot)
 
 write.csv(climate_data, file = "data/climate_data.csv", row.names = FALSE)
 ```
 
-Below is the result of a Principal Component Analysis with all bioclimatic variables. 
+The following plots have NAs in at least one Bioclim variable.
 
 ```{r}
 climate_data |> 
+  filter(if_any(contains("bio"), is.na)) |> 
+  relocate(site, plot)
+```
+
+Below is the result of a Principal Component Analysis with all bioclimatic variables.
+
+```{r}
+data_pca <- climate_data |> 
+  filter(!if_any(everything(), is.na)) 
+
+data_pca |> 
   select(contains("bio")) |> 
-  prcomp(scale. = TRUE) |> 
+  prcomp(scale = TRUE) |> 
   autoplot(loadings = TRUE, loadings.label = TRUE, 
-           data = climate_data, colour = "site") +
+           data = data_pca, colour = "site") +
   theme_minimal()
 ```
 
-We can also plot the pairwise correlation of all climate variables. 
+We can also plot the pairwise correlation of all climate variables.
 
 ```{r}
 climate_data |> 
@@ -87,4 +96,3 @@ climate_data |>
   cor() |> 
   ggcorrplot()
 ```
-
