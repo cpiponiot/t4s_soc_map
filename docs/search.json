@@ -1,0 +1,222 @@
+[
+  {
+    "objectID": "11_general_framework.html",
+    "href": "11_general_framework.html",
+    "title": "General framework",
+    "section": "",
+    "text": "Context and motivation",
+    "crumbs": [
+      "General framework"
+    ]
+  },
+  {
+    "objectID": "11_general_framework.html#research-questions",
+    "href": "11_general_framework.html#research-questions",
+    "title": "General framework",
+    "section": "Research questions",
+    "text": "Research questions",
+    "crumbs": [
+      "General framework"
+    ]
+  },
+  {
+    "objectID": "11_general_framework.html#methodological-approach",
+    "href": "11_general_framework.html#methodological-approach",
+    "title": "General framework",
+    "section": "Methodological approach",
+    "text": "Methodological approach",
+    "crumbs": [
+      "General framework"
+    ]
+  },
+  {
+    "objectID": "21_soil_data.html",
+    "href": "21_soil_data.html",
+    "title": "Soil dataset",
+    "section": "",
+    "text": "Site location\nCode\nmap_data(\"world\") |&gt; \n  subset(region == \"Ivory Coast\") |&gt; \n  ggplot() +\n  geom_polygon(aes(x=long, y = lat), fill = \"white\") + \n  geom_point(data = data_soil, aes(lon, lat, col = site)) +\n  theme(axis.title = element_blank()) +\n  coord_equal()",
+    "crumbs": [
+      "Soil dataset"
+    ]
+  },
+  {
+    "objectID": "21_soil_data.html#site-location",
+    "href": "21_soil_data.html#site-location",
+    "title": "Soil dataset",
+    "section": "Site location",
+    "text": "Site location\n\n\nCode\nmap_data(\"world\") |&gt; \n  subset(region == \"Ivory Coast\") |&gt; \n  ggplot() +\n  geom_polygon(aes(x=long, y = lat), fill = \"white\") + \n  geom_point(data = data_soil, aes(lon, lat, col = site)) +\n  theme(axis.title = element_blank()) +\n  coord_equal()",
+    "crumbs": [
+      "Soil dataset"
+    ]
+  },
+  {
+    "objectID": "21_soil_data.html#distribution-of-soil-organic-carbon-stocks",
+    "href": "21_soil_data.html#distribution-of-soil-organic-carbon-stocks",
+    "title": "Soil dataset",
+    "section": "Distribution of soil organic carbon stocks",
+    "text": "Distribution of soil organic carbon stocks\n\n\nCode\ndata_soil |&gt; \n  ggplot(aes(x = T_stock)) + \n  geom_histogram() +\n  labs(x = expression(\"Soil organic carbon stocks [ Mg.\"*ha^-1*\" ]\")) +\n  theme_classic()\n\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\nWarning: Removed 2 rows containing non-finite outside the scale range\n(`stat_bin()`).",
+    "crumbs": [
+      "Soil dataset"
+    ]
+  },
+  {
+    "objectID": "21_soil_data.html#dataset-size",
+    "href": "21_soil_data.html#dataset-size",
+    "title": "Soil dataset",
+    "section": "Dataset size",
+    "text": "Dataset size\n\n\nCode\ndata_soil |&gt; \n  group_by(site) |&gt; \n  summarise(n = n()) |&gt; \n  kable(col.names = c(\"Site\", \"Number of plots\"))\n\n\n\n\n\nSite\nNumber of plots\n\n\n\n\nAnguededou\n1\n\n\nadzope\n17\n\n\nagbo\n18\n\n\nagnibilekrou\n16\n\n\nazaguie\n16\n\n\nbadenou\n17\n\n\nbehiri\n87\n\n\nbiankouma\n16\n\n\nble\n15\n\n\nbonon\n16\n\n\nfoumbou\n17\n\n\nfresco\n16\n\n\ngrand_bereby\n16\n\n\ngueyo\n16\n\n\nguiberoua\n16\n\n\nguiglo\n16\n\n\nht_sassandra\n17\n\n\nirobo\n17\n\n\nmafere\n16\n\n\nmeagui\n16\n\n\nmebifon\n47\n\n\nniegre\n17\n\n\nsan_pedro\n16\n\n\nsoubre\n16\n\n\ntene\n17\n\n\nyaya\n17\n\n\n\n\n\nCode\ndata_soil |&gt; \n  subset(!is.na(present_landuse)) |&gt; \n  group_by(present_landuse) |&gt; \n  summarise(n = n()) |&gt; \n  kable(col.names = c(\"Landuse\", \"Number of plots\"))\n\n\n\n\n\nLanduse\nNumber of plots\n\n\n\n\ncassava\n45\n\n\ncocoa\n211\n\n\nfallow\n184\n\n\nfood_crop\n16\n\n\nforest\n9\n\n\nforetanc\n8\n\n\njvc\n16\n\n\npalm\n8\n\n\nplantation\n1\n\n\nrubber\n12",
+    "crumbs": [
+      "Soil dataset"
+    ]
+  },
+  {
+    "objectID": "31_climate.html",
+    "href": "31_climate.html",
+    "title": "Climate data",
+    "section": "",
+    "text": "Code\nlibrary(terra)\nlibrary(tidyverse)\nlibrary(ggcorrplot)\nlibrary(ggfortify)\n\n\nThe climate data was retrieved from Climatologies at high resolution for the earth’s land surface areas (CHELSA).\n\n\nCode\n# function to download and crop CHELSA data\ndl_chelsa &lt;- function(\n    file,\n    dir_chelsa,\n    dir_local = \"CHELSA\",\n    box = NULL\n) {\n  url &lt;- paste(\n    \"https://os.zhdk.cloud.switch.ch/chelsav2/GLOBAL\",\n    dir_chelsa, file,\n    sep = \"/\"\n  )\n  destfile &lt;- paste(dir_local, file, sep = \"/\")\n  # download raster from url (if it doesn't already exist in the folder)\n  if (!file.exists(destfile)) {\n    utils::download.file(url, destfile, method = \"curl\")\n    ## crop to reduce memory usage\n    if (!is.null(box)) {\n      destfile |&gt; \n        terra::rast() |&gt; \n        terra::crop(terra::ext(box)) |&gt; \n        terra::writeRaster(file = destfile, overwrite = TRUE) \n    }\n  }\n}\n\nif (! dir.exists(\"data/CHELSA\")) dir.create(\"data/CHELSA\")\nfor (i in 1:19) {\n  dl_chelsa(file = paste0(\"CHELSA_bio\", i, \"_1981-2010_V.2.1.tif\"), \n            dir_chelsa = \"climatologies/1981-2010/bio\", \n            dir_local = \"data/CHELSA\",\n            box = c(-9, -2, 4, 11))\n}\n\n\nThe values of all Bioclimatic variables are then extracted at the location of all terri4sol plots.\n\n\nCode\n# extract values for all t4s plots\ndata_stocks &lt;- read.csv(\"data/data_T4s_final.csv\")\n\nclimate_data &lt;- \n  list.files(\"data/CHELSA\", pattern = \"tif$\", full.names = TRUE) |&gt; \n  rast() |&gt; \n  terra::extract(data_stocks[, c(\"lon\", \"lat\")]) |&gt; \n  rename_with( ~ gsub(pattern = \"CHELSA_|_1981-2010_V.2.1\", replacement = \"\", x = .x)) |&gt; \n  select(contains(\"bio\")) |&gt; \n  bind_cols(data_stocks[, c(\"site\", \"plot\")]) |&gt; \n  relocate(site, plot)\n\nwrite.csv(climate_data, file = \"data/climate_data.csv\", row.names = FALSE)\n\n\nThe following plots have NAs in at least one Bioclim variable.\n\n\nCode\nclimate_data |&gt; \n  filter(if_any(contains(\"bio\"), is.na)) |&gt; \n  relocate(site, plot)\n\n\n       site plot bio1 bio10 bio11 bio12 bio13 bio14 bio15 bio16 bio17 bio18\n1 tene_oume    1   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA\n2 tene_oume    2   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA\n3 tene_oume    3   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA\n4 tene_oume    4   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA\n5 tene_oume    5   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA\n6 tene_oume    6   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA\n7 tene_oume    7   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA\n8 tene_oume    8   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA\n  bio19 bio2 bio3 bio4 bio5 bio6 bio7 bio8 bio9\n1    NA   NA   NA   NA   NA   NA   NA   NA   NA\n2    NA   NA   NA   NA   NA   NA   NA   NA   NA\n3    NA   NA   NA   NA   NA   NA   NA   NA   NA\n4    NA   NA   NA   NA   NA   NA   NA   NA   NA\n5    NA   NA   NA   NA   NA   NA   NA   NA   NA\n6    NA   NA   NA   NA   NA   NA   NA   NA   NA\n7    NA   NA   NA   NA   NA   NA   NA   NA   NA\n8    NA   NA   NA   NA   NA   NA   NA   NA   NA\n\n\nBelow is the result of a Principal Component Analysis with all bioclimatic variables.\n\n\nCode\ndata_pca &lt;- climate_data |&gt; \n  filter(!if_any(everything(), is.na)) \n\ndata_pca |&gt; \n  select(contains(\"bio\")) |&gt; \n  prcomp(scale = TRUE) |&gt; \n  autoplot(loadings = TRUE, loadings.label = TRUE, \n           data = data_pca, colour = \"site\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\nWe can also plot the pairwise correlation of all climate variables.\n\n\nCode\nclimate_data |&gt; \n  select(contains(\"bio\")) |&gt; \n  cor() |&gt; \n  ggcorrplot()",
+    "crumbs": [
+      "Ancillary data",
+      "Climate data"
+    ]
+  },
+  {
+    "objectID": "32_soilgrids.html",
+    "href": "32_soilgrids.html",
+    "title": "Soilgrids data",
+    "section": "",
+    "text": "Code\nlibrary(terra)\nlibrary(gdalUtilities)\nlibrary(tidyverse)\nlibrary(ggcorrplot)\nlibrary(ggfortify)\n\n\nThe Soilgrids data was retrieved from the ISRIC website, using SoilGrids 2.0 (Poggio et al. 2021). Variables codes are described here.\n\n\nCode\n# function to download and crop CHELSA data\ndl_soilgrids &lt;- function(\n    var = \"cec\",\n    depth = \"0-5cm\", \n    stat = \"mean\", \n    dir_local = \"data/ISRIC\",\n    box = c(-9, -2, 4, 11)\n) {\n  \n  # project bounding box into IGH\n  ext_vect &lt;- terra::as.polygons(terra::ext(box), crs = \"EPSG:4326\")\n  igh &lt;- '+proj=igh +lat_0=0 +lon_0=0 +datum=WGS84 +units=m +no_defs'\n  ext_igh &lt;- terra::ext(terra::project(ext_vect, igh))\n  bb &lt;- c(ext_igh$xmin, ext_igh$ymax, ext_igh$xmax, ext_igh$ymin)\n  \n  # create url and file name\n  sg_url &lt;- \"/vsicurl/https://files.isric.org/soilgrids/latest/data/\"\n  datos &lt;- paste0(var, \"/\", var, \"_\", depth, \"_\", stat, \".vrt\")\n  file &lt;- paste0(\"data/ISRIC/\", var, \"_\", depth, \"_\", stat, \".tif\")\n  \n  # download from ISRIC site\n  if (!file.exists(file)) {\n    gdalUtilities::gdal_translate(\n      paste0(sg_url,datos), \n      file ,\n      tr=c(250,250),\n      projwin=bb,\n      projwin_srs =igh\n    )\n  }\n}\n\nif (! dir.exists(\"data/ISRIC\")) dir.create(\"data/ISRIC\")\n\nfor (v in c(\"bdod\", \"cec\", \"cfvo\", \"clay\", \"nitrogen\", \"phh2o\", \"sand\", \"silt\")) {\n  dl_soilgrids(\n    var = v,\n    depth = \"0-5cm\", \n    stat = \"mean\", \n    dir_local = \"data/ISRIC\",\n    box = c(-9, -2, 4, 11)\n  )\n}\n\n\nThe values of SoilGrids variables (for now, at 0-5 cm depth) are then extracted at the location of all terri4sol plots.\n\n\nCode\n# extract values for all t4s plots\ndata_stocks &lt;- read.csv(\"data/data_T4s_final.csv\")\n\nsoilgrids_data &lt;- \n  list.files(\"data/ISRIC\", pattern = \"tif$\", full.names = TRUE) |&gt; \n  rast() |&gt; \n  project(\"EPSG: 4326\") |&gt; \n  terra::extract(data_stocks[, c(\"lon\", \"lat\")]) |&gt; \n  rename_with( ~ gsub(pattern = \"_mean\", replacement = \"\", x = .x)) |&gt; \n  select(contains(\"cm\")) |&gt; \n  bind_cols(data_stocks[, c(\"site\", \"plot\")])|&gt; \n  relocate(site, plot)\n\nwrite.csv(soilgrids_data, file = \"data/soilgrids_data.csv\", row.names = FALSE)\n\n\nThe following plots have NAs in at least one Soilgrids variable.\n\n\nCode\nsoilgrids_data |&gt; \n  filter(if_any(contains(\"cm\"), is.na)) |&gt; \n  relocate(site, plot)\n\n\n           site plot bdod_0-5cm cec_0-5cm cfvo_0-5cm clay_0-5cm nitrogen_0-5cm\n1  agnibilekrou   12         NA  222.4667   222.3977   197.9799       338.7231\n2  agnibilekrou   13         NA  222.4667   222.3977   197.9799       338.7231\n3  agnibilekrou   14         NA  262.8052   219.2761   198.1559       380.7717\n4  agnibilekrou    3         NA  219.7961   212.8130   211.8463       370.8293\n5         bonon   14         NA        NA         NA         NA             NA\n6     tene_oume    1         NA        NA         NA         NA             NA\n7     tene_oume    2         NA        NA         NA         NA             NA\n8     tene_oume    3         NA        NA         NA         NA             NA\n9     tene_oume    4         NA        NA         NA         NA             NA\n10    tene_oume    5         NA        NA         NA         NA             NA\n11    tene_oume    6         NA        NA         NA         NA             NA\n12    tene_oume    7         NA        NA         NA         NA             NA\n13    tene_oume    8         NA        NA         NA         NA             NA\n   phh2o_0-5cm sand_0-5cm silt_0-5cm\n1     59.26054   513.8930   287.4169\n2     59.26054   513.8930   287.4169\n3     59.34255   486.8322   315.0118\n4     59.19337   515.0866   273.8551\n5           NA         NA         NA\n6           NA         NA         NA\n7           NA         NA         NA\n8           NA         NA         NA\n9           NA         NA         NA\n10          NA         NA         NA\n11          NA         NA         NA\n12          NA         NA         NA\n13          NA         NA         NA\n\n\nBelow is the result of a Principal Component Analysis with all Soilgrids variables.\n\n\nCode\ndata_pca &lt;- soilgrids_data |&gt; \n  filter(!if_any(everything(), is.na)) \n\ndata_pca |&gt; \n  select(contains(\"cm\")) |&gt; \n  prcomp(scale = TRUE) |&gt; \n  autoplot(loadings = TRUE, loadings.label = TRUE, \n           data = data_pca, colour = \"site\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\nWe can also plot the pairwise correlation of all Soilgrids variables.\n\n\nCode\nsoilgrids_data |&gt;  \n  select(contains(\"cm\")) |&gt; \n  filter(!if_any(everything(), is.na)) |&gt; \n  cor() |&gt; \n  ggcorrplot()\n\n\n\n\n\n\n\n\n\n\n\n\n\nPoggio, Laura, Luis M. de Sousa, Niels H. Batjes, Gerard B. M. Heuvelink, Bas Kempen, Eloi Ribeiro, and David Rossiter. 2021. “SoilGrids 2.0: producing soil information for the globe with quantified spatial uncertainty.” SOIL 7 (1): 217–40. https://doi.org/10.5194/soil-7-217-2021.",
+    "crumbs": [
+      "Ancillary data",
+      "Soilgrids data"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Soil Organic Carbon map of Cote d’Ivoire",
+    "section": "",
+    "text": "Introduction\nt4_soc_map is part of the terri4sol project.\nAll t4_soc_map analyses rely on the quarto documents (files.qmd) that can be run with R and associated environment defined with renv.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#project",
+    "href": "index.html#project",
+    "title": "Soil Organic Carbon map of Cote d’Ivoire",
+    "section": "Project",
+    "text": "Project\nt4_soc_map includes:\n\nAnalyse of the data with associated documentation and figures:\n\nReproducible analyses in files.qmd\nResulting pages in docs/\nDocument structure definition in _quarto.yml\n\nData in data/\nR scripts with functions in r/\nIntermediary files in outputs/\nFigures in figures/\nR environment definition with renv in renv/ and renv/lock\nGit and GitHub files (.gitignore , .github/)\nProject documentation (README.qmd , README.md , LICENSE)",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#help",
+    "href": "index.html#help",
+    "title": "Soil Organic Carbon map of Cote d’Ivoire",
+    "section": "Help",
+    "text": "Help\nPlease preferentially create an issue on GitHub for any questions, bugs or help needed regarding t4_soc_map: https://github.com/cpiponiot/t4s_soc_map/issues. However, you can contact us by email through people in the core group (see below).",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#core-group",
+    "href": "index.html#core-group",
+    "title": "Soil Organic Carbon map of Cote d’Ivoire",
+    "section": "Core group",
+    "text": "Core group\n\nBienvenu H. K. Amani (bienvenuh.amani@gmail.com)\nCamille Piponiot (camille.piponiot-laroche@cirad.fr)\nBlandine Ahou Koffi\nEvans Ehouman\nClovis Grinand\nBeatriz Bellon\nLarissa Houphouet\nBruno Herault",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "41_variable_selection.html",
+    "href": "41_variable_selection.html",
+    "title": "Variable selection",
+    "section": "",
+    "text": "Based on Variance Inflation Factor (VIF)\nThe vifstep function in R detects and removes multicollinearity between predictor variables by calculating the variance inflation factor (VIF). Multicollinearity occurs when predictor variables are highly correlated, which can lead to problems in regression models.\nUsing vifstep on a dataset, with a defined threshold (e.g. th=10), the function calculates the VIF for each variable. If a variable exceeds this threshold, it is deemed too correlated with the others and is removed from the dataset. This process is repetitive: after each deletion, the VIFs are recalculated for the remaining variables, until no variable has a VIF above the set threshold.",
+    "crumbs": [
+      "RandomForest model",
+      "Variable selection"
+    ]
+  },
+  {
+    "objectID": "41_variable_selection.html#based-on-forward-feature-selection-ffs",
+    "href": "41_variable_selection.html#based-on-forward-feature-selection-ffs",
+    "title": "Variable selection",
+    "section": "Based on Forward Feature Selection (FFS)",
+    "text": "Based on Forward Feature Selection (FFS)\nThe Forward Feature Selection (FFS) method, applied via the ffs function, is a variable selection technique used in machine learning and statistics to identify the subsets of variables (features) most relevant to the construction of a predictive model.\nHow Forward Feature Selection (FFS) works:\n\nInitialization: The method starts with a simple model, generally without any explanatory variables (or with only the constant in the case of regression).\nProgressive addition of variables: At each iteration, the method examines the addition of each variable not yet selected to the current model. The variable that most improves model performance, according to a specific criterion (e.g. increasing R², reducing mean squared error, etc.), is added to the model.\nValidation : Model performance is often validated at each stage using a cross-validation technique to avoid overlearning (overfitting).\nStop criterion: The process continues until there is no further significant improvement in model performance by adding new variables. A performance threshold can be predefined to determine when to stop adding variables.\nFinal result: At the end of the process, the model retains the variables that have been selected over the iterations as the most important for prediction.",
+    "crumbs": [
+      "RandomForest model",
+      "Variable selection"
+    ]
+  },
+  {
+    "objectID": "43_rf_model_calibration.html",
+    "href": "43_rf_model_calibration.html",
+    "title": "Random forest model",
+    "section": "",
+    "text": "Code\nlibrary(tidyverse)\nlibrary(randomForest)\nlibrary(usdm)\n\n\n\nPartition data by site\n\n\nCode\ndata &lt;- read.csv(\"data/data_T4s_final.csv\") %&gt;% \n  merge(read.csv(\"data/climate_data.csv\")) %&gt;% \n  merge(read.csv(\"data/soilgrids_data.csv\")) \n\n# partition data in train/validation\n# randomly select 20% of sites for validation\nvalidation_sites &lt;- data %&gt;%\n  group_by(site) %&gt;%\n  summarise(type = c(\"cal\", \"val\")[1+rbinom(1, 1, 0.2)])\n\ndata &lt;- data %&gt;%\n  drop_na() %&gt;%\n  merge(validation_sites)\n\n\n\n\nAll variables\n\n\nCode\nrf_nosel &lt;- data |&gt; \n  select(!contains(\"plot\"), - site, -type, -lon, -lat, -T_stock) |&gt; \n  randomForest(\n    data$T_stock,\n    subset = (data$type == \"cal\"),\n    ntree=500,\n    importance=TRUE\n  )\n\n\n\n\nCode\nimportance_nosel &lt;- importance(rf_nosel, type=1) |&gt; \n  as.data.frame() |&gt; \n  arrange(`%IncMSE`)\nimportance_nosel$variable &lt;- rownames(importance_nosel)\n\nimportance_nosel |&gt; ggplot(\n    aes(x = variable, y = `%IncMSE`, fill = `%IncMSE`)) +\n  geom_bar(stat = \"identity\") +\n  coord_flip() +\n  xlab(\"Variables\") +\n  ylab(\"Increase in OOB Measn Square Error (%)\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\nOnly spatial variables - Prior variable selection based on VIF\n\n\nCode\nall_vif &lt;- data |&gt; \n   select(contains(\"bio\"), contains(\"cm\")) |&gt; \n  vifstep(th=10)\n\nrf_spat_vif &lt;- data |&gt; \n  select(all_vif@results$Variables) |&gt; \n  randomForest(\n    data$T_stock,\n    subset = (data$type == \"cal\"),\n    ntree=500,\n    importance=TRUE\n  )\n\n\n\n\nCode\nimportance_spat_vif &lt;- importance(rf_spat_vif, type=1) |&gt; \n  as.data.frame() |&gt; \n  arrange(`%IncMSE`)\nimportance_spat_vif$variable &lt;- rownames(importance_spat_vif)\n\nimportance_spat_vif |&gt; ggplot(\n    aes(x = variable, y = `%IncMSE`, fill = `%IncMSE`)) +\n  geom_bar(stat = \"identity\") +\n  coord_flip() +\n  xlab(\"Variables\") +\n  ylab(\"Mean decrease in accuracy (%)\") +\n  theme_minimal()",
+    "crumbs": [
+      "RandomForest model",
+      "Random forest model"
+    ]
+  },
+  {
+    "objectID": "21_prepare_raw_data.html",
+    "href": "21_prepare_raw_data.html",
+    "title": "Open and prepare the raw dataset",
+    "section": "",
+    "text": "Code\nlibrary(tidyverse)\n\n\n\n\nCode\ndata_t4s &lt;- read.csv(\"data/t4s_0.1.4.csv\")\nsummary(data_t4s)\n\n\n     site               plot               depth     sampleID        \n Length:2124        Length:2124        Min.   :1   Length:2124       \n Class :character   Class :character   1st Qu.:1   Class :character  \n Mode  :character   Mode  :character   Median :2   Mode  :character  \n                                       Mean   :2                     \n                                       3rd Qu.:3                     \n                                       Max.   :3                     \n                                                                     \n       C                N           toposequence       present_landuse   \n Min.   :0.1020   Min.   :0.00000   Length:2124        Length:2124       \n 1st Qu.:0.6959   1st Qu.:0.06797   Class :character   Class :character  \n Median :1.0406   Median :0.09251   Mode  :character   Mode  :character  \n Mean   :1.2877   Mean   :0.11128                                        \n 3rd Qu.:1.6660   3rd Qu.:0.13784                                        \n Max.   :6.6624   Max.   :0.67775                                        \n                                                                         \n age_landuse        previous_landuse   previous_landuse_duration\n Length:2124        Length:2124        Length:2124              \n Class :character   Class :character   Class :character         \n Mode  :character   Mode  :character   Mode  :character         \n                                                                \n                                                                \n                                                                \n                                                                \n   plot_area            elev         plot_affiliation    plot_code        \n Min.   : 0.0400   Min.   :-245.00   Length:2124        Length:2124       \n 1st Qu.: 0.2000   1st Qu.:   2.00   Class :character   Class :character  \n Median : 0.5000   Median :  62.50   Mode  :character   Mode  :character  \n Mean   : 0.9889   Mean   :  90.99                                        \n 3rd Qu.: 1.2700   3rd Qu.: 197.00                                        \n Max.   :16.0000   Max.   : 727.00                                        \n NA's   :906       NA's   :930                                            \n      lat             lon              diam          height    \n Min.   :4.778   Min.   :-7.768   Min.   :5.5    Min.   :10    \n 1st Qu.:5.767   1st Qu.:-6.113   1st Qu.:5.5    1st Qu.:10    \n Median :5.939   Median :-5.172   Median :5.5    Median :10    \n Mean   :6.158   Mean   :-4.991   Mean   :5.5    Mean   :10    \n 3rd Qu.:6.355   3rd Qu.:-3.581   3rd Qu.:5.5    3rd Qu.:10    \n Max.   :9.845   Max.   :-2.976   Max.   :5.5    Max.   :10    \n NA's   :162     NA's   :162      NA's   :1863   NA's   :1863  \n bulk_density_g_cm3 coarse_fraction   fine_fraction   \n Min.   :0.1148     Min.   :0.00000   Min.   :0.1269  \n 1st Qu.:1.3798     1st Qu.:0.01504   1st Qu.:0.6247  \n Median :1.5568     Median :0.14139   Median :0.8586  \n Mean   :1.5415     Mean   :0.21625   Mean   :0.7838  \n 3rd Qu.:1.7100     3rd Qu.:0.37532   3rd Qu.:0.9850  \n Max.   :2.6440     Max.   :0.87309   Max.   :1.0000  \n NA's   :24         NA's   :3         NA's   :3       \n\n\nSoil organic carbon stocks were estimated as\n\\[ stock = C \\cdot (\\Delta d \\cdot area) \\cdot fine \\cdot bd\\]\nwhere \\(C\\) is the soil organic carbon content, \\(\\Delta d\\) is the measurement depth (0.1 m), \\(area\\) is the standardisation area (1 ha = \\(10^4\\) m), \\(fine\\) is the fine fraction of the soil, and \\(bd\\) is the bulk density of the fine fraction (in Mg m\\(^3\\)).\n\n\nCode\ndata_t4s &lt;- data_t4s |&gt; \n  mutate(stock = C/100 * 1e3 * fine_fraction * bulk_density_g_cm3)\n\n\nWe then sum the carbon stocks over all depths at each site to get the total carbon stocks, and save the results.\n\n\nCode\ndata_stocks &lt;- data_t4s |&gt; \n  filter(!is.na(plot)) |&gt; \n  group_by(site, plot) |&gt; \n  summarise(T_stock = sum(stock))\n\n\n`summarise()` has grouped output by 'site'. You can override using the\n`.groups` argument.\n\n\nCode\ndata_plot &lt;- data_t4s |&gt; \n  filter(!is.na(plot)) |&gt; \n  select(site, contains(\"plot\"), contains(\"landuse\"),  toposequence, lon, lat) |&gt; \n  unique()\n\nmerge(data_stocks, data_plot, by = c(\"site\", \"plot\")) |&gt; \n  write.csv(\"data/data_T4s_final.csv\", row.names = FALSE)",
+    "crumbs": [
+      "terri4sol soil database",
+      "Open and prepare the raw dataset"
+    ]
+  },
+  {
+    "objectID": "22_check_errors.html",
+    "href": "22_check_errors.html",
+    "title": "Error checks",
+    "section": "",
+    "text": "Code\nlibrary(tidyverse)\nlibrary(knitr)\n\n\n\n\nCode\ndata_t4s &lt;- read.csv(\"data/t4s_0.1.4.csv\")\n\n\nThe following sites have missing coordinates:\n\n\nCode\ndata_t4s |&gt; \n  subset(is.na(lon) | is.na(lat)) |&gt; \n  group_by(site) |&gt; \n  summarise(n()) |&gt; \n  kable(col.names = c(\"site\", \"number of plots\"))\n\n\n\n\n\nsite\nnumber of plots\n\n\n\n\nadzope_n\n138\n\n\ntene_oume\n24\n\n\n\n\n\nPlot information is missing in the following sites:\n\n\nCode\ndata_t4s |&gt; \n  subset(is.na(plot)) |&gt; \n  group_by(site) |&gt; \n  summarise(n()) |&gt; \n  kable(col.names = c(\"site\", \"number of plots\"))\n\n\n\n\n\nsite\nnumber of plots\n\n\n\n\nadzope_n\n345\n\n\n\n\n\nPlot area varies as follows (in log-scale):\n\n\nCode\ndata_t4s |&gt; \n ggplot(aes(x = plot_area)) +\n  geom_histogram() +\n  labs(x = \"Plot area (ha)\") +\n  theme_classic() +\n  scale_x_log10()\n\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\nWarning: Removed 906 rows containing non-finite outside the scale range\n(`stat_bin()`).\n\n\n\n\n\n\n\n\n\nThe following plots have a plot area &gt; 5 ha:\n\n\nCode\ndata_t4s |&gt; \n subset(plot_area &gt; 5) |&gt; \n  select(site, plot, plot_area) |&gt; \n  unique()\n\n\n          site plot plot_area\n631  biankouma    1      5.16\n673        ble   15      7.00\n676        ble   16      9.00\n1333 san_pedro   11     10.00\n1369 san_pedro    7      5.50\n1483 tene_oume    1     16.00\n1486 tene_oume    2     16.00",
+    "crumbs": [
+      "terri4sol soil database",
+      "Error checks"
+    ]
+  },
+  {
+    "objectID": "23_visualize_data.html",
+    "href": "23_visualize_data.html",
+    "title": "Soil dataset",
+    "section": "",
+    "text": "Site location\nCode\nmap_data(\"world\") |&gt; \n  subset(region == \"Ivory Coast\") |&gt; \n  ggplot() +\n  geom_polygon(aes(x=long, y = lat), fill = \"white\") + \n  geom_point(data = data_stocks, aes(lon, lat, col = site)) +\n  theme(axis.title = element_blank()) +\n  coord_equal()",
+    "crumbs": [
+      "terri4sol soil database",
+      "Soil dataset"
+    ]
+  },
+  {
+    "objectID": "23_visualize_data.html#dataset-size",
+    "href": "23_visualize_data.html#dataset-size",
+    "title": "Soil dataset",
+    "section": "Dataset size",
+    "text": "Dataset size\n\n\nCode\ndata_stocks |&gt; \n  group_by(site) |&gt; \n  summarise(n = n()) |&gt; \n  kable(col.names = c(\"Site\", \"Number of plots\"))\n\n\n\n\n\nSite\nNumber of plots\n\n\n\n\nadzope\n16\n\n\nagbo\n19\n\n\nagnibilekrou\n16\n\n\nazaguie\n16\n\n\nbadenou\n21\n\n\nbehiri\n87\n\n\nbiankouma\n16\n\n\nble\n16\n\n\nbonon\n16\n\n\nfoumbou\n20\n\n\nfresco\n16\n\n\ngrand_bereby\n16\n\n\ngueyo\n16\n\n\nguiberoua\n16\n\n\nguiglo\n16\n\n\nht_sassandra\n20\n\n\nirobo\n20\n\n\nmafere\n16\n\n\nmeagui\n16\n\n\nmebifon\n99\n\n\nniegre\n20\n\n\nsan_pedro\n16\n\n\nsoubre\n16\n\n\ntene\n19\n\n\ntene_oume\n8\n\n\nyaya\n20\n\n\n\n\n\nCode\ndata_stocks |&gt; \n  subset(!is.na(present_landuse)) |&gt; \n  group_by(present_landuse) |&gt; \n  summarise(n = n()) |&gt; \n  kable(col.names = c(\"Landuse\", \"Number of plots\"))\n\n\n\n\n\nLanduse\nNumber of plots\n\n\n\n\ncassava\n45\n\n\ncocoa\n227\n\n\nfallow\n191\n\n\nfood_crop\n16\n\n\nforest\n14\n\n\nforetanc\n30\n\n\njvc\n24\n\n\npalm\n8\n\n\nrubber\n32\n\n\ntrees plantation\n5",
+    "crumbs": [
+      "terri4sol soil database",
+      "Soil dataset"
+    ]
+  },
+  {
+    "objectID": "23_visualize_data.html#distribution-of-soil-organic-carbon-stocks",
+    "href": "23_visualize_data.html#distribution-of-soil-organic-carbon-stocks",
+    "title": "Soil dataset",
+    "section": "Distribution of soil organic carbon stocks",
+    "text": "Distribution of soil organic carbon stocks\n\n\nCode\ndata_stocks |&gt; \n  ggplot(aes(x = T_stock)) + \n  geom_histogram() +\n  labs(x = expression(\"Soil organic carbon stocks [ Mg.\"*ha^-1*\" ]\")) +\n  theme_classic()\n\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\nWarning: Removed 1 row containing non-finite outside the scale range\n(`stat_bin()`).",
+    "crumbs": [
+      "terri4sol soil database",
+      "Soil dataset"
+    ]
+  }
+]
