@@ -12,7 +12,6 @@ library(knitr)
 data_t4s <- read.csv("data/t4s_0.1.4.csv")
 ```
 
-
 The following sites have missing coordinates:
 
 ```{r}
@@ -23,8 +22,7 @@ data_t4s |>
   kable(col.names = c("site", "number of plots"))
 ```
 
-
-Plot information is missing in the following sites: 
+Plot information is missing in the following sites:
 
 ```{r}
 data_t4s |> 
@@ -32,4 +30,25 @@ data_t4s |>
   group_by(site) |> 
   summarise(n()) |> 
   kable(col.names = c("site", "number of plots"))
+```
+
+
+Plot area varies as follows (in log-scale):
+
+```{r}
+data_t4s |> 
+ ggplot(aes(x = plot_area)) +
+  geom_histogram() +
+  labs(x = "Plot area (ha)") +
+  theme_classic() +
+  scale_x_log10()
+```
+
+The following plots have a plot area > 5 ha:
+
+```{r}
+data_t4s |> 
+ subset(plot_area > 5) |> 
+  select(site, plot, plot_area) |> 
+  unique()
 ```
