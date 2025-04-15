@@ -295,7 +295,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_t4s <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/t4s_0.1.4.csv"</span>)</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_t4s <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/soil_0.2.2.csv"</span>) </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_t4s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -307,46 +307,22 @@ window.Quarto = {
                                        3rd Qu.:3                     
                                        Max.   :3                     
                                                                      
-       C                N           toposequence       present_landuse   
- Min.   :0.1020   Min.   :0.00000   Length:2124        Length:2124       
- 1st Qu.:0.6959   1st Qu.:0.06797   Class :character   Class :character  
- Median :1.0406   Median :0.09251   Mode  :character   Mode  :character  
- Mean   :1.2877   Mean   :0.11128                                        
- 3rd Qu.:1.6660   3rd Qu.:0.13784                                        
- Max.   :6.6624   Max.   :0.67775                                        
-                                                                         
- age_landuse        previous_landuse   previous_landuse_duration
- Length:2124        Length:2124        Length:2124              
- Class :character   Class :character   Class :character         
- Mode  :character   Mode  :character   Mode  :character         
-                                                                
-                                                                
-                                                                
-                                                                
-   plot_area            elev         plot_affiliation    plot_code        
- Min.   : 0.0400   Min.   :-245.00   Length:2124        Length:2124       
- 1st Qu.: 0.2000   1st Qu.:   2.00   Class :character   Class :character  
- Median : 0.5000   Median :  62.50   Mode  :character   Mode  :character  
- Mean   : 0.9889   Mean   :  90.99                                        
- 3rd Qu.: 1.2700   3rd Qu.: 197.00                                        
- Max.   :16.0000   Max.   : 727.00                                        
- NA's   :906       NA's   :930                                            
-      lat             lon              diam          height    
- Min.   :4.778   Min.   :-7.768   Min.   :5.5    Min.   :10    
- 1st Qu.:5.767   1st Qu.:-6.113   1st Qu.:5.5    1st Qu.:10    
- Median :5.939   Median :-5.172   Median :5.5    Median :10    
- Mean   :6.158   Mean   :-4.991   Mean   :5.5    Mean   :10    
- 3rd Qu.:6.355   3rd Qu.:-3.581   3rd Qu.:5.5    3rd Qu.:10    
- Max.   :9.845   Max.   :-2.976   Max.   :5.5    Max.   :10    
- NA's   :162     NA's   :162      NA's   :1863   NA's   :1863  
- bulk_density_g_cm3 coarse_fraction   fine_fraction   
- Min.   :0.1148     Min.   :0.00000   Min.   :0.1269  
- 1st Qu.:1.3798     1st Qu.:0.01504   1st Qu.:0.6247  
- Median :1.5568     Median :0.14139   Median :0.8586  
- Mean   :1.5415     Mean   :0.21625   Mean   :0.7838  
- 3rd Qu.:1.7100     3rd Qu.:0.37532   3rd Qu.:0.9850  
- Max.   :2.6440     Max.   :0.87309   Max.   :1.0000  
- NA's   :24         NA's   :3         NA's   :3       </code></pre>
+       C                N           bulk_density_g_cm3 coarse_fraction  
+ Min.   :0.1020   Min.   :0.00000   Min.   :0.1148     Min.   :0.00000  
+ 1st Qu.:0.6959   1st Qu.:0.06797   1st Qu.:1.3798     1st Qu.:0.01504  
+ Median :1.0406   Median :0.09251   Median :1.5568     Median :0.14139  
+ Mean   :1.2877   Mean   :0.11128   Mean   :1.5415     Mean   :0.21625  
+ 3rd Qu.:1.6660   3rd Qu.:0.13784   3rd Qu.:1.7100     3rd Qu.:0.37532  
+ Max.   :6.6624   Max.   :0.67775   Max.   :2.6440     Max.   :0.87309  
+                                    NA's   :24         NA's   :3        
+ fine_fraction   
+ Min.   :0.1269  
+ 1st Qu.:0.6247  
+ Median :0.8586  
+ Mean   :0.7838  
+ 3rd Qu.:0.9850  
+ Max.   :1.0000  
+ NA's   :3       </code></pre>
 </div>
 </div>
 <p>Soil organic carbon stocks were estimated as</p>
@@ -363,24 +339,12 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data_stocks <span class="ot">&lt;-</span> data_t4s <span class="sc">|&gt;</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(plot)) <span class="sc">|&gt;</span> </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site, plot) <span class="sc">|&gt;</span> </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">T_stock =</span> <span class="fu">sum</span>(stock))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'site'. You can override using the
-`.groups` argument.</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data_plot <span class="ot">&lt;-</span> data_t4s <span class="sc">|&gt;</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(plot)) <span class="sc">|&gt;</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, <span class="fu">contains</span>(<span class="st">"plot"</span>), <span class="fu">contains</span>(<span class="st">"landuse"</span>),  toposequence, lon, lat) <span class="sc">|&gt;</span> </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">merge</span>(data_stocks, data_plot, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"site"</span>, <span class="st">"plot"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(<span class="st">"data/data_T4s_final.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.2.csv"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, lon, lat) <span class="sc">|&gt;</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(data_t4s) <span class="sc">|&gt;</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site, plot, lon, lat) <span class="sc">|&gt;</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">T_stock =</span> <span class="fu">sum</span>(stock), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 

@@ -286,8 +286,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/data_T4s_final.csv"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/climate_data.csv"</span>)) <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/climate_data.csv"</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, T_stock, <span class="fu">paste0</span>(<span class="st">"bio"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">11</span>))</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>temp_vif <span class="ot">&lt;-</span> temp <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">"bio"</span>)) <span class="sc">|&gt;</span> <span class="fu">vifstep</span>(<span class="at">th=</span><span class="dv">10</span>)</span>
@@ -304,23 +304,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">bio3</td>
-<td style="text-align: right;">1.433831</td>
+<td style="text-align: right;">1.469313</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">bio5</td>
-<td style="text-align: right;">1.766642</td>
+<td style="text-align: right;">1.941930</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">bio8</td>
-<td style="text-align: right;">4.132112</td>
+<td style="text-align: right;">3.958409</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">bio9</td>
-<td style="text-align: right;">5.528690</td>
+<td style="text-align: right;">4.555572</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">bio11</td>
-<td style="text-align: right;">5.249901</td>
+<td style="text-align: right;">4.623957</td>
 </tr>
 </tbody>
 </table>
@@ -330,8 +330,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>prec <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/data_T4s_final.csv"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/climate_data.csv"</span>)) <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>prec <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/climate_data.csv"</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, T_stock, <span class="fu">paste0</span>(<span class="st">"bio"</span>, <span class="dv">12</span><span class="sc">:</span><span class="dv">19</span>))</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>prec_vif <span class="ot">&lt;-</span> prec <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">"bio"</span>)) <span class="sc">|&gt;</span> <span class="fu">vifstep</span>(<span class="at">th=</span><span class="dv">10</span>)</span>
@@ -347,20 +347,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">bio14</td>
-<td style="text-align: right;">1.400751</td>
+<td style="text-align: left;">bio12</td>
+<td style="text-align: right;">9.891594</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">bio15</td>
-<td style="text-align: right;">2.133585</td>
+<td style="text-align: left;">bio14</td>
+<td style="text-align: right;">6.080972</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">bio18</td>
-<td style="text-align: right;">2.409299</td>
+<td style="text-align: left;">bio15</td>
+<td style="text-align: right;">3.330341</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">bio18</td>
+<td style="text-align: right;">5.536979</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">bio19</td>
-<td style="text-align: right;">1.214032</td>
+<td style="text-align: right;">2.431827</td>
 </tr>
 </tbody>
 </table>
@@ -373,8 +377,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>phys <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/data_T4s_final.csv"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/soilgrids_data.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>phys <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/soilgrids_data.csv"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, T_stock, </span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>         <span class="fu">paste0</span>(<span class="fu">c</span>(<span class="st">"bdod"</span>, <span class="st">"cfvo"</span>, <span class="st">"clay"</span>, <span class="st">"sand"</span>, <span class="st">"silt"</span>), <span class="st">"_0.5cm"</span>))</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
@@ -392,19 +396,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">bdod_0.5cm</td>
-<td style="text-align: right;">1.184048</td>
+<td style="text-align: right;">1.162246</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">cfvo_0.5cm</td>
-<td style="text-align: right;">1.102653</td>
+<td style="text-align: right;">1.097809</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">clay_0.5cm</td>
-<td style="text-align: right;">1.259994</td>
+<td style="text-align: right;">1.191885</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">silt_0.5cm</td>
-<td style="text-align: right;">1.167091</td>
+<td style="text-align: right;">1.133980</td>
 </tr>
 </tbody>
 </table>
@@ -414,8 +418,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>chem <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/data_T4s_final.csv"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/soilgrids_data.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>chem <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/soilgrids_data.csv"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, T_stock, </span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>         <span class="fu">paste0</span>(<span class="fu">c</span>(<span class="st">"cec"</span>, <span class="st">"nitrogen"</span>, <span class="st">"phh2o"</span>), <span class="st">"_0.5cm"</span>))      </span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
@@ -433,15 +437,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">cec_0.5cm</td>
-<td style="text-align: right;">2.258361</td>
+<td style="text-align: right;">2.011446</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">nitrogen_0.5cm</td>
-<td style="text-align: right;">1.898987</td>
+<td style="text-align: right;">1.603897</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">phh2o_0.5cm</td>
-<td style="text-align: right;">1.267284</td>
+<td style="text-align: right;">1.333450</td>
 </tr>
 </tbody>
 </table>
@@ -454,9 +458,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>all <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/data_T4s_final.csv"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/climate_data.csv"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/soilgrids_data.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>all <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/climate_data.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/soilgrids_data.csv"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, T_stock, <span class="fu">contains</span>(<span class="st">"bio"</span>), <span class="fu">contains</span>(<span class="st">"cm"</span>))      </span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>all_vif <span class="ot">&lt;-</span> all <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>site, <span class="sc">-</span>plot, <span class="sc">-</span>T_stock) <span class="sc">|&gt;</span> <span class="fu">vifstep</span>(<span class="at">th=</span><span class="dv">10</span>)</span>
@@ -472,52 +476,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">bio14</td>
+<td style="text-align: right;">9.653107</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">bio15</td>
-<td style="text-align: right;">7.615891</td>
+<td style="text-align: right;">7.829700</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">bio18</td>
-<td style="text-align: right;">3.585460</td>
+<td style="text-align: right;">3.670889</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">bio19</td>
-<td style="text-align: right;">2.493774</td>
+<td style="text-align: right;">2.816883</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">bio3</td>
-<td style="text-align: right;">5.598815</td>
+<td style="text-align: right;">5.657633</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">bio9</td>
-<td style="text-align: right;">3.524396</td>
+<td style="text-align: right;">3.705616</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">bdod_0.5cm</td>
-<td style="text-align: right;">4.552106</td>
+<td style="text-align: right;">3.882456</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">cec_0.5cm</td>
-<td style="text-align: right;">3.100245</td>
+<td style="text-align: right;">2.920539</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">cfvo_0.5cm</td>
-<td style="text-align: right;">2.574712</td>
+<td style="text-align: right;">3.072198</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">clay_0.5cm</td>
-<td style="text-align: right;">2.016320</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">nitrogen_0.5cm</td>
-<td style="text-align: right;">3.148965</td>
+<td style="text-align: right;">1.975895</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">phh2o_0.5cm</td>
-<td style="text-align: right;">4.006627</td>
+<td style="text-align: left;">nitrogen_0.5cm</td>
+<td style="text-align: right;">3.203026</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">phh2o_0.5cm</td>
+<td style="text-align: right;">7.926877</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">silt_0.5cm</td>
-<td style="text-align: right;">2.742529</td>
+<td style="text-align: right;">2.318918</td>
 </tr>
 </tbody>
 </table>

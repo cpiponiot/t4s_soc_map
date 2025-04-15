@@ -296,7 +296,7 @@ div.csl-indent {
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">var =</span> <span class="st">"cec"</span>,</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">depth =</span> <span class="st">"0-5cm"</span>, </span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">stat =</span> <span class="st">"mean"</span>, </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir_local =</span> <span class="st">"data/ISRIC"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir_local =</span> <span class="st">"data/download/ISRIC"</span>,</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">box =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">9</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">11</span>)</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>) {</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -309,7 +309,7 @@ div.csl-indent {
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create url and file name</span></span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  sg_url <span class="ot">&lt;-</span> <span class="st">"/vsicurl/https://files.isric.org/soilgrids/latest/data/"</span></span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  datos <span class="ot">&lt;-</span> <span class="fu">paste0</span>(var, <span class="st">"/"</span>, var, <span class="st">"_"</span>, depth, <span class="st">"_"</span>, stat, <span class="st">".vrt"</span>)</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  file <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"data/ISRIC/"</span>, var, <span class="st">"_"</span>, depth, <span class="st">"_"</span>, stat, <span class="st">".tif"</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  file <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"data/download/ISRIC/"</span>, var, <span class="st">"_"</span>, depth, <span class="st">"_"</span>, stat, <span class="st">".tif"</span>)</span>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># download from ISRIC site</span></span>
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(file)) {</span>
@@ -323,14 +323,14 @@ div.csl-indent {
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span> <span class="fu">dir.exists</span>(<span class="st">"data/ISRIC"</span>)) <span class="fu">dir.create</span>(<span class="st">"data/ISRIC"</span>)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span> <span class="fu">dir.exists</span>(<span class="st">"data/download/ISRIC"</span>)) <span class="fu">dir.create</span>(<span class="st">"data/download/ISRIC"</span>)</span>
 <span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (v <span class="cf">in</span> <span class="fu">c</span>(<span class="st">"bdod"</span>, <span class="st">"cec"</span>, <span class="st">"cfvo"</span>, <span class="st">"clay"</span>, <span class="st">"nitrogen"</span>, <span class="st">"phh2o"</span>, <span class="st">"sand"</span>, <span class="st">"silt"</span>)) {</span>
 <span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dl_soilgrids</span>(</span>
 <span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">var =</span> v,</span>
 <span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">depth =</span> <span class="st">"0-5cm"</span>, </span>
 <span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">stat =</span> <span class="st">"mean"</span>, </span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir_local =</span> <span class="st">"data/ISRIC"</span>,</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir_local =</span> <span class="st">"data/download/ISRIC"</span>,</span>
 <span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">box =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">9</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">11</span>)</span>
 <span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -341,10 +341,10 @@ div.csl-indent {
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract values for all t4s plots</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data_stocks <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/data_T4s_final.csv"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data_stocks <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>soilgrids_data <span class="ot">&lt;-</span> </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list.files</span>(<span class="st">"data/ISRIC"</span>, <span class="at">pattern =</span> <span class="st">"tif$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list.files</span>(<span class="st">"data/download/ISRIC"</span>, <span class="at">pattern =</span> <span class="st">"tif$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rast</span>() <span class="sc">|&gt;</span> </span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">project</span>(<span class="st">"EPSG: 4326"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">extract</span>(data_stocks[, <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>)]) <span class="sc">|&gt;</span> </span>
@@ -353,7 +353,7 @@ div.csl-indent {
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(data_stocks[, <span class="fu">c</span>(<span class="st">"site"</span>, <span class="st">"plot"</span>)])<span class="sc">|&gt;</span> </span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(site, plot)</span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(soilgrids_data, <span class="at">file =</span> <span class="st">"data/soilgrids_data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(soilgrids_data, <span class="at">file =</span> <span class="st">"data/cache/soilgrids_data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>The following plots have NAs in at least one Soilgrids variable.</p>
@@ -366,33 +366,37 @@ div.csl-indent {
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>           site plot bdod_0-5cm cec_0-5cm cfvo_0-5cm clay_0-5cm nitrogen_0-5cm
-1  agnibilekrou   12         NA  222.4667   222.3977   197.9799       338.7231
-2  agnibilekrou   13         NA  222.4667   222.3977   197.9799       338.7231
-3  agnibilekrou   14         NA  262.8052   219.2761   198.1559       380.7717
-4  agnibilekrou    3         NA  219.7961   212.8130   211.8463       370.8293
-5         bonon   14         NA        NA         NA         NA             NA
-6     tene_oume    1         NA        NA         NA         NA             NA
-7     tene_oume    2         NA        NA         NA         NA             NA
-8     tene_oume    3         NA        NA         NA         NA             NA
-9     tene_oume    4         NA        NA         NA         NA             NA
-10    tene_oume    5         NA        NA         NA         NA             NA
-11    tene_oume    6         NA        NA         NA         NA             NA
-12    tene_oume    7         NA        NA         NA         NA             NA
-13    tene_oume    8         NA        NA         NA         NA             NA
+1       adzopeN   15         NA        NA         NA         NA             NA
+2       adzopeN   21         NA        NA         NA         NA             NA
+3       adzopeN   29         NA        NA         NA         NA             NA
+4       adzopeN   48         NA        NA         NA         NA             NA
+5       adzopeN   49         NA        NA         NA         NA             NA
+6       adzopeN   50         NA        NA         NA         NA             NA
+7       adzopeN   51         NA        NA         NA         NA             NA
+8       adzopeN   68         NA        NA         NA         NA             NA
+9       adzopeN   74         NA        NA         NA         NA             NA
+10 agnibilekrou   12         NA  222.4667   222.3977   197.9799       338.7231
+11 agnibilekrou   13         NA  222.4667   222.3977   197.9799       338.7231
+12 agnibilekrou   14         NA  262.8052   219.2761   198.1559       380.7717
+13 agnibilekrou    3         NA  219.7961   212.8130   211.8463       370.8293
+14        bonon   14         NA        NA         NA         NA             NA
+15    tene_oume    8         NA        NA         NA         NA             NA
    phh2o_0-5cm sand_0-5cm silt_0-5cm
-1     59.26054   513.8930   287.4169
-2     59.26054   513.8930   287.4169
-3     59.34255   486.8322   315.0118
-4     59.19337   515.0866   273.8551
+1           NA         NA         NA
+2           NA         NA         NA
+3           NA         NA         NA
+4           NA         NA         NA
 5           NA         NA         NA
 6           NA         NA         NA
 7           NA         NA         NA
 8           NA         NA         NA
 9           NA         NA         NA
-10          NA         NA         NA
-11          NA         NA         NA
-12          NA         NA         NA
-13          NA         NA         NA</code></pre>
+10    59.26054   513.8930   287.4169
+11    59.26054   513.8930   287.4169
+12    59.34255   486.8322   315.0118
+13    59.19337   515.0866   273.8551
+14          NA         NA         NA
+15          NA         NA         NA</code></pre>
 </div>
 </div>
 <p>Below is the result of a Principal Component Analysis with all Soilgrids variables.</p>

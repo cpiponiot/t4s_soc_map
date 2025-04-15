@@ -296,11 +296,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span> <span class="fu">dir.exists</span>(<span class="st">"data/CHELSA"</span>)) <span class="fu">dir.create</span>(<span class="st">"data/CHELSA"</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span> <span class="fu">dir.exists</span>(<span class="st">"data/download/CHELSA"</span>)) <span class="fu">dir.create</span>(<span class="st">"data/download/CHELSA"</span>)</span>
 <span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">19</span>) {</span>
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dl_chelsa</span>(<span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"CHELSA_bio"</span>, i, <span class="st">"_1981-2010_V.2.1.tif"</span>), </span>
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>            <span class="at">dir_chelsa =</span> <span class="st">"climatologies/1981-2010/bio"</span>, </span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>            <span class="at">dir_local =</span> <span class="st">"data/CHELSA"</span>,</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>            <span class="at">dir_local =</span> <span class="st">"data/download/CHELSA"</span>,</span>
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>            <span class="at">box =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">9</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">11</span>))</span>
 <span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -310,10 +310,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract values for all t4s plots</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data_stocks <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/data_T4s_final.csv"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data_stocks <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>climate_data <span class="ot">&lt;-</span> </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list.files</span>(<span class="st">"data/CHELSA"</span>, <span class="at">pattern =</span> <span class="st">"tif$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list.files</span>(<span class="st">"data/download/CHELSA"</span>, <span class="at">pattern =</span> <span class="st">"tif$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rast</span>() <span class="sc">|&gt;</span> </span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">extract</span>(data_stocks[, <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>)]) <span class="sc">|&gt;</span> </span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename_with</span>( <span class="sc">~</span> <span class="fu">gsub</span>(<span class="at">pattern =</span> <span class="st">"CHELSA_|_1981-2010_V.2.1"</span>, <span class="at">replacement =</span> <span class="st">""</span>, <span class="at">x =</span> .x)) <span class="sc">|&gt;</span> </span>
@@ -321,7 +321,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(data_stocks[, <span class="fu">c</span>(<span class="st">"site"</span>, <span class="st">"plot"</span>)]) <span class="sc">|&gt;</span> </span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(site, plot)</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(climate_data, <span class="at">file =</span> <span class="st">"data/climate_data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(climate_data, <span class="at">file =</span> <span class="st">"data/cache/climate_data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>The following plots have NAs in at least one Bioclim variable.</p>
@@ -333,24 +333,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(site, plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>       site plot bio1 bio10 bio11 bio12 bio13 bio14 bio15 bio16 bio17 bio18
-1 tene_oume    1   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
-2 tene_oume    2   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
-3 tene_oume    3   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
-4 tene_oume    4   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
-5 tene_oume    5   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
-6 tene_oume    6   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
-7 tene_oume    7   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
-8 tene_oume    8   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
-  bio19 bio2 bio3 bio4 bio5 bio6 bio7 bio8 bio9
-1    NA   NA   NA   NA   NA   NA   NA   NA   NA
-2    NA   NA   NA   NA   NA   NA   NA   NA   NA
-3    NA   NA   NA   NA   NA   NA   NA   NA   NA
-4    NA   NA   NA   NA   NA   NA   NA   NA   NA
-5    NA   NA   NA   NA   NA   NA   NA   NA   NA
-6    NA   NA   NA   NA   NA   NA   NA   NA   NA
-7    NA   NA   NA   NA   NA   NA   NA   NA   NA
-8    NA   NA   NA   NA   NA   NA   NA   NA   NA</code></pre>
+<pre><code>        site plot bio1 bio10 bio11 bio12 bio13 bio14 bio15 bio16 bio17 bio18
+1    adzopeN   15   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
+2    adzopeN   21   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
+3    adzopeN   29   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
+4    adzopeN   48   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
+5    adzopeN   49   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
+6    adzopeN   50   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
+7    adzopeN   51   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
+8    adzopeN   68   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
+9    adzopeN   74   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
+10 tene_oume    8   NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
+   bio19 bio2 bio3 bio4 bio5 bio6 bio7 bio8 bio9
+1     NA   NA   NA   NA   NA   NA   NA   NA   NA
+2     NA   NA   NA   NA   NA   NA   NA   NA   NA
+3     NA   NA   NA   NA   NA   NA   NA   NA   NA
+4     NA   NA   NA   NA   NA   NA   NA   NA   NA
+5     NA   NA   NA   NA   NA   NA   NA   NA   NA
+6     NA   NA   NA   NA   NA   NA   NA   NA   NA
+7     NA   NA   NA   NA   NA   NA   NA   NA   NA
+8     NA   NA   NA   NA   NA   NA   NA   NA   NA
+9     NA   NA   NA   NA   NA   NA   NA   NA   NA
+10    NA   NA   NA   NA   NA   NA   NA   NA   NA</code></pre>
 </div>
 </div>
 <p>Below is the result of a Principal Component Analysis with all bioclimatic variables.</p>
