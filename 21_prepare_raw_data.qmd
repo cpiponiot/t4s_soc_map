@@ -8,7 +8,7 @@ library(tidyverse)
 ## Open and prepare the raw dataset {.unnumbered}
 
 ```{r}
-data_t4s <- read.csv("data/t4s_0.1.4.csv")
+data_t4s <- read.csv("data/soil_0.2.2.csv") 
 summary(data_t4s)
 ```
 
@@ -26,15 +26,10 @@ data_t4s <- data_t4s |>
 We then sum the carbon stocks over all depths at each site to get the total carbon stocks, and save the results.
 
 ```{r}
-data_stocks <- data_t4s |> 
-  filter(!is.na(plot)) |> 
-  group_by(site, plot) |> 
-  summarise(T_stock = sum(stock))
-data_plot <- data_t4s |> 
-  filter(!is.na(plot)) |> 
-  select(site, contains("plot"), contains("landuse"),  toposequence, lon, lat) |> 
-  unique()
-
-merge(data_stocks, data_plot, by = c("site", "plot")) |> 
-  write.csv("data/data_T4s_final.csv", row.names = FALSE)
+read.csv("data/plot_0.2.2.csv") |> 
+  select(site, plot, lon, lat) |> 
+  merge(data_t4s) |> 
+  group_by(site, plot, lon, lat) |> 
+  summarise(T_stock = sum(stock), .groups = "drop") |> 
+  write.csv("data/cache/data_stocks.csv", row.names = FALSE)
 ```

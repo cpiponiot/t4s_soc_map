@@ -20,8 +20,8 @@ Using `vifstep` on a dataset, with a defined threshold (e.g. th=10), the functio
 After applying the VIF on the **temperature** variables, the selected variables that do not present a collinearity problem and that will be evaluated again for their relevance are :
 
 ```{r}
-temp <- read.csv("data/data_T4s_final.csv") %>% 
-  merge(read.csv("data/climate_data.csv")) %>% 
+temp <- read.csv("data/cache/data_stocks.csv") %>% 
+  merge(read.csv("data/cache/climate_data.csv")) %>% 
   select(site, plot, T_stock, paste0("bio", 1:11))
 
 temp_vif <- temp |> select(contains("bio")) |> vifstep(th=10)
@@ -31,8 +31,8 @@ temp_vif@results |> kable()
 After applying the VIF on the **precipitation** variables, the selected variables that do not present a collinearity problem and that will be evaluated again for their relevance are :
 
 ```{r}
-prec <- read.csv("data/data_T4s_final.csv") %>% 
-  merge(read.csv("data/climate_data.csv")) %>% 
+prec <- read.csv("data/cache/data_stocks.csv") %>% 
+  merge(read.csv("data/cache/climate_data.csv")) %>% 
   select(site, plot, T_stock, paste0("bio", 12:19))
 
 prec_vif <- prec |> select(contains("bio")) |> vifstep(th=10)
@@ -44,8 +44,8 @@ prec_vif@results |> kable()
 After applying the VIF on the soil **physical properties**, the selected variables that do not present a collinearity problem and that will be evaluated again for their relevance are :
 
 ```{r}
-phys <- read.csv("data/data_T4s_final.csv") %>% 
-  merge(read.csv("data/soilgrids_data.csv")) %>%
+phys <- read.csv("data/cache/data_stocks.csv") %>% 
+  merge(read.csv("data/cache/soilgrids_data.csv")) %>%
   select(site, plot, T_stock, 
          paste0(c("bdod", "cfvo", "clay", "sand", "silt"), "_0.5cm"))
 
@@ -56,8 +56,8 @@ phys_vif@results |> kable()
 After applying the VIF on the soil **chemical properties**, the selected variables that do not present a collinearity problem and that will be evaluated again for their relevance are :
 
 ```{r}
-chem <- read.csv("data/data_T4s_final.csv") %>% 
-  merge(read.csv("data/soilgrids_data.csv")) %>%
+chem <- read.csv("data/cache/data_stocks.csv") %>% 
+  merge(read.csv("data/cache/soilgrids_data.csv")) %>%
   select(site, plot, T_stock, 
          paste0(c("cec", "nitrogen", "phh2o"), "_0.5cm"))      
 
@@ -70,9 +70,9 @@ chem_vif@results |> kable()
 After applying the VIF all variables together, the selected variables that do not present a collinearity problem and that could be evaluated again for their relevance are :
 
 ```{r}
-all <- read.csv("data/data_T4s_final.csv") %>% 
-  merge(read.csv("data/climate_data.csv")) %>% 
-  merge(read.csv("data/soilgrids_data.csv")) %>%
+all <- read.csv("data/cache/data_stocks.csv") %>% 
+  merge(read.csv("data/cache/climate_data.csv")) %>%
+  merge(read.csv("data/cache/soilgrids_data.csv")) %>%
   select(site, plot, T_stock, contains("bio"), contains("cm"))      
 
 all_vif <- all |> select(-site, -plot, -T_stock) |> vifstep(th=10)

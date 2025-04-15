@@ -39,11 +39,11 @@ dl_chelsa <- function(
   }
 }
 
-if (! dir.exists("data/CHELSA")) dir.create("data/CHELSA")
+if (! dir.exists("data/download/CHELSA")) dir.create("data/download/CHELSA")
 for (i in 1:19) {
   dl_chelsa(file = paste0("CHELSA_bio", i, "_1981-2010_V.2.1.tif"), 
             dir_chelsa = "climatologies/1981-2010/bio", 
-            dir_local = "data/CHELSA",
+            dir_local = "data/download/CHELSA",
             box = c(-9, -2, 4, 11))
 }
 ```
@@ -52,10 +52,10 @@ The values of all Bioclimatic variables are then extracted at the location of al
 
 ```{r extract-chelsa}
 # extract values for all t4s plots
-data_stocks <- read.csv("data/data_T4s_final.csv")
+data_stocks <- read.csv("data/cache/data_stocks.csv")
 
 climate_data <- 
-  list.files("data/CHELSA", pattern = "tif$", full.names = TRUE) |> 
+  list.files("data/download/CHELSA", pattern = "tif$", full.names = TRUE) |> 
   rast() |> 
   terra::extract(data_stocks[, c("lon", "lat")]) |> 
   rename_with( ~ gsub(pattern = "CHELSA_|_1981-2010_V.2.1", replacement = "", x = .x)) |> 
@@ -63,7 +63,7 @@ climate_data <-
   bind_cols(data_stocks[, c("site", "plot")]) |> 
   relocate(site, plot)
 
-write.csv(climate_data, file = "data/climate_data.csv", row.names = FALSE)
+write.csv(climate_data, file = "data/cache/climate_data.csv", row.names = FALSE)
 ```
 
 The following plots have NAs in at least one Bioclim variable.

@@ -24,7 +24,7 @@ All **t4_soc_map** analyses rely on the quarto documents (`files.qmd`) that can 
 
 ## Help
 
-Please preferentially create an issue on GitHub for any questions, bugs or help needed regarding **t4_soc_map**: [https://github.com/cpiponiot/t4s_soc_map/issues](https://github.com/cpiponiot/t4s_soc_map/issues){.uri}. However, you can contact us by email through people in the core group (see below).
+Please preferentially create an issue on GitHub for any questions, bugs or help needed regarding **t4_soc_map**: <https://github.com/cpiponiot/t4s_soc_map/issues>. However, you can contact us by email through people in the core group (see below).
 
 ## Core group
 

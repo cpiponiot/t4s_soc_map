@@ -19,7 +19,7 @@ dl_soilgrids <- function(
     var = "cec",
     depth = "0-5cm", 
     stat = "mean", 
-    dir_local = "data/ISRIC",
+    dir_local = "data/download/ISRIC",
     box = c(-9, -2, 4, 11)
 ) {
   
@@ -32,7 +32,7 @@ dl_soilgrids <- function(
   # create url and file name
   sg_url <- "/vsicurl/https://files.isric.org/soilgrids/latest/data/"
   datos <- paste0(var, "/", var, "_", depth, "_", stat, ".vrt")
-  file <- paste0("data/ISRIC/", var, "_", depth, "_", stat, ".tif")
+  file <- paste0("data/download/ISRIC/", var, "_", depth, "_", stat, ".tif")
   
   # download from ISRIC site
   if (!file.exists(file)) {
@@ -46,14 +46,14 @@ dl_soilgrids <- function(
   }
 }
 
-if (! dir.exists("data/ISRIC")) dir.create("data/ISRIC")
+if (! dir.exists("data/download/ISRIC")) dir.create("data/download/ISRIC")
 
 for (v in c("bdod", "cec", "cfvo", "clay", "nitrogen", "phh2o", "sand", "silt")) {
   dl_soilgrids(
     var = v,
     depth = "0-5cm", 
     stat = "mean", 
-    dir_local = "data/ISRIC",
+    dir_local = "data/download/ISRIC",
     box = c(-9, -2, 4, 11)
   )
 }
@@ -65,10 +65,10 @@ The values of SoilGrids variables (for now, at 0-5 cm depth) are then extracted 
 #| results: 'hide'
 
 # extract values for all t4s plots
-data_stocks <- read.csv("data/data_T4s_final.csv")
+data_stocks <- read.csv("data/cache/data_stocks.csv")
 
 soilgrids_data <- 
-  list.files("data/ISRIC", pattern = "tif$", full.names = TRUE) |> 
+  list.files("data/download/ISRIC", pattern = "tif$", full.names = TRUE) |> 
   rast() |> 
   project("EPSG: 4326") |> 
   terra::extract(data_stocks[, c("lon", "lat")]) |> 
@@ -77,7 +77,7 @@ soilgrids_data <-
   bind_cols(data_stocks[, c("site", "plot")])|> 
   relocate(site, plot)
 
-write.csv(soilgrids_data, file = "data/soilgrids_data.csv", row.names = FALSE)
+write.csv(soilgrids_data, file = "data/cache/soilgrids_data.csv", row.names = FALSE)
 ```
 
 The following plots have NAs in at least one Soilgrids variable.

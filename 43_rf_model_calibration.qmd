@@ -12,9 +12,9 @@ library(usdm)
 ### Partition data by site
 
 ```{r}
-data <- read.csv("data/data_T4s_final.csv") %>% 
-  merge(read.csv("data/climate_data.csv")) %>% 
-  merge(read.csv("data/soilgrids_data.csv")) 
+data <- read.csv("data/cache/data_stocks.csv") %>% 
+  merge(read.csv("data/cache/climate_data.csv")) %>% 
+  merge(read.csv("data/cache/soilgrids_data.csv")) 
 
 # partition data in train/validation
 # randomly select 20% of sites for validation
