@@ -4,93 +4,136 @@
 
 library(tidyverse)
 library(usdm)
+library(CAST)
 library(knitr)
+library(randomForest)
 ```
 
-## Variable selection {.unnumbered}
+## RF with variable selection {.unnumbered}
 
-### Based on Variance Inflation Factor (VIF)
+This method was inspired by the work from @Traore2024.
 
-The `vifstep` function in R detects and removes multicollinearity between predictor variables by calculating the variance inflation factor (VIF). Multicollinearity occurs when predictor variables are highly correlated, which can lead to problems in regression models.
+- Environmental variables were grouped as: climate - temperature / climate - precipitation / soil - physical variables / soil - chemical variables. 
 
-Using `vifstep` on a dataset, with a defined threshold (e.g. th=10), the function calculates the VIF for each variable. If a variable exceeds this threshold, it is deemed too correlated with the others and is removed from the dataset. This process is repetitive: after each deletion, the VIFs are recalculated for the remaining variables, until no variable has a VIF above the set threshold.
+- For each group, a first variable selection was done to avoid collinearity, by applying a using a Variance Inflation Factor (VIF) threshold of < 5 with a stepwise procedure [@Naimi2014].
 
-### Climate
+- A second variable selection step is then performed for each group of variables using a foward feature selection (FFS) procedure [@Meyer2025]. 
 
-After applying the VIF on the **temperature** variables, the selected variables that do not present a collinearity problem and that will be evaluated again for their relevance are :
+- All selected variables are then grouped, and the VIF + FFS are applied to this subset of variables. 
+
+- The RandomForest model is then calibrated with the final subset of variables. 
 
 ```{r}
-temp <- read.csv("data/cache/data_stocks.csv") %>% 
+#| warning: false
+#| eval: false
+
+vif_select <- function(vars, data, select = NULL, thres = 5) {
+  if (is.null(select)) select <- rep(TRUE, length(vars))
+  vif_res <- data[, vars[select]] |> vifstep(th = thres)
+  return(vars %in% vif_res@results$Variables)
+}
+
+ffs_select <- function(vars, data, select = NULL, response = "T_stock") {
+  if (is.null(select)) select <- rep(TRUE, length(vars))
+  ffsel <-  data[, vars[select]] |> 
+    ffs(data[, response], metric = "Rsquared") #, importance = TRUE, seed = 1000
+  # get list of predictor
+  return(vars %in% ffsel$selectedvars)
+}
+
+data_all <- read.csv("data/cache/data_stocks.csv") %>% 
   merge(read.csv("data/cache/climate_data.csv")) %>% 
-  select(site, plot, T_stock, paste0("bio", 1:11))
+  merge(read.csv("data/cache/soilgrids_data.csv")) %>% 
+  drop_na() 
 
-temp_vif <- temp |> select(contains("bio")) |> vifstep(th=10)
-temp_vif@results |> kable()
+# create groups
+data_groups <- data.frame(
+  variable = grep("bio|cm", colnames(data_all), value = TRUE)
+) |> 
+  mutate(group = ifelse(variable %in% paste0("bio", 1:11), "clim-temp", NA)) |> 
+  mutate(group = ifelse(variable %in% paste0("bio", 12:19), "clim-prec", group)) |> 
+  mutate(group = ifelse(grepl("cec|nitrogen|phh2o", variable), "soil-chem", group)) |>
+  mutate(group = ifelse(grepl("bdod|cfvo|clay|sand|silt", variable), "soil-phys", group)) |> 
+  group_by(group) |> 
+  # vif selection by group, based on variables selected at previous stage
+  mutate(vif1 = vif_select(variable, data_all)) |> 
+  # ffs by group, based on variables selected at previous stage
+  mutate(ffs1 = ffs_select(variable, data_all, vif1)) |> 
+  ungroup() |> 
+  # vif selection for all, based on variables selected at previous stage
+  mutate(vif2 = vif_select(variable, data_all, ffs1)) |> 
+  # ffs for all, based on variables selected at previous stage
+  mutate(ffs2 = ffs_select(variable, data_all, vif2))
+
+write.csv(data_groups, file = "data/cache/var_selection.csv", row.names = FALSE)
 ```
 
-After applying the VIF on the **precipitation** variables, the selected variables that do not present a collinearity problem and that will be evaluated again for their relevance are :
+
+
+
+The following variables were selected for each group at the different steps:
 
 ```{r}
-prec <- read.csv("data/cache/data_stocks.csv") %>% 
+read.csv("data/cache/var_selection.csv") |> 
+  pivot_longer(cols = paste0(rep(c("vif", "ffs")), rep(1:2, each = 2))) |> 
+  group_by(group, name) |> 
+  summarise(vars = paste(variable[value], collapse = ", ")) |> 
+  pivot_wider(values_from = "vars") |> 
+  relocate(group, vif1, ffs1, vif2, ffs2) |> 
+  kable(col.names = c("Groups", paste(rep(c("VIF", "FFS")), 
+                                      rep(c("group", "all"), each = 2), 
+                                      sep = "_")))
+```
+
+### Results of the RF model
+
+We first partition the data by site, keeping 20% of sites for validation. 
+
+```{r}
+data <- read.csv("data/cache/data_stocks.csv") %>% 
   merge(read.csv("data/cache/climate_data.csv")) %>% 
-  select(site, plot, T_stock, paste0("bio", 12:19))
+  merge(read.csv("data/cache/soilgrids_data.csv")) %>% 
+  drop_na() 
 
-prec_vif <- prec |> select(contains("bio")) |> vifstep(th=10)
-prec_vif@results |> kable()
+# partition data in train/validation
+# randomly select 20% of sites for validation
+validation_sites <- data %>%
+  group_by(site) %>%
+  summarise(type = c("cal", "val")[1+rbinom(1, 1, 0.2)])
+
+data <- data %>%
+  merge(validation_sites)
 ```
 
-### Soil
 
-After applying the VIF on the soil **physical properties**, the selected variables that do not present a collinearity problem and that will be evaluated again for their relevance are :
+We only keep the explanatory variables selected (as described above). 
 
 ```{r}
-phys <- read.csv("data/cache/data_stocks.csv") %>% 
-  merge(read.csv("data/cache/soilgrids_data.csv")) %>%
-  select(site, plot, T_stock, 
-         paste0(c("bdod", "cfvo", "clay", "sand", "silt"), "_0.5cm"))
+data_groups <- read.csv("data/cache/var_selection.csv")
 
-phys_vif <- phys |> select(-site, -plot, -T_stock) |> vifstep(th=10)
-phys_vif@results |> kable()
+rf_sel <- data |> 
+  select(data_groups$variable[data_groups$ffs2]) |> 
+  randomForest(
+    data$T_stock,
+    subset = (data$type == "cal"),
+    ntree=500,
+    importance=TRUE
+  )
 ```
 
-After applying the VIF on the soil **chemical properties**, the selected variables that do not present a collinearity problem and that will be evaluated again for their relevance are :
+The importance of each selected variable in the final model is represented below. 
 
 ```{r}
-chem <- read.csv("data/cache/data_stocks.csv") %>% 
-  merge(read.csv("data/cache/soilgrids_data.csv")) %>%
-  select(site, plot, T_stock, 
-         paste0(c("cec", "nitrogen", "phh2o"), "_0.5cm"))      
+importance_sel <- importance(rf_sel, type=1) |> 
+  as.data.frame()
+importance_sel$variable <- rownames(importance_sel)
 
-chem_vif <- chem |> select(-site, -plot, -T_stock) |> vifstep(th=10)
-chem_vif@results |> kable()
+importance_sel |> 
+  merge(data_groups) |> 
+  ggplot(aes(x = reorder(variable, `%IncMSE`), y = `%IncMSE`, fill = group)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  xlab("Variables") +
+  ylab("Increase in OOB Measn Square Error (%)") +
+  theme_minimal()
 ```
-
-### All variables
-
-After applying the VIF all variables together, the selected variables that do not present a collinearity problem and that could be evaluated again for their relevance are :
-
-```{r}
-all <- read.csv("data/cache/data_stocks.csv") %>% 
-  merge(read.csv("data/cache/climate_data.csv")) %>%
-  merge(read.csv("data/cache/soilgrids_data.csv")) %>%
-  select(site, plot, T_stock, contains("bio"), contains("cm"))      
-
-all_vif <- all |> select(-site, -plot, -T_stock) |> vifstep(th=10)
-all_vif@results |> kable()
-```
-
-## Based on Forward Feature Selection (FFS)
-
-The Forward Feature Selection (FFS) method, applied via the `ffs` function, is a variable selection technique used in machine learning and statistics to identify the subsets of variables (features) most relevant to the construction of a predictive model.
-
-How Forward Feature Selection (FFS) works:
-
--   **Initialization**: The method starts with a simple model, generally without any explanatory variables (or with only the constant in the case of regression).
-
--   **Progressive addition of variables**: At each iteration, the method examines the addition of each variable not yet selected to the current model. The variable that most improves model performance, according to a specific criterion (e.g. increasing R², reducing mean squared error, etc.), is added to the model.
-
--   **Validation** : Model performance is often validated at each stage using a cross-validation technique to avoid overlearning (overfitting).
-
--   **Stop criterion**: The process continues until there is no further significant improvement in model performance by adding new variables. A performance threshold can be predefined to determine when to stop adding variables.
-
--   **Final result**: At the end of the process, the model retains the variables that have been selected over the iterations as the most important for prediction.

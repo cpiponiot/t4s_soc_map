@@ -1,0 +1,10 @@
+```{r setup}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(randomForest)
+library(usdm)
+```
+
+## Comparison of Random forest models results {.unnumbered}

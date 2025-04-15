@@ -1,0 +1,58 @@
+```{r setup}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(randomForest)
+library(usdm)
+```
+
+## RF without variable selection {.unnumbered}
+
+### Partition data by site
+
+```{r}
+data <- read.csv("data/cache/data_stocks.csv") %>% 
+  merge(read.csv("data/cache/climate_data.csv")) %>% 
+  merge(read.csv("data/cache/soilgrids_data.csv"))  %>%
+  drop_na()
+
+# partition data in train/validation
+# randomly select 20% of sites for validation
+validation_sites <- data %>%
+  group_by(site) %>%
+  summarise(type = c("cal", "val")[1+rbinom(1, 1, 0.2)])
+
+data <- data %>%
+  merge(validation_sites)
+```
+
+### Results
+
+```{r}
+rf_nosel <- data |> 
+  select(!contains("plot"), - site, -type, -lon, -lat, -T_stock) |> 
+  randomForest(
+    data$T_stock,
+    subset = (data$type == "cal"),
+    ntree=500,
+    importance=TRUE
+  )
+```
+
+```{r}
+data_groups <- read.csv("data/cache/var_selection.csv")
+
+importance_nosel <- importance(rf_nosel, type=1) |> 
+  as.data.frame() 
+importance_nosel$variable <- rownames(importance_nosel)
+
+importance_nosel |> 
+  merge(data_groups) |> 
+  ggplot(aes(x = reorder(variable, `%IncMSE`), y = `%IncMSE`, fill = group)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  xlab("Variables") +
+  ylab("Increase in OOB Measn Square Error (%)") +
+  theme_minimal()
+```

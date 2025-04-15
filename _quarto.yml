@@ -20,7 +20,8 @@ book:
     - part: 40_rf_model.qmd
       chapters:
         - 41_variable_selection.qmd
-        - 43_rf_model_calibration.qmd
+        - 42_all_variables.qmd
+        - 43_rf_comparison.qmd
 
 bibliography: references.bib
 

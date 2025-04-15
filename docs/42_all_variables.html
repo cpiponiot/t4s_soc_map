@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>RF with variable selection – Soil Organic Carbon map of Cote d’Ivoire</title>
+<title>RF without variable selection – Soil Organic Carbon map of Cote d’Ivoire</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -54,27 +54,7 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -84,8 +64,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./42_all_variables.html" rel="next">
-<link href="./40_rf_model.html" rel="prev">
+<link href="./43_rf_comparison.html" rel="next">
+<link href="./41_variable_selection.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -135,7 +115,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_rf_model.html">RandomForest model</a></li><li class="breadcrumb-item"><a href="./41_variable_selection.html">RF with variable selection</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_rf_model.html">RandomForest model</a></li><li class="breadcrumb-item"><a href="./42_all_variables.html">RF without variable selection</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -235,13 +215,13 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./41_variable_selection.html" class="sidebar-item-text sidebar-link active">
+  <a href="./41_variable_selection.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">RF with variable selection</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./42_all_variables.html" class="sidebar-item-text sidebar-link">
+  <a href="./42_all_variables.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">RF without variable selection</span></a>
   </div>
 </li>
@@ -263,16 +243,17 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#results-of-the-rf-model" id="toc-results-of-the-rf-model" class="nav-link active" data-scroll-target="#results-of-the-rf-model">Results of the RF model</a></li>
+  <li><a href="#partition-data-by-site" id="toc-partition-data-by-site" class="nav-link active" data-scroll-target="#partition-data-by-site">Partition data by site</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_rf_model.html">RandomForest model</a></li><li class="breadcrumb-item"><a href="./41_variable_selection.html">RF with variable selection</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_rf_model.html">RandomForest model</a></li><li class="breadcrumb-item"><a href="./42_all_variables.html">RF without variable selection</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">RF with variable selection</h1>
+<h1 class="title">RF without variable selection</h1>
 </div>
 
 
@@ -293,208 +274,74 @@ div.csl-indent {
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(usdm)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(CAST)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForest)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(usdm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>This method was inspired by the work from <span class="citation" data-cites="Traore2024">Traoré et al. (<a href="#ref-Traore2024" role="doc-biblioref">2024</a>)</span>.</p>
-<ul>
-<li><p>Environmental variables were grouped as: climate - temperature / climate - precipitation / soil - physical variables / soil - chemical variables.</p></li>
-<li><p>For each group, a first variable selection was done to avoid collinearity, by applying a using a Variance Inflation Factor (VIF) threshold of &lt; 5 with a stepwise procedure <span class="citation" data-cites="Naimi2014">(<a href="#ref-Naimi2014" role="doc-biblioref">Naimi et al. 2014</a>)</span>.</p></li>
-<li><p>A second variable selection step is then performed for each group of variables using a foward feature selection (FFS) procedure <span class="citation" data-cites="Meyer2025">(<a href="#ref-Meyer2025" role="doc-biblioref">Meyer et al. 2025</a>)</span>.</p></li>
-<li><p>All selected variables are then grouped, and the VIF + FFS are applied to this subset of variables.</p></li>
-<li><p>The RandomForest model is then calibrated with the final subset of variables.</p></li>
-</ul>
+<section id="partition-data-by-site" class="level3">
+<h3 class="anchored" data-anchor-id="partition-data-by-site">Partition data by site</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>vif_select <span class="ot">&lt;-</span> <span class="cf">function</span>(vars, data, <span class="at">select =</span> <span class="cn">NULL</span>, <span class="at">thres =</span> <span class="dv">5</span>) {</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(select)) select <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">TRUE</span>, <span class="fu">length</span>(vars))</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  vif_res <span class="ot">&lt;-</span> data[, vars[select]] <span class="sc">|&gt;</span> <span class="fu">vifstep</span>(<span class="at">th =</span> thres)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(vars <span class="sc">%in%</span> vif_res<span class="sc">@</span>results<span class="sc">$</span>Variables)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>ffs_select <span class="ot">&lt;-</span> <span class="cf">function</span>(vars, data, <span class="at">select =</span> <span class="cn">NULL</span>, <span class="at">response =</span> <span class="st">"T_stock"</span>) {</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(select)) select <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">TRUE</span>, <span class="fu">length</span>(vars))</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  ffsel <span class="ot">&lt;-</span>  data[, vars[select]] <span class="sc">|&gt;</span> </span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ffs</span>(data[, response], <span class="at">metric =</span> <span class="st">"Rsquared"</span>) <span class="co">#, importance = TRUE, seed = 1000</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># get list of predictor</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(vars <span class="sc">%in%</span> ffsel<span class="sc">$</span>selectedvars)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>data_all <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/climate_data.csv"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/soilgrids_data.csv"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() </span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># create groups</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>data_groups <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable =</span> <span class="fu">grep</span>(<span class="st">"bio|cm"</span>, <span class="fu">colnames</span>(data_all), <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(variable <span class="sc">%in%</span> <span class="fu">paste0</span>(<span class="st">"bio"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">11</span>), <span class="st">"clim-temp"</span>, <span class="cn">NA</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(variable <span class="sc">%in%</span> <span class="fu">paste0</span>(<span class="st">"bio"</span>, <span class="dv">12</span><span class="sc">:</span><span class="dv">19</span>), <span class="st">"clim-prec"</span>, group)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"cec|nitrogen|phh2o"</span>, variable), <span class="st">"soil-chem"</span>, group)) <span class="sc">|&gt;</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"bdod|cfvo|clay|sand|silt"</span>, variable), <span class="st">"soil-phys"</span>, group)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span> </span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># vif selection by group, based on variables selected at previous stage</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vif1 =</span> <span class="fu">vif_select</span>(variable, data_all)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ffs by group, based on variables selected at previous stage</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ffs1 =</span> <span class="fu">ffs_select</span>(variable, data_all, vif1)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># vif selection for all, based on variables selected at previous stage</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vif2 =</span> <span class="fu">vif_select</span>(variable, data_all, ffs1)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ffs for all, based on variables selected at previous stage</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ffs2 =</span> <span class="fu">ffs_select</span>(variable, data_all, vif2))</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(data_groups, <span class="at">file =</span> <span class="st">"data/cache/var_selection.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/climate_data.csv"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/soilgrids_data.csv"</span>))  <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># partition data in train/validation</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># randomly select 20% of sites for validation</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>validation_sites <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site) <span class="sc">%&gt;%</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">type =</span> <span class="fu">c</span>(<span class="st">"cal"</span>, <span class="st">"val"</span>)[<span class="dv">1</span><span class="sc">+</span><span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">0.2</span>)])</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(validation_sites)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>The following variables were selected for each group at the different steps:</p>
+</section>
+<section id="results" class="level3">
+<h3 class="anchored" data-anchor-id="results">Results</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/cache/var_selection.csv"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">paste0</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"vif"</span>, <span class="st">"ffs"</span>)), <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">each =</span> <span class="dv">2</span>))) <span class="sc">|&gt;</span> </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group, name) <span class="sc">|&gt;</span> </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">vars =</span> <span class="fu">paste</span>(variable[value], <span class="at">collapse =</span> <span class="st">", "</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">values_from =</span> <span class="st">"vars"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(group, vif1, ffs1, vif2, ffs2) <span class="sc">|&gt;</span> </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Groups"</span>, <span class="fu">paste</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"VIF"</span>, <span class="st">"FFS"</span>)), </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                                      <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"all"</span>), <span class="at">each =</span> <span class="dv">2</span>), </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">sep =</span> <span class="st">"_"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>rf_nosel <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">!</span><span class="fu">contains</span>(<span class="st">"plot"</span>), <span class="sc">-</span> site, <span class="sc">-</span>type, <span class="sc">-</span>lon, <span class="sc">-</span>lat, <span class="sc">-</span>T_stock) <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">randomForest</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    data<span class="sc">$</span>T_stock,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">subset =</span> (data<span class="sc">$</span>type <span class="sc">==</span> <span class="st">"cal"</span>),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">ntree=</span><span class="dv">500</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">importance=</span><span class="cn">TRUE</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'group'. You can override using the
-`.groups` argument.</code></pre>
 </div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 5%">
-<col style="width: 27%">
-<col style="width: 27%">
-<col style="width: 27%">
-<col style="width: 13%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Groups</th>
-<th style="text-align: left;">VIF_group</th>
-<th style="text-align: left;">FFS_group</th>
-<th style="text-align: left;">VIF_all</th>
-<th style="text-align: left;">FFS_all</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">clim-prec</td>
-<td style="text-align: left;">bio14, bio15, bio18, bio19</td>
-<td style="text-align: left;">bio14, bio15, bio18, bio19</td>
-<td style="text-align: left;">bio18, bio19</td>
-<td style="text-align: left;">bio18</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">clim-temp</td>
-<td style="text-align: left;">bio11, bio3, bio5, bio8, bio9</td>
-<td style="text-align: left;">bio11, bio3, bio5, bio8, bio9</td>
-<td style="text-align: left;">bio3, bio5, bio9</td>
-<td style="text-align: left;">bio3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">soil-chem</td>
-<td style="text-align: left;">cec_0.5cm, nitrogen_0.5cm, phh2o_0.5cm</td>
-<td style="text-align: left;">cec_0.5cm, nitrogen_0.5cm, phh2o_0.5cm</td>
-<td style="text-align: left;">cec_0.5cm, nitrogen_0.5cm</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">soil-phys</td>
-<td style="text-align: left;">bdod_0.5cm, cfvo_0.5cm, clay_0.5cm, silt_0.5cm</td>
-<td style="text-align: left;">bdod_0.5cm, cfvo_0.5cm, clay_0.5cm, silt_0.5cm</td>
-<td style="text-align: left;">bdod_0.5cm, cfvo_0.5cm, clay_0.5cm, silt_0.5cm</td>
-<td style="text-align: left;">bdod_0.5cm, silt_0.5cm</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<section id="results-of-the-rf-model" class="level3">
-<h3 class="anchored" data-anchor-id="results-of-the-rf-model">Results of the RF model</h3>
-<p>We first partition the data by site, keeping 20% of sites for validation.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/climate_data.csv"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/soilgrids_data.csv"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># partition data in train/validation</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># randomly select 20% of sites for validation</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>validation_sites <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site) <span class="sc">%&gt;%</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">type =</span> <span class="fu">c</span>(<span class="st">"cal"</span>, <span class="st">"val"</span>)[<span class="dv">1</span><span class="sc">+</span><span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">0.2</span>)])</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(validation_sites)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>We only keep the explanatory variables selected (as described above).</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data_groups <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/var_selection.csv"</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>rf_sel <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(data_groups<span class="sc">$</span>variable[data_groups<span class="sc">$</span>ffs2]) <span class="sc">|&gt;</span> </span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">randomForest</span>(</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    data<span class="sc">$</span>T_stock,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">subset =</span> (data<span class="sc">$</span>type <span class="sc">==</span> <span class="st">"cal"</span>),</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">ntree=</span><span class="dv">500</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">importance=</span><span class="cn">TRUE</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>The importance of each selected variable in the final model is represented below.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>importance_sel <span class="ot">&lt;-</span> <span class="fu">importance</span>(rf_sel, <span class="at">type=</span><span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>importance_sel<span class="sc">$</span>variable <span class="ot">&lt;-</span> <span class="fu">rownames</span>(importance_sel)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>importance_sel <span class="sc">|&gt;</span> </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(data_groups) <span class="sc">|&gt;</span> </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(variable, <span class="st">`</span><span class="at">%IncMSE</span><span class="st">`</span>), <span class="at">y =</span> <span class="st">`</span><span class="at">%IncMSE</span><span class="st">`</span>, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Variables"</span>) <span class="sc">+</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Increase in OOB Measn Square Error (%)"</span>) <span class="sc">+</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data_groups <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/var_selection.csv"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>importance_nosel <span class="ot">&lt;-</span> <span class="fu">importance</span>(rf_nosel, <span class="at">type=</span><span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>importance_nosel<span class="sc">$</span>variable <span class="ot">&lt;-</span> <span class="fu">rownames</span>(importance_nosel)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>importance_nosel <span class="sc">|&gt;</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(data_groups) <span class="sc">|&gt;</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(variable, <span class="st">`</span><span class="at">%IncMSE</span><span class="st">`</span>), <span class="at">y =</span> <span class="st">`</span><span class="at">%IncMSE</span><span class="st">`</span>, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Variables"</span>) <span class="sc">+</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Increase in OOB Measn Square Error (%)"</span>) <span class="sc">+</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="41_variable_selection_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="42_all_variables_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-Meyer2025" class="csl-entry" role="listitem">
-Meyer, Hanna, Carles Milà, Marvin Ludwig, Jan Linnenbrink, and Fabian Schumacher. 2025. <em>CAST: ’Caret’ Applications for Spatial-Temporal Models</em>. <a href="https://github.com/HannaMeyer/CAST">https://github.com/HannaMeyer/CAST</a>.
-</div>
-<div id="ref-Naimi2014" class="csl-entry" role="listitem">
-Naimi, Babak, Nicholas a.s. Hamm, Thomas A. Groen, Andrew K. Skidmore, and Albertus G. Toxopeus. 2014. <span>“Where Is Positional Uncertainty a Problem for Species Distribution Modelling.”</span> <em>Ecography</em> 37: 191–203. <a href="https://doi.org/10.1111/j.1600-0587.2013.00205.x">https://doi.org/10.1111/j.1600-0587.2013.00205.x</a>.
-</div>
-<div id="ref-Traore2024" class="csl-entry" role="listitem">
-Traoré, Soulemane, Irie Casimir Zo-Bi, Camille Piponiot, Raphaël Aussenac, and Bruno Hérault. 2024. <span>“<span class="nocase">Fragmentation is the main driver of residual forest aboveground biomass in West African low forest-high deforestation landscapes</span>.”</span> <em>Trees, Forests and People</em> 15 (March): 100477. <a href="https://doi.org/10.1016/j.tfp.2023.100477">https://doi.org/10.1016/j.tfp.2023.100477</a>.
-</div>
-</div>
 </section>
 
 </main> <!-- /main -->
@@ -920,13 +767,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./40_rf_model.html" class="pagination-link" aria-label="RandomForest model">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">RandomForest model</span>
+      <a href="./41_variable_selection.html" class="pagination-link" aria-label="RF with variable selection">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">RF with variable selection</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./42_all_variables.html" class="pagination-link" aria-label="RF without variable selection">
-        <span class="nav-page-text">RF without variable selection</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./43_rf_comparison.html" class="pagination-link" aria-label="Comparison of Random forest models results">
+        <span class="nav-page-text">Comparison of Random forest models results</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
