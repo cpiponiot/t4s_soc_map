@@ -74,6 +74,8 @@ write.csv(data_groups, file = "data/cache/var_selection.csv", row.names = FALSE)
 The following variables were selected for each group at the different steps:
 
 ```{r}
+#| warning: false
+
 read.csv("data/cache/var_selection.csv") |> 
   pivot_longer(cols = paste0(rep(c("vif", "ffs")), rep(1:2, each = 2))) |> 
   group_by(group, name) |> 

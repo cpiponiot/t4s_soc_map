@@ -93,6 +93,7 @@ We can also plot the pairwise correlation of all climate variables.
 ```{r}
 climate_data |> 
   select(contains("bio")) |> 
+  drop_na() |> 
   cor() |> 
   ggcorrplot()
 ```

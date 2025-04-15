@@ -9,7 +9,7 @@ library(usdm)
 
 ## RF without variable selection {.unnumbered}
 
-### Partition data by site
+We first randomly partition the data by site, keeping 20% of sites for validation. 
 
 ```{r}
 data <- read.csv("data/cache/data_stocks.csv") %>% 
@@ -27,8 +27,6 @@ data <- data %>%
   merge(validation_sites)
 ```
 
-### Results
-
 ```{r}
 rf_nosel <- data |> 
   select(!contains("plot"), - site, -type, -lon, -lat, -T_stock) |> 
@@ -39,6 +37,8 @@ rf_nosel <- data |>
     importance=TRUE
   )
 ```
+
+The importance of all variables in the final model is represented below. 
 
 ```{r}
 data_groups <- read.csv("data/cache/var_selection.csv")
