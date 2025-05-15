@@ -1617,6 +1617,37 @@
       "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
       "Repository": "CRAN"
     },
+    "crosstalk": {
+      "Package": "crosstalk",
+      "Version": "1.2.1",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "Inter-Widget Interactivity for HTML Widgets",
+      "Authors@R": "c( person(\"Joe\", \"Cheng\", role = \"aut\", email = \"joe@posit.co\"), person(\"Carson\", \"Sievert\", role = c(\"aut\", \"cre\"), email = \"carson@posit.co\", comment = c(ORCID = \"0000-0002-4958-2844\")), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")), person(family = \"jQuery Foundation\", role = \"cph\", comment = \"jQuery library and jQuery UI library\"), person(family = \"jQuery contributors\", role = c(\"ctb\", \"cph\"), comment = \"jQuery library; authors listed in inst/www/shared/jquery-AUTHORS.txt\"), person(\"Mark\", \"Otto\", role = \"ctb\", comment = \"Bootstrap library\"), person(\"Jacob\", \"Thornton\", role = \"ctb\", comment = \"Bootstrap library\"), person(family = \"Bootstrap contributors\", role = \"ctb\", comment = \"Bootstrap library\"), person(family = \"Twitter, Inc\", role = \"cph\", comment = \"Bootstrap library\"), person(\"Brian\", \"Reavis\", role = c(\"ctb\", \"cph\"), comment = \"selectize.js library\"), person(\"Kristopher Michael\", \"Kowal\", role = c(\"ctb\", \"cph\"), comment = \"es5-shim library\"), person(family = \"es5-shim contributors\", role = c(\"ctb\", \"cph\"), comment = \"es5-shim library\"), person(\"Denis\", \"Ineshin\", role = c(\"ctb\", \"cph\"), comment = \"ion.rangeSlider library\"), person(\"Sami\", \"Samhuri\", role = c(\"ctb\", \"cph\"), comment = \"Javascript strftime library\") )",
+      "Description": "Provides building blocks for allowing HTML widgets to communicate with each other, with Shiny or without (i.e. static .html files). Currently supports linked brushing and filtering.",
+      "License": "MIT + file LICENSE",
+      "Imports": [
+        "htmltools (>= 0.3.6)",
+        "jsonlite",
+        "lazyeval",
+        "R6"
+      ],
+      "Suggests": [
+        "shiny",
+        "ggplot2",
+        "testthat (>= 2.1.0)",
+        "sass",
+        "bslib"
+      ],
+      "URL": "https://rstudio.github.io/crosstalk/, https://github.com/rstudio/crosstalk",
+      "BugReports": "https://github.com/rstudio/crosstalk/issues",
+      "RoxygenNote": "7.2.3",
+      "Encoding": "UTF-8",
+      "NeedsCompilation": "no",
+      "Author": "Joe Cheng [aut], Carson Sievert [aut, cre] (<https://orcid.org/0000-0002-4958-2844>), Posit Software, PBC [cph, fnd], jQuery Foundation [cph] (jQuery library and jQuery UI library), jQuery contributors [ctb, cph] (jQuery library; authors listed in inst/www/shared/jquery-AUTHORS.txt), Mark Otto [ctb] (Bootstrap library), Jacob Thornton [ctb] (Bootstrap library), Bootstrap contributors [ctb] (Bootstrap library), Twitter, Inc [cph] (Bootstrap library), Brian Reavis [ctb, cph] (selectize.js library), Kristopher Michael Kowal [ctb, cph] (es5-shim library), es5-shim contributors [ctb, cph] (es5-shim library), Denis Ineshin [ctb, cph] (ion.rangeSlider library), Sami Samhuri [ctb, cph] (Javascript strftime library)",
+      "Maintainer": "Carson Sievert <carson@posit.co>",
+      "Repository": "CRAN"
+    },
     "curl": {
       "Package": "curl",
       "Version": "6.2.2",
@@ -2098,6 +2129,46 @@
       "NeedsCompilation": "no",
       "Author": "Hadley Wickham [aut, cre], Yihui Xie [aut] (<https://orcid.org/0000-0003-0645-5666>), Michael Lawrence [ctb], Thomas Kluyver [ctb], Jeroen Ooms [ctb], Barret Schloerke [ctb], Adam Ryczkowski [ctb], Hiroaki Yutani [ctb], Michel Lang [ctb], Karolis Koncevičius [ctb], Posit Software, PBC [cph, fnd]",
       "Maintainer": "Hadley Wickham <hadley@posit.co>",
+      "Repository": "CRAN"
+    },
+    "exactextractr": {
+      "Package": "exactextractr",
+      "Version": "0.10.0",
+      "Source": "Repository",
+      "Title": "Fast Extraction from Raster Datasets using Polygons",
+      "Authors@R": "c( person(\"Daniel Baston\", email = \"dbaston@isciences.com\", role = c(\"aut\", \"cre\")), person(\"ISciences, LLC\", role=\"cph\"))",
+      "Description": "Quickly and accurately summarizes raster values over polygonal areas (\"zonal statistics\").",
+      "Depends": [
+        "R (>= 3.4.0)"
+      ],
+      "License": "Apache License (== 2.0)",
+      "SystemRequirements": "GEOS (>= 3.5.0)",
+      "Imports": [
+        "Rcpp (>= 0.12.12)",
+        "methods",
+        "raster",
+        "sf (>= 0.9.0)"
+      ],
+      "URL": "https://isciences.gitlab.io/exactextractr/, https://github.com/isciences/exactextractr",
+      "BugReports": "https://github.com/isciences/exactextractr/issues",
+      "LinkingTo": [
+        "Rcpp"
+      ],
+      "Suggests": [
+        "dplyr",
+        "foreign",
+        "knitr",
+        "ncdf4",
+        "rmarkdown",
+        "testthat",
+        "terra (>= 1.5.17)"
+      ],
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.1.2",
+      "VignetteBuilder": "knitr",
+      "NeedsCompilation": "yes",
+      "Author": "Daniel Baston [aut, cre], ISciences, LLC [cph]",
+      "Maintainer": "Daniel Baston <dbaston@isciences.com>",
       "Repository": "CRAN"
     },
     "fansi": {
@@ -3754,6 +3825,118 @@
       "NeedsCompilation": "no",
       "Repository": "CRAN"
     },
+    "lazyeval": {
+      "Package": "lazyeval",
+      "Version": "0.2.2",
+      "Source": "Repository",
+      "Title": "Lazy (Non-Standard) Evaluation",
+      "Description": "An alternative approach to non-standard evaluation using formulas. Provides a full implementation of LISP style 'quasiquotation', making it easier to generate code with other code.",
+      "Authors@R": "c( person(\"Hadley\", \"Wickham\", ,\"hadley@rstudio.com\", c(\"aut\", \"cre\")), person(\"RStudio\", role = \"cph\") )",
+      "License": "GPL-3",
+      "LazyData": "true",
+      "Depends": [
+        "R (>= 3.1.0)"
+      ],
+      "Suggests": [
+        "knitr",
+        "rmarkdown (>= 0.2.65)",
+        "testthat",
+        "covr"
+      ],
+      "VignetteBuilder": "knitr",
+      "RoxygenNote": "6.1.1",
+      "NeedsCompilation": "yes",
+      "Author": "Hadley Wickham [aut, cre], RStudio [cph]",
+      "Maintainer": "Hadley Wickham <hadley@rstudio.com>",
+      "Repository": "CRAN"
+    },
+    "leaflet": {
+      "Package": "leaflet",
+      "Version": "2.2.2",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "Create Interactive Web Maps with the JavaScript 'Leaflet' Library",
+      "Authors@R": "c( person(\"Joe\", \"Cheng\", , \"joe@posit.co\", role = c(\"aut\", \"cre\")), person(\"Barret\", \"Schloerke\", , \"barret@posit.co\", role = \"aut\", comment = c(ORCID = \"0000-0001-9986-114X\")), person(\"Bhaskar\", \"Karambelkar\", role = \"aut\"), person(\"Yihui\", \"Xie\", role = \"aut\"), person(\"Hadley\", \"Wickham\", role = \"ctb\"), person(\"Kenton\", \"Russell\", role = \"ctb\"), person(\"Kent\", \"Johnson\", role = \"ctb\"), person(\"Vladimir\", \"Agafonkin\", role = c(\"ctb\", \"cph\"), comment = \"Leaflet library\"), person(\"CloudMade\", role = \"cph\", comment = \"Leaflet library\"), person(\"Leaflet contributors\", role = \"ctb\", comment = \"Leaflet library\"), person(\"Brandon Copeland\", role = c(\"ctb\", \"cph\"), comment = \"leaflet-measure plugin\"), person(\"Joerg Dietrich\", role = c(\"ctb\", \"cph\"), comment = \"Leaflet.Terminator plugin\"), person(\"Benjamin Becquet\", role = c(\"ctb\", \"cph\"), comment = \"Leaflet.MagnifyingGlass plugin\"), person(\"Norkart AS\", role = c(\"ctb\", \"cph\"), comment = \"Leaflet.MiniMap plugin\"), person(\"L. Voogdt\", role = c(\"ctb\", \"cph\"), comment = \"Leaflet.awesome-markers plugin\"), person(\"Daniel Montague\", role = c(\"ctb\", \"cph\"), comment = \"Leaflet.EasyButton plugin\"), person(\"Kartena AB\", role = c(\"ctb\", \"cph\"), comment = \"Proj4Leaflet plugin\"), person(\"Robert Kajic\", role = c(\"ctb\", \"cph\"), comment = \"leaflet-locationfilter plugin\"), person(\"Mapbox\", role = c(\"ctb\", \"cph\"), comment = \"leaflet-omnivore plugin\"), person(\"Michael Bostock\", role = c(\"ctb\", \"cph\"), comment = \"topojson\"), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
+      "Description": "Create and customize interactive maps using the 'Leaflet' JavaScript library and the 'htmlwidgets' package. These maps can be used directly from the R console, from 'RStudio', in Shiny applications and R Markdown documents.",
+      "License": "GPL-3",
+      "URL": "https://rstudio.github.io/leaflet/, https://github.com/rstudio/leaflet",
+      "BugReports": "https://github.com/rstudio/leaflet/issues",
+      "Depends": [
+        "R (>= 3.1.0)"
+      ],
+      "Imports": [
+        "crosstalk",
+        "htmltools",
+        "htmlwidgets (>= 1.5.4)",
+        "jquerylib",
+        "leaflet.providers (>= 2.0.0)",
+        "magrittr",
+        "methods",
+        "png",
+        "raster (>= 3.6.3)",
+        "RColorBrewer",
+        "scales (>= 1.0.0)",
+        "sp",
+        "stats",
+        "viridisLite",
+        "xfun"
+      ],
+      "Suggests": [
+        "knitr",
+        "maps",
+        "purrr",
+        "R6",
+        "RJSONIO",
+        "rmarkdown",
+        "s2",
+        "sf (>= 0.9-6)",
+        "shiny",
+        "terra",
+        "testthat (>= 3.0.0)"
+      ],
+      "Config/testthat/edition": "3",
+      "Config/Needs/website": "dplyr, geojsonio, ncdf4, tidyverse/tidytemplate",
+      "Encoding": "UTF-8",
+      "LazyData": "true",
+      "RoxygenNote": "7.3.1",
+      "NeedsCompilation": "no",
+      "Author": "Joe Cheng [aut, cre], Barret Schloerke [aut] (<https://orcid.org/0000-0001-9986-114X>), Bhaskar Karambelkar [aut], Yihui Xie [aut], Hadley Wickham [ctb], Kenton Russell [ctb], Kent Johnson [ctb], Vladimir Agafonkin [ctb, cph] (Leaflet library), CloudMade [cph] (Leaflet library), Leaflet contributors [ctb] (Leaflet library), Brandon Copeland [ctb, cph] (leaflet-measure plugin), Joerg Dietrich [ctb, cph] (Leaflet.Terminator plugin), Benjamin Becquet [ctb, cph] (Leaflet.MagnifyingGlass plugin), Norkart AS [ctb, cph] (Leaflet.MiniMap plugin), L. Voogdt [ctb, cph] (Leaflet.awesome-markers plugin), Daniel Montague [ctb, cph] (Leaflet.EasyButton plugin), Kartena AB [ctb, cph] (Proj4Leaflet plugin), Robert Kajic [ctb, cph] (leaflet-locationfilter plugin), Mapbox [ctb, cph] (leaflet-omnivore plugin), Michael Bostock [ctb, cph] (topojson), Posit Software, PBC [cph, fnd]",
+      "Maintainer": "Joe Cheng <joe@posit.co>",
+      "Repository": "CRAN"
+    },
+    "leaflet.providers": {
+      "Package": "leaflet.providers",
+      "Version": "2.0.0",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "Leaflet Providers",
+      "Authors@R": "c( person(\"Leslie\", \"Huang\", , \"lesliehuang@nyu.edu\", role = \"aut\"), person(\"Barret\", \"Schloerke\", , \"barret@posit.co\", role = c(\"ctb\", \"cre\"), comment = c(ORCID = \"0000-0001-9986-114X\")), person(\"Leaflet Providers contributors\", role = c(\"ctb\", \"cph\"), comment = \"Leaflet Providers plugin\"), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
+      "Description": "Contains third-party map tile provider information from 'Leaflet.js', <https://github.com/leaflet-extras/leaflet-providers>, to be used with the 'leaflet' R package. Additionally, 'leaflet.providers' enables users to retrieve up-to-date provider information between package updates.",
+      "License": "BSD_2_clause + file LICENSE",
+      "URL": "https://rstudio.github.io/leaflet.providers/, https://github.com/rstudio/leaflet.providers",
+      "BugReports": "https://github.com/rstudio/leaflet.providers/issues",
+      "Depends": [
+        "R (>= 2.10)"
+      ],
+      "Imports": [
+        "htmltools"
+      ],
+      "Suggests": [
+        "jsonlite",
+        "testthat (>= 3.0.0)",
+        "V8"
+      ],
+      "Config/Needs/website": "tidyverse/tidytemplate",
+      "Config/testthat/edition": "3",
+      "Encoding": "UTF-8",
+      "Language": "en-US",
+      "RoxygenNote": "7.2.3",
+      "Collate": "'providers_data.R' 'get_current_providers.R' 'leaflet.providers-package.R' 'zzz.R'",
+      "NeedsCompilation": "no",
+      "Author": "Leslie Huang [aut], Barret Schloerke [ctb, cre] (<https://orcid.org/0000-0001-9986-114X>), Leaflet Providers contributors [ctb, cph] (Leaflet Providers plugin), Posit Software, PBC [cph, fnd]",
+      "Maintainer": "Barret Schloerke <barret@posit.co>",
+      "Repository": "CRAN"
+    },
     "lifecycle": {
       "Package": "lifecycle",
       "Version": "1.0.4",
@@ -3942,34 +4125,6 @@
       "Author": "Stefan Milton Bache [aut, cph] (Original author and creator of magrittr), Hadley Wickham [aut], Lionel Henry [cre], RStudio [cph, fnd]",
       "Maintainer": "Lionel Henry <lionel@rstudio.com>",
       "Repository": "CRAN"
-    },
-    "maps": {
-      "Package": "maps",
-      "Version": "3.4.2.1",
-      "Source": "Repository",
-      "Title": "Draw Geographical Maps",
-      "Date": "2023-12-14",
-      "Author": "Original S code by Richard A. Becker and Allan R. Wilks. R version by Ray Brownrigg. Enhancements by Thomas P Minka and Alex Deckmyn.",
-      "Description": "Display of maps.  Projection code and larger maps are in separate packages ('mapproj' and 'mapdata').",
-      "Depends": [
-        "R (>= 3.5.0)"
-      ],
-      "Imports": [
-        "graphics",
-        "utils"
-      ],
-      "LazyData": "yes",
-      "Suggests": [
-        "mapproj (>= 1.2-0)",
-        "mapdata (>= 2.3.0)",
-        "sp",
-        "rnaturalearth"
-      ],
-      "License": "GPL-2",
-      "Maintainer": "Alex Deckmyn <alex.deckmyn@meteo.be>",
-      "NeedsCompilation": "yes",
-      "Repository": "RSPM",
-      "Encoding": "UTF-8"
     },
     "matrixStats": {
       "Package": "matrixStats",
@@ -4530,6 +4685,23 @@
       "NeedsCompilation": "yes",
       "Author": "Hadley Wickham [aut, cre]",
       "Maintainer": "Hadley Wickham <hadley@rstudio.com>",
+      "Repository": "CRAN"
+    },
+    "png": {
+      "Package": "png",
+      "Version": "0.1-8",
+      "Source": "Repository",
+      "Title": "Read and write PNG images",
+      "Author": "Simon Urbanek <Simon.Urbanek@r-project.org>",
+      "Maintainer": "Simon Urbanek <Simon.Urbanek@r-project.org>",
+      "Depends": [
+        "R (>= 2.9.0)"
+      ],
+      "Description": "This package provides an easy and simple way to read, write and display bitmap images stored in the PNG format. It can read and write both files and in-memory raw vectors.",
+      "License": "GPL-2 | GPL-3",
+      "SystemRequirements": "libpng",
+      "URL": "http://www.rforge.net/png/",
+      "NeedsCompilation": "yes",
       "Repository": "CRAN"
     },
     "posterior": {

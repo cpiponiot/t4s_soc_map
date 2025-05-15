@@ -3,8 +3,8 @@
 #| warning: false
 
 library(tidyverse)
-library(maps)
 library(knitr)
+library(leaflet)
 ```
 
 # Soil dataset {.unnumbered}
@@ -12,16 +12,13 @@ library(knitr)
 ## Site location
 
 ```{r}
-#| warning: false
-
-map_data("world") |> 
-  subset(region == "Ivory Coast") |> 
-  ggplot() +
-  geom_polygon(aes(x=long, y = lat), fill = "white") + 
-  geom_point(data = read.csv("data/plot_0.2.2.csv"), 
-             aes(lon, lat, col = site)) +
-  theme(axis.title = element_blank()) +
-  coord_equal() 
+loc_plots <- read.csv("data/plot_0.2.2.csv") |> 
+  select(site, plot, lat, lon) |> 
+  drop_na()
+leaflet() |>
+  addProviderTiles(providers$Esri.WorldImagery) |>
+  addMarkers(lng=loc_plots$lon, lat=loc_plots$lat, 
+             label = paste(loc_plots$site, loc_plots$plot))
 ```
 
 ## Dataset size
