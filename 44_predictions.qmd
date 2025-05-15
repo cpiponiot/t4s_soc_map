@@ -1,0 +1,81 @@
+```{r setup}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(randomForest)
+library(usdm)
+library(exactextractr)
+```
+
+# SOC stocks prediction {.unnumbered}
+
+Predictors must be at the same resolution (here the coarsest resolution: 1 km). 
+
+```{r}
+#| message: false
+#| warning: false
+#| eval: false
+
+chelsa <- 
+  list.files("data/download/CHELSA", pattern = "tif$", full.names = TRUE) |> 
+  rast()
+names(chelsa) <- list.files("data/download/CHELSA", pattern = "tif$") |> 
+  gsub(pattern = "CHELSA_|_1981-2010_V.2.1.tif", replacement = "")
+
+soilgrids <- 
+  list.files("data/download/ISRIC", pattern = "tif$", full.names = TRUE) |> 
+  rast() |> 
+  project("EPSG: 4326") |> 
+  lapply(function(x) exact_resample(x, chelsa[[1]], 'mean')) |> 
+  rast()
+names(soilgrids) <- list.files("data/download/ISRIC", pattern = "tif$") |> 
+  gsub(pattern = "_mean.tif", replacement = "")
+
+as.data.frame(chelsa, xy = TRUE) |> 
+  inner_join(as.data.frame(soilgrids, xy = TRUE)) |> 
+  write.csv("data/cache/data_vars.csv", row.names = FALSE)
+```
+
+
+```{r}
+data <- read.csv("data/cache/data_stocks.csv") %>% 
+  merge(read.csv("data/cache/climate_data.csv")) %>% 
+  merge(read.csv("data/cache/soilgrids_data.csv"))  %>%
+  drop_na()
+
+# partition data in train/validation
+# randomly select 20% of sites for validation
+validation_sites <- data %>%
+  group_by(site) %>%
+  summarise(type = c("cal", "val")[1+rbinom(1, 1, 0.2)])
+
+data <- data %>%
+  merge(validation_sites)
+```
+
+```{r}
+rf_nosel <- data |> 
+  select(!contains("plot"), - site, -type, -lon, -lat, -T_stock) |> 
+  randomForest(
+    data$T_stock,
+    subset = (data$type == "cal"),
+    ntree=500,
+    importance=TRUE
+  )
+```
+
+```{r}
+data_vars <- read.csv("data/cache/data_vars.csv") |> 
+  drop_na()
+data_vars$T_stock <- predict(rf_nosel, data_vars)
+
+ggplot(data_vars, aes(x, y, fill = T_stock)) +
+  geom_raster() +
+  coord_equal()+
+  labs(x = NULL, y = NULL) +
+  scale_fill_viridis_c(name = "Stocks de C\nprédits\n(Mg/ha)", option = "D") +
+  theme_minimal()
+ggsave("D:/projets-cirad/terri4sol/presentations/carte_c_preds.png")
+```
+

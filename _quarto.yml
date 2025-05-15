@@ -22,6 +22,7 @@ book:
         - 41_variable_selection.qmd
         - 42_all_variables.qmd
         - 43_rf_comparison.qmd
+        - 44_predictions.qmd
 
 bibliography: references.bib
 
