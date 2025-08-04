@@ -1,0 +1,90 @@
+```{r setup}
+#| message: false
+#| warning: false
+library(terra)
+library(sf)
+library(tidyverse)
+library(tidyterra)
+```
+
+## TMF data {.unnumbered}
+
+```{r}
+#| message: false
+#| warning: false
+#| eval: false
+
+# South Cote d'Ivoire ("zone forestiere") area
+area <- st_read("data/rci_south.shp") |> st_transform(4326)
+# download tmf annual change for Cote d'Ivoire
+if (!dir.exists("data/download/TMF")) dir.create("data/download/TMF")
+for (yr in 1990:2024) {
+  file <- paste0(
+    "data/download/TMF/JRC_TMF_AnnualChange_v1_", yr,
+    "_AFR_ID52_N10_W10.tif"
+  )
+  if (!file.exists(file)) {
+    paste0(
+      "https://ies-ows.jrc.ec.europa.eu/iforce/tmf_v1/download.py?",
+      "type=tile&dataset=AnnualChange_", yr, "&lat=N10&lon=W10"
+    ) |>
+      download.file(file, mode = "wb")
+  }
+  crop_file <- paste0("data/download/TMF/JRC_TMF_AnnualChange_v1_", yr, "_RCI.tif")
+  if (!file.exists(crop_file)) {
+    rast(file)|> crop(ext(area)) |> writeRaster(crop_file)
+  }
+}
+tmf <- list.files("data/download/TMF", "RCI", full.names = TRUE) |> 
+  grep(pattern = paste(seq(1990, 2022), collapse = "|"), value = TRUE) |>
+  rast()
+if (!dir.exists("data/cache/tiles")) dir.create("data/cache/tiles")
+# create 25 smaller raster stacks
+makeTiles(tmf, 2000, filename="data/cache/tiles/tmf_.tif")
+
+for (fl in list.files("data/cache/tiles", "tmf", full.names = TRUE)) {
+  r <- rast(fl) 
+  # age of secondary forests in 2022
+  if (!file.exists(gsub("tmf", "tmf_sec", fl))) {
+    mask(x = r, ifel(r[[length(r)]] == 4, 1, NA)) |>
+      app(\(x) {
+        if (any(!is.na(x) & x != 4)) {
+          length(x) - max(which(x != 4))
+        } else {
+          NA
+        }
+      }) |> 
+      writeRaster(gsub("tmf", "tmf_sec", fl))
+  }
+  # deforestation age
+  if (!file.exists(gsub("tmf", "tmf_def", fl))) {
+    mask(x = r, ifel(r[[1]] %in% c(1,2), 1, NA)) |>
+      app(\(x) {
+        if (any(!is.na(x) & x > 2)) {
+          sum(!is.na(x) & x > 2)
+        } else {
+          NA
+        }
+      }) |> 
+      writeRaster(gsub("tmf", "tmf_def", fl))
+  }
+}
+
+list.files("data/cache/tiles", "sec", full.names = TRUE) |>
+  lapply(rast) |> 
+  sprc() |> 
+  mosaic() |>
+  writeRaster("data/cache/tmf_sec_age.tif", overwrite = TRUE)
+list.files("data/cache/tiles", "def", full.names = TRUE) |>
+  lapply(rast) |> 
+  sprc() |> 
+  mosaic() |>
+  writeRaster("data/cache/tmf_def_age.tif", overwrite = TRUE)
+```
+
+```{r}
+ggplot()+
+  geom_spatraster(data = tmf[[35]]) +
+  geom_sf(data = area)
+```
+
