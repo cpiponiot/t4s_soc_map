@@ -9,6 +9,10 @@ library(tidyterra)
 
 ## TMF data {.unnumbered}
 
+We used data from the Tropical Moist Forests (TMF) product, which is based on Landsat images [@Vancutsem2021], to estimate the time since deforestation and the age of secondary forests. These classify tropical areas annually as follows: (i) undisturbed forests, (ii) disturbed forests, (iii) deforested areas, (iv) regrowing forests, (v) water, and (vi) other. 
+
+We estimated the age of secondary forests in 2022 as the number of years a pixel of regrowing forest in 2022 had continuously been classified as such. We estimated the time since deforestation as the time since a pixel that was classified as undisturbed or disturbed forest in 1990 (i.e. the first year of the TMF time series) had changed to another class. 
+
 ```{r}
 #| message: false
 #| warning: false
@@ -30,61 +34,108 @@ for (yr in 1990:2024) {
     ) |>
       download.file(file, mode = "wb")
   }
-  crop_file <- paste0("data/download/TMF/JRC_TMF_AnnualChange_v1_", yr, "_RCI.tif")
+  crop_file <- 
+    paste0("data/download/TMF/JRC_TMF_AnnualChange_v1_", yr, "_RCI.tif")
   if (!file.exists(crop_file)) {
-    rast(file)|> crop(ext(area)) |> writeRaster(crop_file)
+    rast(file) |>
+      crop(ext(area)) |>
+      writeRaster(crop_file)
   }
 }
-tmf <- list.files("data/download/TMF", "RCI", full.names = TRUE) |> 
+tmf <- list.files("data/download/TMF", "RCI", full.names = TRUE) |>
   grep(pattern = paste(seq(1990, 2022), collapse = "|"), value = TRUE) |>
   rast()
 if (!dir.exists("data/cache/tiles")) dir.create("data/cache/tiles")
 # create 25 smaller raster stacks
-makeTiles(tmf, 2000, filename="data/cache/tiles/tmf_.tif")
+makeTiles(tmf, 2000, filename = "data/cache/tiles/tmf_.tif")
 
 for (fl in list.files("data/cache/tiles", "tmf", full.names = TRUE)) {
-  r <- rast(fl) 
+  if (!file.exists(gsub("tmf", "tmf_sec", fl)) |
+    !file.exists(gsub("tmf", "tmf_def", fl))) {
+    r <- rast(fl)
+    vals <- values(r)
+  }
   # age of secondary forests in 2022
   if (!file.exists(gsub("tmf", "tmf_sec", fl))) {
-    mask(x = r, ifel(r[[length(r)]] == 4, 1, NA)) |>
-      app(\(x) {
+    ind <- which(vals[, 33] == 4)
+    age_sec <- vals[ind, ] |>
+      apply(1, function(x) {
         if (any(!is.na(x) & x != 4)) {
           length(x) - max(which(x != 4))
         } else {
           NA
         }
-      }) |> 
-      writeRaster(gsub("tmf", "tmf_sec", fl))
+      })
+    vals_sec <- rep(NA, nrow(vals))
+    vals_sec[ind] <- age_sec
+    r_sec <- rast(
+      matrix(vals_sec, nrow = nrow(r), ncol = ncol(r), byrow = TRUE),
+      extent = ext(r), crs = crs(r)
+    )
+    writeRaster(r_sec, gsub("tmf", "tmf_sec", fl))
   }
-  # deforestation age
+  # deforestation age in 2022
   if (!file.exists(gsub("tmf", "tmf_def", fl))) {
-    mask(x = r, ifel(r[[1]] %in% c(1,2), 1, NA)) |>
-      app(\(x) {
+    ind <- which(vals[, 1] %in% c(1, 2))
+    age_def <- vals[ind, ] |>
+      apply(1, function(x) {
         if (any(!is.na(x) & x > 2)) {
           sum(!is.na(x) & x > 2)
         } else {
           NA
         }
-      }) |> 
-      writeRaster(gsub("tmf", "tmf_def", fl))
+      })
+    vals_def <- rep(NA, nrow(vals))
+    vals_def[ind] <- age_def
+    r_def <- rast(
+      matrix(vals_def, nrow = nrow(r), ncol = ncol(r), byrow = TRUE),
+      extent = ext(r), crs = crs(r)
+    )
+    writeRaster(r_def, gsub("tmf", "tmf_def", fl))
   }
 }
-
 list.files("data/cache/tiles", "sec", full.names = TRUE) |>
-  lapply(rast) |> 
-  sprc() |> 
+  lapply(rast) |>
+  sprc() |>
   mosaic() |>
   writeRaster("data/cache/tmf_sec_age.tif", overwrite = TRUE)
 list.files("data/cache/tiles", "def", full.names = TRUE) |>
-  lapply(rast) |> 
-  sprc() |> 
+  lapply(rast) |>
+  sprc() |>
   mosaic() |>
   writeRaster("data/cache/tmf_def_age.tif", overwrite = TRUE)
+# remove tiles to save space
+list.files("data/cache/tiles", full.names = TRUE) |> file.remove()
+```
+
+
+```{r include=FALSE}
+#| message: false
+#| warning: false
+#| results: hide
+area <- st_read("data/rci_south.shp") |> st_transform(4326)
+```
+
+
+```{r}
+#| message: false
+#| warning: false
+ggplot() +
+  geom_spatraster(data = rast("data/cache/tmf_sec_age.tif")) +
+  scale_fill_viridis_c(na.value = "transparent") +
+  geom_sf(data = area, fill = NA, col = "black") +
+  labs(title = "Age of secondary forests in 2022", fill = "Age (yr)") +
+  theme_minimal()
 ```
 
 ```{r}
-ggplot()+
-  geom_spatraster(data = tmf[[35]]) +
-  geom_sf(data = area)
+#| message: false
+#| warning: false
+ggplot() +
+  geom_spatraster(data = rast("data/cache/tmf_def_age.tif")) +
+  scale_fill_viridis_c(na.value = "transparent") +
+  geom_sf(data = area, fill = NA, col = "black") +
+  labs(title = "Time since deforestation", fill = "Time (yr)") +
+  theme_minimal()
 ```
 
