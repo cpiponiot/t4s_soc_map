@@ -257,7 +257,7 @@
     "href": "33_tmf.html",
     "title": "TMF data",
     "section": "",
-    "text": "Position of forest/fallow measurements compared to TMF data\nWe used data from the Tropical Moist Forests (TMF) product, which is based on Landsat images (Vancutsem et al. 2021), to estimate the time since deforestation and the age of secondary forests. These classify tropical areas annually as follows: (i) undisturbed forests, (ii) disturbed forests, (iii) deforested areas, (iv) regrowing forests, (v) water, and (vi) other.\nWe estimated the age of secondary forests in 2022 as the number of years a pixel of regrowing forest in 2022 had continuously been classified as such. We estimated the time since deforestation as the time since a pixel that was classified as undisturbed or disturbed forest in 1990 (i.e. the first year of the TMF time series) had changed to another class.",
+    "text": "Comparison of TMF and field-based plot classification\nWe used data from the Tropical Moist Forests (TMF) product, which is based on Landsat images (Vancutsem et al. 2021), to estimate the time since deforestation and the age of secondary forests. These classify tropical areas annually as follows: (i) undisturbed forests, (ii) disturbed forests, (iii) deforested areas, (iv) regrowing forests, (v) water, and (vi) other.\nWe estimated the age of secondary forests in 2022 as the number of years a pixel of regrowing forest in 2022 had continuously been classified as such. We estimated the time since deforestation as the time since a pixel that was classified as undisturbed or disturbed forest in 1990 (i.e. the first year of the TMF time series) had changed to another class.\nCode\ntmf2022 &lt;- rast(\"data/download/TMF/JRC_TMF_AnnualChange_v1_2022_RCI.tif\")\nplots &lt;- read.csv(\"data/plot_0.2.4.csv\")\nplots$tmf_class &lt;- \n  c(\"Undisturbed\", \"Degraded\", \"Deforested\", \"Regrowth\", \"Water\", \"Other\")[\n  terra::extract(tmf2022, plots[, c(\"lon\", \"lat\")])$Dec2022]\nplots |&gt; \n  with(table(tmf_class, present_landuse))\n\n\n             present_landuse\ntmf_class     cassava cocoa fallow food_crop forest foretanc jvc palm rubber\n  Deforested       14    53     19         7      0        0   7    1      8\n  Degraded          3    43     60         0      4        5  12    0     14\n  Other            24    69     41         9      5        2   0    5      2\n  Regrowth          3    43     17         0      2        0   1    2      3\n  Undisturbed       1    19     22         0      3       14   4    0      5\n             present_landuse\ntmf_class     trees plantation\n  Deforested                 0\n  Degraded                   0\n  Other                      5\n  Regrowth                   0\n  Undisturbed                0",
     "crumbs": [
       "Ancillary data",
       "TMF data"
@@ -266,6 +266,17 @@
   {
     "objectID": "33_tmf.html#position-of-forestfallow-measurements-compared-to-tmf-data",
     "href": "33_tmf.html#position-of-forestfallow-measurements-compared-to-tmf-data",
+    "title": "TMF data",
+    "section": "",
+    "text": "Vancutsem, Christelle, Frédéric Achard, J-F Pekel, Ghislain Vieilledent, Silvia Carboni, Dario Simonetti, Javier Gallego, Luiz EOC Aragao, and Robert Nasi. 2021. “Long-Term (1990–2019) Monitoring of Forest Cover Changes in the Humid Tropics.” Science Advances 7 (10): eabe1603.",
+    "crumbs": [
+      "Ancillary data",
+      "TMF data"
+    ]
+  },
+  {
+    "objectID": "33_tmf.html#comparison-of-tmf-and-field-based-plot-classification",
+    "href": "33_tmf.html#comparison-of-tmf-and-field-based-plot-classification",
     "title": "TMF data",
     "section": "",
     "text": "Vancutsem, Christelle, Frédéric Achard, J-F Pekel, Ghislain Vieilledent, Silvia Carboni, Dario Simonetti, Javier Gallego, Luiz EOC Aragao, and Robert Nasi. 2021. “Long-Term (1990–2019) Monitoring of Forest Cover Changes in the Humid Tropics.” Science Advances 7 (10): eabe1603.",

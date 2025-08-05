@@ -139,3 +139,18 @@ ggplot() +
   theme_minimal()
 ```
 
+## Comparison of TMF and field-based plot classification
+
+```{r}
+#| message: false
+#| warning: false
+tmf2022 <- rast("data/download/TMF/JRC_TMF_AnnualChange_v1_2022_RCI.tif")
+plots <- read.csv("data/plot_0.2.4.csv")
+plots$tmf_class <- 
+  c("Undisturbed", "Degraded", "Deforested", "Regrowth", "Water", "Other")[
+  terra::extract(tmf2022, plots[, c("lon", "lat")])$Dec2022]
+plots |> 
+  with(table(tmf_class, present_landuse))
+```
+
+

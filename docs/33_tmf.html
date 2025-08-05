@@ -275,7 +275,7 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#position-of-forestfallow-measurements-compared-to-tmf-data" id="toc-position-of-forestfallow-measurements-compared-to-tmf-data" class="nav-link active" data-scroll-target="#position-of-forestfallow-measurements-compared-to-tmf-data">Position of forest/fallow measurements compared to TMF data</a></li>
+  <li><a href="#comparison-of-tmf-and-field-based-plot-classification" id="toc-comparison-of-tmf-and-field-based-plot-classification" class="nav-link active" data-scroll-target="#comparison-of-tmf-and-field-based-plot-classification">Comparison of TMF and field-based plot classification</a></li>
   </ul>
 </nav>
     </div>
@@ -441,8 +441,36 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<section id="position-of-forestfallow-measurements-compared-to-tmf-data" class="level2">
-<h2 class="anchored" data-anchor-id="position-of-forestfallow-measurements-compared-to-tmf-data">Position of forest/fallow measurements compared to TMF data</h2>
+<section id="comparison-of-tmf-and-field-based-plot-classification" class="level2">
+<h2 class="anchored" data-anchor-id="comparison-of-tmf-and-field-based-plot-classification">Comparison of TMF and field-based plot classification</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>tmf2022 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/download/TMF/JRC_TMF_AnnualChange_v1_2022_RCI.tif"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.4.csv"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>plots<span class="sc">$</span>tmf_class <span class="ot">&lt;-</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"Undisturbed"</span>, <span class="st">"Degraded"</span>, <span class="st">"Deforested"</span>, <span class="st">"Regrowth"</span>, <span class="st">"Water"</span>, <span class="st">"Other"</span>)[</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">extract</span>(tmf2022, plots[, <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>)])<span class="sc">$</span>Dec2022]</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plots <span class="sc">|&gt;</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">table</span>(tmf_class, present_landuse))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>             present_landuse
+tmf_class     cassava cocoa fallow food_crop forest foretanc jvc palm rubber
+  Deforested       14    53     19         7      0        0   7    1      8
+  Degraded          3    43     60         0      4        5  12    0     14
+  Other            24    69     41         9      5        2   0    5      2
+  Regrowth          3    43     17         0      2        0   1    2      3
+  Undisturbed       1    19     22         0      3       14   4    0      5
+             present_landuse
+tmf_class     trees plantation
+  Deforested                 0
+  Degraded                   0
+  Other                      5
+  Regrowth                   0
+  Undisturbed                0</code></pre>
+</div>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
