@@ -313,34 +313,34 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_t4s <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/soil_0.2.2.csv"</span>) </span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_t4s <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/soil_0.2.4.csv"</span>) </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_t4s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>     site               plot               depth     sampleID        
- Length:2124        Length:2124        Min.   :1   Length:2124       
- Class :character   Class :character   1st Qu.:1   Class :character  
- Mode  :character   Mode  :character   Median :2   Mode  :character  
-                                       Mean   :2                     
-                                       3rd Qu.:3                     
-                                       Max.   :3                     
-                                                                     
-       C                N           bulk_density_g_cm3 coarse_fraction  
- Min.   :0.1020   Min.   :0.00000   Min.   :0.1148     Min.   :0.00000  
- 1st Qu.:0.6959   1st Qu.:0.06797   1st Qu.:1.3798     1st Qu.:0.01504  
- Median :1.0406   Median :0.09251   Median :1.5568     Median :0.14139  
- Mean   :1.2877   Mean   :0.11128   Mean   :1.5415     Mean   :0.21625  
- 3rd Qu.:1.6660   3rd Qu.:0.13784   3rd Qu.:1.7100     3rd Qu.:0.37532  
- Max.   :6.6624   Max.   :0.67775   Max.   :2.6440     Max.   :0.87309  
-                                    NA's   :24         NA's   :3        
+<pre><code>     site               plot               depth         sampleID        
+ Length:2254        Length:2254        Min.   :1.000   Length:2254       
+ Class :character   Class :character   1st Qu.:1.000   Class :character  
+ Mode  :character   Mode  :character   Median :2.000   Mode  :character  
+                                       Mean   :1.998                     
+                                       3rd Qu.:3.000                     
+                                       Max.   :3.000                     
+                                                                         
+       C                N            bulk_density_g_cm3 coarse_fraction  
+ Min.   :0.1020   Min.   :-0.03744   Min.   :0.1148     Min.   :0.00000  
+ 1st Qu.:0.7046   1st Qu.: 0.06761   1st Qu.:1.3798     1st Qu.:0.01504  
+ Median :1.0512   Median : 0.09187   Median :1.5568     Median :0.14139  
+ Mean   :1.2960   Mean   : 0.11039   Mean   :1.5415     Mean   :0.21625  
+ 3rd Qu.:1.6751   3rd Qu.: 0.13708   3rd Qu.:1.7100     3rd Qu.:0.37532  
+ Max.   :6.6624   Max.   : 0.67775   Max.   :2.6440     Max.   :0.87309  
+                                     NA's   :154        NA's   :133      
  fine_fraction   
  Min.   :0.1269  
  1st Qu.:0.6247  
  Median :0.8586  
- Mean   :0.7838  
+ Mean   :0.7837  
  3rd Qu.:0.9850  
  Max.   :1.0000  
- NA's   :3       </code></pre>
+ NA's   :133     </code></pre>
 </div>
 </div>
 <p>Soil organic carbon stocks were estimated as</p>
@@ -357,7 +357,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.2.csv"</span>) <span class="sc">|&gt;</span> </span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.4.csv"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, lon, lat) <span class="sc">|&gt;</span> </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(data_t4s) <span class="sc">|&gt;</span> </span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site, plot, lon, lat) <span class="sc">|&gt;</span> </span>

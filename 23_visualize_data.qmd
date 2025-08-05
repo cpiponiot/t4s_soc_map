@@ -12,7 +12,7 @@ library(leaflet)
 ## Site location
 
 ```{r}
-loc_plots <- read.csv("data/plot_0.2.2.csv") |> 
+loc_plots <- read.csv("data/plot_0.2.4.csv") |> 
   select(site, plot, lat, lon) |> 
   drop_na()
 leaflet() |>
@@ -24,12 +24,12 @@ leaflet() |>
 ## Dataset size
 
 ```{r}
-read.csv("data/plot_0.2.2.csv") |> 
+read.csv("data/plot_0.2.4.csv") |> 
   group_by(site) |> 
   summarise(n = n()) |> 
   kable(col.names = c("Site", "Number of plots"))
 
-read.csv("data/plot_0.2.2.csv") |> 
+read.csv("data/plot_0.2.4.csv") |> 
   subset(!is.na(present_landuse)) |> 
   group_by(present_landuse) |> 
   summarise(n = n()) |> 

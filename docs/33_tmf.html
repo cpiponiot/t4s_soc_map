@@ -270,8 +270,14 @@ div.csl-indent {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#position-of-forestfallow-measurements-compared-to-tmf-data" id="toc-position-of-forestfallow-measurements-compared-to-tmf-data" class="nav-link active" data-scroll-target="#position-of-forestfallow-measurements-compared-to-tmf-data">Position of forest/fallow measurements compared to TMF data</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -325,65 +331,78 @@ div.csl-indent {
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">download.file</span>(file, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  crop_file <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"data/download/TMF/JRC_TMF_AnnualChange_v1_"</span>, yr, <span class="st">"_RCI.tif"</span>)</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(crop_file)) {</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rast</span>(file)<span class="sc">|&gt;</span> <span class="fu">crop</span>(<span class="fu">ext</span>(area)) <span class="sc">|&gt;</span> <span class="fu">writeRaster</span>(crop_file)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>tmf <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">"data/download/TMF"</span>, <span class="st">"RCI"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grep</span>(<span class="at">pattern =</span> <span class="fu">paste</span>(<span class="fu">seq</span>(<span class="dv">1990</span>, <span class="dv">2022</span>), <span class="at">collapse =</span> <span class="st">"|"</span>), <span class="at">value =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rast</span>()</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="st">"data/cache/tiles"</span>)) <span class="fu">dir.create</span>(<span class="st">"data/cache/tiles"</span>)</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># create 25 smaller raster stacks</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="fu">makeTiles</span>(tmf, <span class="dv">2000</span>, <span class="at">filename=</span><span class="st">"data/cache/tiles/tmf_.tif"</span>)</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (fl <span class="cf">in</span> <span class="fu">list.files</span>(<span class="st">"data/cache/tiles"</span>, <span class="st">"tmf"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_sec"</span>, fl)) <span class="sc">|</span> </span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_def"</span>, fl))) {</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    r <span class="ot">&lt;-</span> <span class="fu">rast</span>(fl) </span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    vals <span class="ot">&lt;-</span> <span class="fu">values</span>(r)</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># age of secondary forests in 2022</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_sec"</span>, fl))) {</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    ind <span class="ot">&lt;-</span> <span class="fu">which</span>(vals[,<span class="dv">33</span>] <span class="sc">==</span> <span class="dv">4</span>)</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    age_sec <span class="ot">&lt;-</span> vals[ind,] <span class="sc">|&gt;</span> </span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>      <span class="fu">apply</span>(<span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">any</span>(<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> x <span class="sc">!=</span> <span class="dv">4</span>))</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>          <span class="fu">length</span>(x) <span class="sc">-</span> <span class="fu">max</span>(<span class="fu">which</span>(x <span class="sc">!=</span> <span class="dv">4</span>))</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="cn">NA</span> })</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    vals_sec <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">nrow</span>(vals))</span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    vals_sec[ind] <span class="ot">&lt;-</span> age_sec</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    r_sec <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="fu">matrix</span>(vals_sec, <span class="at">nrow=</span><span class="fu">nrow</span>(r), <span class="at">ncol=</span><span class="fu">ncol</span>(r), <span class="at">byrow =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>                  <span class="at">extent =</span> <span class="fu">ext</span>(r), <span class="at">crs =</span> <span class="fu">crs</span>(r))</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeRaster</span>(r_sec, <span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_sec"</span>, fl))</span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>  <span class="co"># deforestation age in 2022</span></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_def"</span>, fl))) {</span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    ind <span class="ot">&lt;-</span> <span class="fu">which</span>(vals[,<span class="dv">1</span>] <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    age_def <span class="ot">&lt;-</span> vals[ind,] <span class="sc">|&gt;</span> </span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>      <span class="fu">apply</span>(<span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">any</span>(<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> x <span class="sc">&gt;</span> <span class="dv">2</span>)) </span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>          <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> x <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="cn">NA</span>})</span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    vals_def <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">nrow</span>(vals))</span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    vals_def[ind] <span class="ot">&lt;-</span> age_def</span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    r_def <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="fu">matrix</span>(vals_def, <span class="at">nrow=</span><span class="fu">nrow</span>(r), <span class="at">ncol=</span><span class="fu">ncol</span>(r), <span class="at">byrow =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>                  <span class="at">extent =</span> <span class="fu">ext</span>(r), <span class="at">crs =</span> <span class="fu">crs</span>(r))</span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeRaster</span>(r_def, <span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_def"</span>, fl))</span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"data/cache/tiles"</span>, <span class="st">"sec"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(rast) <span class="sc">|&gt;</span> </span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sprc</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mosaic</span>() <span class="sc">|&gt;</span></span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeRaster</span>(<span class="st">"data/cache/tmf_sec_age.tif"</span>, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"data/cache/tiles"</span>, <span class="st">"def"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(rast) <span class="sc">|&gt;</span> </span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sprc</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mosaic</span>() <span class="sc">|&gt;</span></span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeRaster</span>(<span class="st">"data/cache/tmf_def_age.tif"</span>, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="co"># remove tiles to save space</span></span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"data/cache/tiles"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">file.remove</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  crop_file <span class="ot">&lt;-</span> </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"data/download/TMF/JRC_TMF_AnnualChange_v1_"</span>, yr, <span class="st">"_RCI.tif"</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(crop_file)) {</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rast</span>(file) <span class="sc">|&gt;</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">crop</span>(<span class="fu">ext</span>(area)) <span class="sc">|&gt;</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">writeRaster</span>(crop_file)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>tmf <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">"data/download/TMF"</span>, <span class="st">"RCI"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grep</span>(<span class="at">pattern =</span> <span class="fu">paste</span>(<span class="fu">seq</span>(<span class="dv">1990</span>, <span class="dv">2022</span>), <span class="at">collapse =</span> <span class="st">"|"</span>), <span class="at">value =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rast</span>()</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="st">"data/cache/tiles"</span>)) <span class="fu">dir.create</span>(<span class="st">"data/cache/tiles"</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co"># create 25 smaller raster stacks</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="fu">makeTiles</span>(tmf, <span class="dv">2000</span>, <span class="at">filename =</span> <span class="st">"data/cache/tiles/tmf_.tif"</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (fl <span class="cf">in</span> <span class="fu">list.files</span>(<span class="st">"data/cache/tiles"</span>, <span class="st">"tmf"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_sec"</span>, fl)) <span class="sc">|</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_def"</span>, fl))) {</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    r <span class="ot">&lt;-</span> <span class="fu">rast</span>(fl)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    vals <span class="ot">&lt;-</span> <span class="fu">values</span>(r)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># age of secondary forests in 2022</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_sec"</span>, fl))) {</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    ind <span class="ot">&lt;-</span> <span class="fu">which</span>(vals[, <span class="dv">33</span>] <span class="sc">==</span> <span class="dv">4</span>)</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    age_sec <span class="ot">&lt;-</span> vals[ind, ] <span class="sc">|&gt;</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>      <span class="fu">apply</span>(<span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">any</span>(<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> x <span class="sc">!=</span> <span class="dv">4</span>)) {</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>          <span class="fu">length</span>(x) <span class="sc">-</span> <span class="fu">max</span>(<span class="fu">which</span>(x <span class="sc">!=</span> <span class="dv">4</span>))</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>          <span class="cn">NA</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>      })</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    vals_sec <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">nrow</span>(vals))</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    vals_sec[ind] <span class="ot">&lt;-</span> age_sec</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    r_sec <span class="ot">&lt;-</span> <span class="fu">rast</span>(</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>      <span class="fu">matrix</span>(vals_sec, <span class="at">nrow =</span> <span class="fu">nrow</span>(r), <span class="at">ncol =</span> <span class="fu">ncol</span>(r), <span class="at">byrow =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>      <span class="at">extent =</span> <span class="fu">ext</span>(r), <span class="at">crs =</span> <span class="fu">crs</span>(r)</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeRaster</span>(r_sec, <span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_sec"</span>, fl))</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>  <span class="co"># deforestation age in 2022</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_def"</span>, fl))) {</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    ind <span class="ot">&lt;-</span> <span class="fu">which</span>(vals[, <span class="dv">1</span>] <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    age_def <span class="ot">&lt;-</span> vals[ind, ] <span class="sc">|&gt;</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>      <span class="fu">apply</span>(<span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">any</span>(<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> x <span class="sc">&gt;</span> <span class="dv">2</span>)) {</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>          <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> x <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>          <span class="cn">NA</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>      })</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    vals_def <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">nrow</span>(vals))</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>    vals_def[ind] <span class="ot">&lt;-</span> age_def</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>    r_def <span class="ot">&lt;-</span> <span class="fu">rast</span>(</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>      <span class="fu">matrix</span>(vals_def, <span class="at">nrow =</span> <span class="fu">nrow</span>(r), <span class="at">ncol =</span> <span class="fu">ncol</span>(r), <span class="at">byrow =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>      <span class="at">extent =</span> <span class="fu">ext</span>(r), <span class="at">crs =</span> <span class="fu">crs</span>(r)</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeRaster</span>(r_def, <span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_def"</span>, fl))</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"data/cache/tiles"</span>, <span class="st">"sec"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(rast) <span class="sc">|&gt;</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sprc</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mosaic</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeRaster</span>(<span class="st">"data/cache/tmf_sec_age.tif"</span>, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"data/cache/tiles"</span>, <span class="st">"def"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(rast) <span class="sc">|&gt;</span></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sprc</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mosaic</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeRaster</span>(<span class="st">"data/cache/tmf_def_age.tif"</span>, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="co"># remove tiles to save space</span></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"data/cache/tiles"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">file.remove</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -422,6 +441,8 @@ div.csl-indent {
 </div>
 </div>
 </div>
+<section id="position-of-forestfallow-measurements-compared-to-tmf-data" class="level2">
+<h2 class="anchored" data-anchor-id="position-of-forestfallow-measurements-compared-to-tmf-data">Position of forest/fallow measurements compared to TMF data</h2>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
@@ -429,6 +450,7 @@ div.csl-indent {
 Vancutsem, Christelle, Frédéric Achard, J-F Pekel, Ghislain Vieilledent, Silvia Carboni, Dario Simonetti, Javier Gallego, Luiz EOC Aragao, and Robert Nasi. 2021. <span>“Long-Term (1990–2019) Monitoring of Forest Cover Changes in the Humid Tropics.”</span> <em>Science Advances</em> 7 (10): eabe1603.
 </div>
 </div>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
