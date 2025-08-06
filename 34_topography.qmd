@@ -1,0 +1,67 @@
+```{r setup}
+#| message: false
+#| warning: false
+library(terra)
+library(tidyverse)
+```
+
+# Topography {.unnumbered}
+
+```{r}
+#| message: false
+#| warning: false
+topo <- list.files("data/download/SRTM/", pattern = "tif$", full.names = TRUE) |> 
+  rast()
+plot(topo)
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| eval: false
+list.files("data/download/SRTM/", pattern = "tif$", full.names = TRUE) |> 
+  rast() |> 
+  project("EPSG: 4326") |> 
+  terra::extract(read.csv("data/plot_0.2.4.csv")[, c("lon", "lat")]) |>
+  bind_cols(read.csv("data/plot_0.2.4.csv")[, c("site", "plot")]) |>
+  select(-ID) |>
+  relocate(site, plot) |> 
+  write.csv("data/cache/srtm_data.csv", row.names = FALSE)
+```
+
+## Distribution of values in the t4s dataset
+
+```{r}
+#| message: false
+#| warning: false
+read.csv("data/cache/srtm_data.csv") |> 
+  pivot_longer(cols = c("elevation", "slope", "aspect")) |> 
+  ggplot(aes(x = value)) +
+  geom_density() +
+  facet_wrap(~name, scales = "free") +
+  theme_classic() +
+  labs(x = NULL)
+```
+
+
+```{r}
+#| message: false
+#| warning: false
+read.csv("data/cache/srtm_data.csv") |> 
+  ggplot(aes(x = elevation, slope, col=site)) +
+  geom_point() +
+  scale_x_log10() + scale_y_log10() +
+  theme_classic()
+```
+
+```{r}
+#| message: false
+#| warning: false
+read.csv("data/cache/srtm_data.csv") |> 
+  left_join(read.csv("data/plot_0.2.4.csv")) |> 
+  filter(!is.na(toposequence) & toposequence != "") |> 
+  ggplot(aes(x = toposequence, y = slope)) +
+  geom_violin(fill="grey") +
+  theme_classic()
+```
+

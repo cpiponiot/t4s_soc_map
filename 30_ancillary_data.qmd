@@ -4,4 +4,3 @@
 ```
 
 # Ancillary data {.unnumbered}
-

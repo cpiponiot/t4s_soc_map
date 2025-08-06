@@ -284,5 +284,37 @@
       "Ancillary data",
       "TMF data"
     ]
+  },
+  {
+    "objectID": "43_var_comparison.html",
+    "href": "43_var_comparison.html",
+    "title": "Comparison of Random forest models results",
+    "section": "",
+    "text": "Code\nlibrary(tidyverse)\nlibrary(randomForest)\nlibrary(usdm)",
+    "crumbs": [
+      "RandomForest model",
+      "Comparison of Random forest models results"
+    ]
+  },
+  {
+    "objectID": "60_results.html",
+    "href": "60_results.html",
+    "title": "SOC stocks prediction",
+    "section": "",
+    "text": "Code\nlibrary(tidyverse)\nlibrary(randomForest)\nlibrary(usdm)\nlibrary(exactextractr)\n\n\nPredictors must be at the same resolution (here the coarsest resolution: 1 km).\n\n\nCode\nchelsa &lt;- \n  list.files(\"data/download/CHELSA\", pattern = \"tif$\", full.names = TRUE) |&gt; \n  rast()\nnames(chelsa) &lt;- list.files(\"data/download/CHELSA\", pattern = \"tif$\") |&gt; \n  gsub(pattern = \"CHELSA_|_1981-2010_V.2.1.tif\", replacement = \"\")\n\nsoilgrids &lt;- \n  list.files(\"data/download/ISRIC\", pattern = \"tif$\", full.names = TRUE) |&gt; \n  rast() |&gt; \n  project(\"EPSG: 4326\") |&gt; \n  lapply(function(x) exact_resample(x, chelsa[[1]], 'mean')) |&gt; \n  rast()\nnames(soilgrids) &lt;- list.files(\"data/download/ISRIC\", pattern = \"tif$\") |&gt; \n  gsub(pattern = \"_mean.tif\", replacement = \"\")\n\nas.data.frame(chelsa, xy = TRUE) |&gt; \n  inner_join(as.data.frame(soilgrids, xy = TRUE)) |&gt; \n  write.csv(\"data/cache/data_vars.csv\", row.names = FALSE)\n\n\n\n\nCode\ndata &lt;- read.csv(\"data/cache/data_stocks.csv\") %&gt;% \n  merge(read.csv(\"data/cache/climate_data.csv\")) %&gt;% \n  merge(read.csv(\"data/cache/soilgrids_data.csv\"))  %&gt;%\n  drop_na()\n\n# partition data in train/validation\n# randomly select 20% of sites for validation\nvalidation_sites &lt;- data %&gt;%\n  group_by(site) %&gt;%\n  summarise(type = c(\"cal\", \"val\")[1+rbinom(1, 1, 0.2)])\n\ndata &lt;- data %&gt;%\n  merge(validation_sites)\n\n\n\n\nCode\nrf_nosel &lt;- data |&gt; \n  select(!contains(\"plot\"), - site, -type, -lon, -lat, -T_stock) |&gt; \n  randomForest(\n    data$T_stock,\n    subset = (data$type == \"cal\"),\n    ntree=500,\n    importance=TRUE\n  )\n\n\n\n\nCode\ndata_vars &lt;- read.csv(\"data/cache/data_vars.csv\") |&gt; \n  drop_na()\ndata_vars$T_stock &lt;- predict(rf_nosel, data_vars)\n\nggplot(data_vars, aes(x, y, fill = T_stock)) +\n  geom_raster() +\n  coord_equal()+\n  labs(x = NULL, y = NULL) +\n  scale_fill_viridis_c(name = \"Stocks de C\\nprédits\\n(Mg/ha)\", option = \"D\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\nCode\nggsave(\"D:/projets-cirad/terri4sol/presentations/carte_c_preds.png\")\n\n\nSaving 7 x 5 in image",
+    "crumbs": [
+      "SOC stocks prediction"
+    ]
+  },
+  {
+    "objectID": "34_topography.html",
+    "href": "34_topography.html",
+    "title": "Topography",
+    "section": "",
+    "text": "Distribution of values in the t4s dataset\nCode\nread.csv(\"data/cache/srtm_data.csv\") |&gt; \n  pivot_longer(cols = c(\"elevation\", \"slope\", \"aspect\")) |&gt; \n  ggplot(aes(x = value)) +\n  geom_density() +\n  facet_wrap(~name, scales = \"free\") +\n  theme_classic() +\n  labs(x = NULL)\nCode\nread.csv(\"data/cache/srtm_data.csv\") |&gt; \n  ggplot(aes(x = elevation, slope, col=site)) +\n  geom_point() +\n  scale_x_log10() + scale_y_log10() +\n  theme_classic()\nCode\nread.csv(\"data/cache/srtm_data.csv\") |&gt; \n  left_join(read.csv(\"data/plot_0.2.4.csv\")) |&gt; \n  filter(!is.na(toposequence) & toposequence != \"\") |&gt; \n  ggplot(aes(x = toposequence, y = slope)) +\n  geom_violin(fill=\"grey\") +\n  theme_classic()",
+    "crumbs": [
+      "Ancillary data",
+      "Topography"
+    ]
   }
 ]

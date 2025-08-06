@@ -18,6 +18,7 @@ book:
         - 31_climate.qmd
         - 32_soilgrids.qmd
         - 33_tmf.qmd
+        - 34_topography.qmd
     - part: 40_var_selection.qmd
       chapters:
         - 41_variable_selection.qmd
