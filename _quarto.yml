@@ -18,12 +18,17 @@ book:
         - 31_climate.qmd
         - 32_soilgrids.qmd
         - 33_tmf.qmd
-    - part: 40_rf_model.qmd
+    - part: 40_var_selection.qmd
       chapters:
         - 41_variable_selection.qmd
         - 42_all_variables.qmd
-        - 43_rf_comparison.qmd
-        - 44_predictions.qmd
+        - 43_var_comparison.qmd
+    - part: 50_autocorrelation.qmd
+      chapters:
+        - 51_without_spat.qmd
+        - 52_with_spat.qmd
+        - 53_aut_comparison.qmd
+    - 60_results.qmd
 
 bibliography: references.bib
 

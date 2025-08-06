@@ -1,0 +1,6 @@
+```{r setup}
+#| message: false
+#| warning: false
+```
+
+## With spatial autocorrelation {.unnumbered}
