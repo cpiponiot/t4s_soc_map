@@ -1,0 +1,144 @@
+```{r setup}
+#| message: false
+#| warning: false
+
+library(terra)
+library(gdalUtilities)
+library(tidyverse)
+library(ggcorrplot)
+library(ggfortify)
+```
+
+
+
+
+## Soilgrids data {.unnumbered}
+
+The Soilgrids data was retrieved from the [ISRIC website](https://soilgrids.org/), using SoilGrids 2.0 [@Poggio2021]. Variables codes are described [here](https://www.isric.org/explore/soilgrids/faq-soilgrids#What_do_the_filename_codes_mean).
+
+
+
+
+```{r download-soilgrids}
+# function to download and crop CHELSA data
+dl_soilgrids <- function(
+    var = "cec",
+    depth = "0-5cm", 
+    stat = "mean", 
+    dir_local = "data/download/ISRIC",
+    box = c(-9, -2, 4, 11)
+) {
+  
+  # project bounding box into IGH
+  ext_vect <- terra::as.polygons(terra::ext(box), crs = "EPSG:4326")
+  igh <- '+proj=igh +lat_0=0 +lon_0=0 +datum=WGS84 +units=m +no_defs'
+  ext_igh <- terra::ext(terra::project(ext_vect, igh))
+  bb <- c(ext_igh$xmin, ext_igh$ymax, ext_igh$xmax, ext_igh$ymin)
+  
+  # create url and file name
+  sg_url <- "/vsicurl/https://files.isric.org/soilgrids/latest/data/"
+  datos <- paste0(var, "/", var, "_", depth, "_", stat, ".vrt")
+  file <- paste0("data/download/ISRIC/", var, "_", depth, "_", stat, ".tif")
+  
+  # download from ISRIC site
+  if (!file.exists(file)) {
+    gdalUtilities::gdal_translate(
+      paste0(sg_url,datos), 
+      file ,
+      tr=c(250,250),
+      projwin=bb,
+      projwin_srs =igh
+    )
+  }
+}
+
+if (! dir.exists("data/download/ISRIC")) dir.create("data/download/ISRIC")
+
+for (v in c("bdod", "cec", "cfvo", "clay", "nitrogen", "phh2o", "sand", "silt")) {
+  dl_soilgrids(
+    var = v,
+    depth = "0-5cm", 
+    stat = "mean", 
+    dir_local = "data/download/ISRIC",
+    box = c(-9, -2, 4, 11)
+  )
+}
+```
+
+
+
+
+The values of SoilGrids variables (for now, at 0-5 cm depth) are then extracted at the location of all terri4sol plots.
+
+
+
+
+```{r extract-soilgrids}
+#| results: 'hide'
+
+# extract values for all t4s plots
+data_stocks <- read.csv("data/cache/data_stocks.csv")
+
+soilgrids_data <- 
+  list.files("data/download/ISRIC", pattern = "tif$", full.names = TRUE) |> 
+  rast() |> 
+  project("EPSG: 4326") |> 
+  terra::extract(data_stocks[, c("lon", "lat")]) |> 
+  rename_with( ~ gsub(pattern = "_mean", replacement = "", x = .x)) |> 
+  select(contains("cm")) |> 
+  bind_cols(data_stocks[, c("site", "plot")])|> 
+  relocate(site, plot)
+
+write.csv(soilgrids_data, file = "data/cache/soilgrids_data.csv", row.names = FALSE)
+```
+
+
+
+
+The following plots have NAs in at least one Soilgrids variable.
+
+
+
+
+```{r}
+soilgrids_data |> 
+  filter(if_any(contains("cm"), is.na)) |> 
+  relocate(site, plot)
+```
+
+
+
+
+Below is the result of a Principal Component Analysis with all Soilgrids variables.
+
+
+
+
+```{r}
+data_pca <- soilgrids_data |> 
+  filter(!if_any(everything(), is.na)) 
+
+data_pca |> 
+  select(contains("cm")) |> 
+  prcomp(scale = TRUE) |> 
+  autoplot(loadings = TRUE, loadings.label = TRUE, 
+           data = data_pca, colour = "site") +
+  theme_minimal()
+```
+
+
+
+
+We can also plot the pairwise correlation of all Soilgrids variables.
+
+
+
+
+```{r}
+soilgrids_data |>  
+  select(contains("cm")) |> 
+  filter(!if_any(everything(), is.na)) |> 
+  cor() |> 
+  ggcorrplot()
+```
+

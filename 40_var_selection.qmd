@@ -3,4 +3,4 @@
 #| warning: false
 ```
 
-# RandomForest model {.unnumbered}
+# Methods - Variable selection {.unnumbered}

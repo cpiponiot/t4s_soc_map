@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>TMF data – Soil Organic Carbon map of Cote d’Ivoire</title>
+<title>Landuse data – Soil Organic Carbon map of Cote d’Ivoire</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -54,27 +54,7 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -84,8 +64,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./34_topography.html" rel="next">
-<link href="./32_soilgrids.html" rel="prev">
+<link href="./40_var_selection.html" rel="next">
+<link href="./34_topography.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -135,7 +115,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30_ancillary_data.html">Ancillary data</a></li><li class="breadcrumb-item"><a href="./33_tmf.html">TMF data</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30_ancillary_data.html">Ancillary data</a></li><li class="breadcrumb-item"><a href="./35_landuse.html">Landuse data</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -224,7 +204,7 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./33_tmf.html" class="sidebar-item-text sidebar-link active">
+  <a href="./33_tmf.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">TMF data</span></a>
   </div>
 </li>
@@ -236,7 +216,7 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./35_landuse.html" class="sidebar-item-text sidebar-link">
+  <a href="./35_landuse.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Landuse data</span></a>
   </div>
 </li>
@@ -316,16 +296,16 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#comparison-of-tmf-and-field-based-plot-classification" id="toc-comparison-of-tmf-and-field-based-plot-classification" class="nav-link active" data-scroll-target="#comparison-of-tmf-and-field-based-plot-classification">Comparison of TMF and field-based plot classification</a></li>
+  <li><a href="#comparison-with-landuse-recorded-in-the-t4s-dataset" id="toc-comparison-with-landuse-recorded-in-the-t4s-dataset" class="nav-link active" data-scroll-target="#comparison-with-landuse-recorded-in-the-t4s-dataset">Comparison with landuse recorded in the t4s dataset</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30_ancillary_data.html">Ancillary data</a></li><li class="breadcrumb-item"><a href="./33_tmf.html">TMF data</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30_ancillary_data.html">Ancillary data</a></li><li class="breadcrumb-item"><a href="./35_landuse.html">Landuse data</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">TMF data</h1>
+<h1 class="title">Landuse data</h1>
 </div>
 
 
@@ -346,120 +326,21 @@ div.csl-indent {
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyterra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>We used data from the Tropical Moist Forests (TMF) product, which is based on Landsat images <span class="citation" data-cites="Vancutsem2021">(<a href="#ref-Vancutsem2021" role="doc-biblioref">Vancutsem et al. 2021</a>)</span>, to estimate the time since deforestation and the age of secondary forests. These classify tropical areas annually as follows: (i) undisturbed forests, (ii) disturbed forests, (iii) deforested areas, (iv) regrowing forests, (v) water, and (vi) other.</p>
-<p>We estimated the age of secondary forests in 2022 as the number of years a pixel of regrowing forest in 2022 had continuously been classified as such. We estimated the time since deforestation as the time since a pixel that was classified as undisturbed or disturbed forest in 1990 (i.e.&nbsp;the first year of the TMF time series) had changed to another class.</p>
+<p>We used the 2020 land use map of Côte d’Ivoire produced by the Bureau National d’Études Techniques et de Développement (BNEDT).</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># South Cote d'Ivoire ("zone forestiere") area</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>area <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/rci_south.shp"</span>) <span class="sc">|&gt;</span> <span class="fu">st_transform</span>(<span class="dv">4326</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># download tmf annual change for Cote d'Ivoire</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="st">"data/download/TMF"</span>)) <span class="fu">dir.create</span>(<span class="st">"data/download/TMF"</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (yr <span class="cf">in</span> <span class="dv">1990</span><span class="sc">:</span><span class="dv">2024</span>) {</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  file <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/download/TMF/JRC_TMF_AnnualChange_v1_"</span>, yr,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"_AFR_ID52_N10_W10.tif"</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(file)) {</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>      <span class="st">"https://ies-ows.jrc.ec.europa.eu/iforce/tmf_v1/download.py?"</span>,</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      <span class="st">"type=tile&amp;dataset=AnnualChange_"</span>, yr, <span class="st">"&amp;lat=N10&amp;lon=W10"</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">download.file</span>(file, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  crop_file <span class="ot">&lt;-</span> </span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"data/download/TMF/JRC_TMF_AnnualChange_v1_"</span>, yr, <span class="st">"_RCI.tif"</span>)</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(crop_file)) {</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rast</span>(file) <span class="sc">|&gt;</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">crop</span>(<span class="fu">ext</span>(area)) <span class="sc">|&gt;</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">writeRaster</span>(crop_file)</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>tmf <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">"data/download/TMF"</span>, <span class="st">"RCI"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grep</span>(<span class="at">pattern =</span> <span class="fu">paste</span>(<span class="fu">seq</span>(<span class="dv">1990</span>, <span class="dv">2022</span>), <span class="at">collapse =</span> <span class="st">"|"</span>), <span class="at">value =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rast</span>()</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="st">"data/cache/tiles"</span>)) <span class="fu">dir.create</span>(<span class="st">"data/cache/tiles"</span>)</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co"># create 25 smaller raster stacks</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="fu">makeTiles</span>(tmf, <span class="dv">2000</span>, <span class="at">filename =</span> <span class="st">"data/cache/tiles/tmf_.tif"</span>)</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (fl <span class="cf">in</span> <span class="fu">list.files</span>(<span class="st">"data/cache/tiles"</span>, <span class="st">"tmf"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_sec"</span>, fl)) <span class="sc">|</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_def"</span>, fl))) {</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    r <span class="ot">&lt;-</span> <span class="fu">rast</span>(fl)</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    vals <span class="ot">&lt;-</span> <span class="fu">values</span>(r)</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># age of secondary forests in 2022</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_sec"</span>, fl))) {</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    ind <span class="ot">&lt;-</span> <span class="fu">which</span>(vals[, <span class="dv">33</span>] <span class="sc">==</span> <span class="dv">4</span>)</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    age_sec <span class="ot">&lt;-</span> vals[ind, ] <span class="sc">|&gt;</span></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>      <span class="fu">apply</span>(<span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">any</span>(<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> x <span class="sc">!=</span> <span class="dv">4</span>)) {</span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>          <span class="fu">length</span>(x) <span class="sc">-</span> <span class="fu">max</span>(<span class="fu">which</span>(x <span class="sc">!=</span> <span class="dv">4</span>))</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>          <span class="cn">NA</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>      })</span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    vals_sec <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">nrow</span>(vals))</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    vals_sec[ind] <span class="ot">&lt;-</span> age_sec</span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    r_sec <span class="ot">&lt;-</span> <span class="fu">rast</span>(</span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>      <span class="fu">matrix</span>(vals_sec, <span class="at">nrow =</span> <span class="fu">nrow</span>(r), <span class="at">ncol =</span> <span class="fu">ncol</span>(r), <span class="at">byrow =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>      <span class="at">extent =</span> <span class="fu">ext</span>(r), <span class="at">crs =</span> <span class="fu">crs</span>(r)</span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeRaster</span>(r_sec, <span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_sec"</span>, fl))</span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>  <span class="co"># deforestation age in 2022</span></span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_def"</span>, fl))) {</span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    ind <span class="ot">&lt;-</span> <span class="fu">which</span>(vals[, <span class="dv">1</span>] <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    age_def <span class="ot">&lt;-</span> vals[ind, ] <span class="sc">|&gt;</span></span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>      <span class="fu">apply</span>(<span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">any</span>(<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> x <span class="sc">&gt;</span> <span class="dv">2</span>)) {</span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>          <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> x <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>          <span class="cn">NA</span></span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>      })</span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    vals_def <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">nrow</span>(vals))</span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>    vals_def[ind] <span class="ot">&lt;-</span> age_def</span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>    r_def <span class="ot">&lt;-</span> <span class="fu">rast</span>(</span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>      <span class="fu">matrix</span>(vals_def, <span class="at">nrow =</span> <span class="fu">nrow</span>(r), <span class="at">ncol =</span> <span class="fu">ncol</span>(r), <span class="at">byrow =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>      <span class="at">extent =</span> <span class="fu">ext</span>(r), <span class="at">crs =</span> <span class="fu">crs</span>(r)</span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeRaster</span>(r_def, <span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_def"</span>, fl))</span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"data/cache/tiles"</span>, <span class="st">"sec"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(rast) <span class="sc">|&gt;</span></span>
-<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sprc</span>() <span class="sc">|&gt;</span></span>
-<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mosaic</span>() <span class="sc">|&gt;</span></span>
-<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeRaster</span>(<span class="st">"data/cache/tmf_sec_age.tif"</span>, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"data/cache/tiles"</span>, <span class="st">"def"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(rast) <span class="sc">|&gt;</span></span>
-<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sprc</span>() <span class="sc">|&gt;</span></span>
-<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mosaic</span>() <span class="sc">|&gt;</span></span>
-<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeRaster</span>(<span class="st">"data/cache/tmf_def_age.tif"</span>, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="co"># remove tiles to save space</span></span>
-<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"data/cache/tiles"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">file.remove</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data =</span> <span class="fu">rast</span>(<span class="st">"data/cache/tmf_sec_age.tif"</span>)) <span class="sc">+</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">na.value =</span> <span class="st">"transparent"</span>) <span class="sc">+</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> area, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Age of secondary forests in 2022"</span>, <span class="at">fill =</span> <span class="st">"Age (yr)"</span>) <span class="sc">+</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>legend <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/download/BNEDT/legend_bnedt.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"data/download/BNEDT/"</span>, <span class="at">pattern =</span> <span class="st">"tif$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rast</span>() <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">col =</span> legend<span class="sc">$</span>color)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="33_tmf_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="35_landuse_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -467,58 +348,148 @@ div.csl-indent {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data =</span> <span class="fu">rast</span>(<span class="st">"data/cache/tmf_def_age.tif"</span>)) <span class="sc">+</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">na.value =</span> <span class="st">"transparent"</span>) <span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> area, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Time since deforestation"</span>, <span class="at">fill =</span> <span class="st">"Time (yr)"</span>) <span class="sc">+</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ceiling</span>(legend<span class="sc">$</span>value<span class="sc">/</span><span class="dv">12</span>), <span class="dv">12</span><span class="sc">*</span><span class="fu">ceiling</span>(legend<span class="sc">$</span>value<span class="sc">/</span><span class="dv">12</span>)<span class="sc">-</span>legend<span class="sc">$</span>value, </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> legend<span class="sc">$</span>col, <span class="at">cex =</span> <span class="dv">2</span>, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>), </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="cn">NA</span>, <span class="at">ylab =</span> <span class="cn">NA</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">yaxt =</span> <span class="st">"n"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">ceiling</span>(legend<span class="sc">$</span>value<span class="sc">/</span><span class="dv">12</span>)<span class="sc">+</span><span class="fl">0.5</span>, <span class="dv">12</span><span class="sc">*</span><span class="fu">ceiling</span>(legend<span class="sc">$</span>value<span class="sc">/</span><span class="dv">12</span>)<span class="sc">-</span>legend<span class="sc">$</span>value,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>     legend<span class="sc">$</span>label)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="33_tmf_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="35_landuse_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="1152"></p>
 </figure>
 </div>
 </div>
 </div>
-<section id="comparison-of-tmf-and-field-based-plot-classification" class="level2">
-<h2 class="anchored" data-anchor-id="comparison-of-tmf-and-field-based-plot-classification">Comparison of TMF and field-based plot classification</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>tmf2022 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/download/TMF/JRC_TMF_AnnualChange_v1_2022_RCI.tif"</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.4.csv"</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>plots<span class="sc">$</span>tmf_class <span class="ot">&lt;-</span> </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"Undisturbed"</span>, <span class="st">"Degraded"</span>, <span class="st">"Deforested"</span>, <span class="st">"Regrowth"</span>, <span class="st">"Water"</span>, <span class="st">"Other"</span>)[</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">extract</span>(tmf2022, plots[, <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>)])<span class="sc">$</span>Dec2022]</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plots <span class="sc">|&gt;</span> </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">table</span>(tmf_class, present_landuse))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"data/download/BNEDT/"</span>, <span class="at">pattern =</span> <span class="st">"tif$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rast</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">project</span>(<span class="st">"EPSG: 4326"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">extract</span>(<span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.4.csv"</span>)[, <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>)]) <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.4.csv"</span>)[, <span class="fu">c</span>(<span class="st">"site"</span>, <span class="st">"plot"</span>)]) <span class="sc">|&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>ID) <span class="sc">|&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">landuse =</span> BNEDT_OCS_2020.tif) <span class="sc">|&gt;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(site, plot) <span class="sc">|&gt;</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(<span class="st">"data/cache/bnedt_data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="comparison-with-landuse-recorded-in-the-t4s-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="comparison-with-landuse-recorded-in-the-t4s-dataset">Comparison with landuse recorded in the t4s dataset</h2>
+<p>In the table below we compare the landuse values recorded in the terri4sol database (columns) with the landuse values extracted from the BNEDT map at the same locations (rows).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/cache/bnedt_data.csv"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">landuse =</span> <span class="fu">round</span>(landuse)) <span class="sc">|&gt;</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">read.csv</span>(<span class="st">"data/download/BNEDT/legend_bnedt.csv"</span>), </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">join_by</span>(landuse<span class="sc">==</span>value)) <span class="sc">|&gt;</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.4.csv"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(label, present_landuse) <span class="sc">|&gt;</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>             present_landuse
-tmf_class     cassava cocoa fallow food_crop forest foretanc jvc palm rubber
-  Deforested       14    53     19         7      0        0   7    1      8
-  Degraded          3    43     60         0      4        5  12    0     14
-  Other            24    69     41         9      5        2   0    5      2
-  Regrowth          3    43     17         0      2        0   1    2      3
-  Undisturbed       1    19     22         0      3       14   4    0      5
-             present_landuse
-tmf_class     trees plantation
-  Deforested                 0
-  Degraded                   0
-  Other                      5
-  Regrowth                   0
-  Undisturbed                0</code></pre>
+<pre><code>                                                           present_landuse
+label                                                       cassava cocoa
+  Agricultural development/Other crops/Orchards/Fallow land      17    13
+  Body of water,Courses and waterways                             0     0
+  Cashew plantation                                               1    10
+  Cocoa Plantation                                                3    81
+  Coconut Plantation                                              0     4
+  Coffee Plantation                                               1     4
+  Dense forest                                                    1    16
+  Forest gallery                                                  0     2
+  Forest plantation/Reforestation                                 0     2
+  Fruit plantation / Arboriculture                                6     9
+  Light forest                                                    0     1
+  Mangrove                                                        1     3
+  Oil palm plantation                                             1    15
+  Rubber plantation                                              10    59
+  Secondary forest/degraded forest                                3     3
+  Swamp forest/Forest on hydromorphic soil                        1     5
+  Tree savannah                                                   0     0
+                                                           present_landuse
+label                                                       fallow food_crop
+  Agricultural development/Other crops/Orchards/Fallow land     12         2
+  Body of water,Courses and waterways                            1         0
+  Cashew plantation                                              3         0
+  Cocoa Plantation                                              19         2
+  Coconut Plantation                                             5         0
+  Coffee Plantation                                              4         0
+  Dense forest                                                  32         0
+  Forest gallery                                                 6         0
+  Forest plantation/Reforestation                               21         1
+  Fruit plantation / Arboriculture                               2         1
+  Light forest                                                   2         0
+  Mangrove                                                       3         0
+  Oil palm plantation                                            8         0
+  Rubber plantation                                             38         8
+  Secondary forest/degraded forest                               7         1
+  Swamp forest/Forest on hydromorphic soil                       8         1
+  Tree savannah                                                 20         0
+                                                           present_landuse
+label                                                       forest foretanc jvc
+  Agricultural development/Other crops/Orchards/Fallow land      1        0   0
+  Body of water,Courses and waterways                            0        0   0
+  Cashew plantation                                              0        0   0
+  Cocoa Plantation                                               2        3   1
+  Coconut Plantation                                             0        0   1
+  Coffee Plantation                                              0        0   0
+  Dense forest                                                   1       10   5
+  Forest gallery                                                 0        2   0
+  Forest plantation/Reforestation                                4        6   0
+  Fruit plantation / Arboriculture                               0        0   0
+  Light forest                                                   1        1   1
+  Mangrove                                                       1        0   0
+  Oil palm plantation                                            1        0   2
+  Rubber plantation                                              1        1  12
+  Secondary forest/degraded forest                               1        0   1
+  Swamp forest/Forest on hydromorphic soil                       0        2   1
+  Tree savannah                                                  1        5   0
+                                                           present_landuse
+label                                                       palm rubber
+  Agricultural development/Other crops/Orchards/Fallow land    2      1
+  Body of water,Courses and waterways                          0      0
+  Cashew plantation                                            0      0
+  Cocoa Plantation                                             1      2
+  Coconut Plantation                                           0      0
+  Coffee Plantation                                            0      2
+  Dense forest                                                 0      7
+  Forest gallery                                               0      0
+  Forest plantation/Reforestation                              1      1
+  Fruit plantation / Arboriculture                             1      0
+  Light forest                                                 0      0
+  Mangrove                                                     0      0
+  Oil palm plantation                                          1      2
+  Rubber plantation                                            2     17
+  Secondary forest/degraded forest                             0      0
+  Swamp forest/Forest on hydromorphic soil                     0      0
+  Tree savannah                                                0      0
+                                                           present_landuse
+label                                                       trees plantation
+  Agricultural development/Other crops/Orchards/Fallow land                0
+  Body of water,Courses and waterways                                      0
+  Cashew plantation                                                        0
+  Cocoa Plantation                                                         0
+  Coconut Plantation                                                       0
+  Coffee Plantation                                                        0
+  Dense forest                                                             0
+  Forest gallery                                                           0
+  Forest plantation/Reforestation                                          5
+  Fruit plantation / Arboriculture                                         0
+  Light forest                                                             0
+  Mangrove                                                                 0
+  Oil palm plantation                                                      0
+  Rubber plantation                                                        0
+  Secondary forest/degraded forest                                         0
+  Swamp forest/Forest on hydromorphic soil                                 0
+  Tree savannah                                                            0</code></pre>
 </div>
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-Vancutsem2021" class="csl-entry" role="listitem">
-Vancutsem, Christelle, Frédéric Achard, J-F Pekel, Ghislain Vieilledent, Silvia Carboni, Dario Simonetti, Javier Gallego, Luiz EOC Aragao, and Robert Nasi. 2021. <span>“Long-Term (1990–2019) Monitoring of Forest Cover Changes in the Humid Tropics.”</span> <em>Science Advances</em> 7 (10): eabe1603.
-</div>
-</div>
 </section>
 
 </main> <!-- /main -->
@@ -941,13 +912,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./32_soilgrids.html" class="pagination-link" aria-label="Soilgrids data">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Soilgrids data</span>
+      <a href="./34_topography.html" class="pagination-link" aria-label="Topography">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Topography</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./34_topography.html" class="pagination-link" aria-label="Topography">
-        <span class="nav-page-text">Topography</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./40_var_selection.html" class="pagination-link" aria-label="RandomForest model">
+        <span class="nav-page-text">RandomForest model</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
