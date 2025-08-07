@@ -43,7 +43,6 @@ read.csv("data/cache/srtm_data.csv") |>
   labs(x = NULL)
 ```
 
-
 ```{r}
 #| message: false
 #| warning: false
@@ -64,4 +63,3 @@ read.csv("data/cache/srtm_data.csv") |>
   geom_violin(fill="grey") +
   theme_classic()
 ```
-

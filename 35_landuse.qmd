@@ -1,0 +1,63 @@
+```{r setup}
+#| message: false
+#| warning: false
+library(terra)
+library(tidyverse)
+```
+
+# Landuse data {.unnumbered}
+
+We used the 2020 land use map of Côte d'Ivoire produced by the Bureau National d'Études Techniques et de Développement (BNEDT). 
+
+```{r}
+#| message: false
+#| warning: false
+legend <- read.csv("data/download/BNEDT/legend_bnedt.csv")
+list.files("data/download/BNEDT/", pattern = "tif$", full.names = TRUE) |>
+rast() |> plot(col = legend$color)
+```
+
+
+```{r}
+#| message: false
+#| warning: false
+#| fig.height: 4
+#| fig.width: 12
+plot(ceiling(legend$value/12), 12*ceiling(legend$value/12)-legend$value, 
+     col = legend$col, cex = 2, pch=16, xlim = c(1,3), 
+     xlab=NA, ylab = NA, xaxt = "n", yaxt = "n")
+text(ceiling(legend$value/12)+0.5, 12*ceiling(legend$value/12)-legend$value,
+     legend$label)
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| eval: false
+list.files("data/download/BNEDT/", pattern = "tif$", full.names = TRUE) |> 
+  rast() |> 
+  project("EPSG: 4326") |> 
+  terra::extract(read.csv("data/plot_0.2.4.csv")[, c("lon", "lat")]) |>
+  bind_cols(read.csv("data/plot_0.2.4.csv")[, c("site", "plot")]) |>
+  select(-ID) |>
+  rename(landuse = BNEDT_OCS_2020.tif) |>
+  relocate(site, plot) |> 
+  write.csv("data/cache/bnedt_data.csv", row.names = FALSE)
+```
+
+## Comparison with landuse recorded in the t4s dataset
+
+In the table below we compare the landuse values recorded in the terri4sol database (columns) with the landuse values extracted from the BNEDT map at the same locations (rows). 
+
+```{r}
+#| message: false
+#| warning: false
+read.csv("data/cache/bnedt_data.csv") |> 
+  mutate(landuse = round(landuse)) |> 
+  left_join(read.csv("data/download/BNEDT/legend_bnedt.csv"), 
+            by = join_by(landuse==value)) |> 
+  left_join(read.csv("data/plot_0.2.4.csv")) |> 
+  select(label, present_landuse) |> 
+  table()
+```
+
