@@ -5,6 +5,132 @@
 library(tidyverse)
 library(randomForest)
 library(usdm)
+library(caret)
 ```
 
 ## Comparison of Random forest models results {.unnumbered}
+
+```{r}
+data <- read.csv("data/cache/data_stocks.csv") %>% 
+  merge(read.csv("data/cache/climate_data.csv")) %>% 
+  merge(read.csv("data/cache/soilgrids_data.csv")) %>% 
+  drop_na() 
+
+# partition data in train/validation
+# randomly select 20% of sites for validation
+validation_sites <- data %>%
+  group_by(site) %>%
+  summarise(type = c("cal", "val")[1+rbinom(1, 1, 0.2)])
+
+data <- data %>%
+  merge(validation_sites)
+
+
+
+data_groups <- read.csv("data/cache/var_selection.csv")
+```
+
+
+### Model with variable selection
+
+```{r}
+# Définir la stratégie de validation croisée répétée
+valid_control <- trainControl(method = "repeatedcv", number = 5, repeats = 3)
+
+# Créer le jeu de données d'entraînement (calibration)
+train_data <- data %>% 
+  filter(type == "cal") %>% 
+  select(all_of(data_groups$variable[data_groups$ffs2]), T_stock)
+
+# Créer les objets x (variables explicatives) et y (variable réponse)
+x <- train_data %>% select(-T_stock)
+y <- train_data$T_stock
+
+# Entraîner le modèle Random Forest avec caret
+caret_rf_model <- train(
+  x = x,
+  y = y,
+  method = "rf",
+  metric = "Rsquared",
+  trControl = valid_control,
+  importance = TRUE,
+  ntree = 500
+)
+
+# Afficher les résultats
+kable(caret_rf_model$results, digits = 3, caption = "Random Forest Model Performance with Variable Selection")
+```
+
+### Model with all variables
+
+```{r}
+# Définir la stratégie de validation croisée répétée
+valid_control <- trainControl(method = "repeatedcv", number = 5, repeats = 3)
+
+# Créer le jeu de données d'entraînement (calibration) avec les mêmes variables que rf_nosel
+train_data <- data %>%
+  filter(type == "cal") %>%
+  select(!contains("plot"), -site, -type, -lon, -lat, -T_stock, T_stock)  # T_stock réajouté à la fin
+
+# Créer les objets x (variables explicatives) et y (variable réponse)
+x <- train_data %>% select(-T_stock)
+y <- train_data$T_stock
+
+# Entraîner le modèle Random Forest avec caret
+caret_rf_nosel <- train(
+  x = x,
+  y = y,
+  method = "rf",
+  metric = "Rsquared",
+  trControl = valid_control,
+  importance = TRUE,
+  ntree = 500
+)
+
+kable(caret_rf_nosel$results, digits = 3, caption = "Random Forest Model Performance with All Variable")
+```
+
+```{r}
+# Ajouter une colonne pour identifier chaque modèle
+res_sel <- caret_rf_model$results %>%
+  mutate(Model = "With Variable selection")
+
+res_nosel <- caret_rf_nosel$results %>%
+  mutate(Model = "With All Variables")
+
+# Combiner les deux en un seul tableau
+res_combined <- bind_rows(res_sel, res_nosel)
+
+# Passer au format long pour ggplot
+res_long <- res_combined %>%
+  select(mtry, RMSE, Rsquared, MAE, Model) %>%
+  pivot_longer(cols = c(RMSE, Rsquared, MAE), names_to = "Metric", values_to = "Value")
+
+
+
+
+ggplot(res_long, aes(x = mtry, y = Value, color = Model)) +
+  geom_line() +
+  geom_point(size = 2) +
+  facet_wrap(~ Metric, scales = "free_y") +
+  labs(
+    title = "Comparison of performance by mtry",
+    x = "mtry (number of random variables)",
+    y = "Metric value",
+    color = "Model"
+  ) +
+  theme_minimal()
+
+```
+
+The above graph presents a comparison of the performance of two Random Forest models based on three key metrics : MAE (Mean Absolute Error), RMSE (Root Mean Squared Error), and R² (coefficient of determination).
+
+These metrics respectively evaluate the average absolute error, the root mean squared error, and the model’s ability to explain the variance of the observed data.
+
+We observe that the model built with a prior selection of explanatory variables (model with variable selection) generally shows better performance compared to the model using all available variables (model with all variables) :
+
+-   The MAE and RMSE values are lower, indicating more accurate predictions with smaller average differences between observed and predicted values.
+
+-   The R² coefficient is higher, showing that the model with selection better explains the variability of carbon stocks (T_stock) in the data.
+
+-   This improvement highlights the importance of reducing dimensionality and removing irrelevant or redundant variables, which allows the model to generalize better without overfitting.
