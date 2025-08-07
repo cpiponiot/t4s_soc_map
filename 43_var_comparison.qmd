@@ -6,6 +6,7 @@ library(tidyverse)
 library(randomForest)
 library(usdm)
 library(caret)
+library(knitr)
 ```
 
 ## Comparison of Random forest models results {.unnumbered}
@@ -29,7 +30,6 @@ data <- data %>%
 
 data_groups <- read.csv("data/cache/var_selection.csv")
 ```
-
 
 ### Model with variable selection
 
