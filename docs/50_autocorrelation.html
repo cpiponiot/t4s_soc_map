@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -174,12 +194,24 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">TMF data</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./34_topography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Topography</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./35_landuse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Landuse data</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./40_var_selection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RandomForest model</span></a>
+ <span class="menu-text">Methods - Variable selection</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -270,8 +302,17 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>As the samples were grouped by sampling site, our dataset is spatially aggregated. Traditional random forest models do not account for the spatial structure of such data, particularly the presence of spatial autocorrelation. To address this issue, we evaluated the impact of incorporating spatial autocorrelation by using the Random Forest Spatial Interpolation (RFSI) approach <span class="citation" data-cites="Sekulic2020">(<a href="#ref-Sekulic2020" role="doc-biblioref">Sekulić et al. 2020</a>)</span>. This approach was found to offer slightly improved performance while remaining computationally efficient in a separate national-scale study of soil organic carbon stock mapping <span class="citation" data-cites="Kmoch2025">(<a href="#ref-Kmoch2025" role="doc-biblioref">Kmoch et al. 2025</a>)</span>.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Kmoch2025" class="csl-entry" role="listitem">
+Kmoch, Alexander, Clay Taylor Harrison, Jeonghwan Choi, and Evelyn Uuemaa. 2025. <span>“Spatial Autocorrelation in Machine Learning for Modelling Soil Organic Carbon.”</span> <em>Ecological Informatics</em> 86: 103057.
+</div>
+<div id="ref-Sekulic2020" class="csl-entry" role="listitem">
+Sekulić, Aleksandar, Milan Kilibarda, Gerard BM Heuvelink, Mladen Nikolić, and Branislav Bajat. 2020. <span>“Random Forest Spatial Interpolation.”</span> <em>Remote Sensing</em> 12 (10): 1687.
+</div>
+</div>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

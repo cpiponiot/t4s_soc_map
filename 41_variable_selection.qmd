@@ -1,59 +1,138 @@
 ```{r setup}
 #| message: false
 #| warning: false
+#| echo: false
+#| results: 'hide'
 
 library(tidyverse)
 library(usdm)
 library(CAST)
 library(knitr)
 library(randomForest)
+library(caret)
+list.files("r", pattern = "\\.R", full.names = TRUE) |> lapply(source)
 ```
 
-## RF with variable selection {.unnumbered}
+# Variable selection {.unnumbered}
+
+```{r}
+#| message: false
+#| warning: false
+data_all <- read.csv("data/cache/data_stocks.csv") %>% 
+  merge(read.csv("data/cache/climate_data.csv")) %>% 
+  merge(read.csv("data/cache/soilgrids_data.csv")) %>% 
+  merge(read.csv("data/cache/bnedt_data.csv")) %>% 
+  merge(read.csv("data/cache/srtm_data.csv")) %>% 
+  drop_na() 
+```
+
+## RandomForest without variable selection {.unnumbered}
+
+A Random Forest (RF) model was implemented using the ranger package in R to predict soil organic carbon stock from environmental and soil covariates.
+
+```{r}
+#| eval: false
+formula_soc_all <- colnames(data_all) %>%
+  setdiff(c("site", "plot", "lon", "lat", "T_stock")) %>%
+  paste(collapse = " + ") %>% paste("T_stock ~", .) %>%
+  as.formula()
+training_index <- lapply(unique(data_all$site), function(s) which(data_all$site != s))
+rf_all <- train(
+  form = formula_soc_all,
+  data = data_all,
+  method = "rf",
+  metric = "RMSE",
+  trControl = trainControl(method = "cv", index = training_index),
+  ntree = 500, importance = TRUE
+)
+if (!dir.exists("data/cache/models")) dir.create("data/cache/models")
+save(rf_all, file = "data/cache/models/rf_all.rda")
+```
+
+Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+load("data/cache/models/rf_all.rda")
+cat("RMSE:", mean(rf_all$resample$RMSE), 
+    "\nR²:", mean(rf_all$resample$Rsquared))
+```
+
+## RandomForest with variable selection based on VIF {.unnumbered}
+
+Variable selection was done to avoid collinearity, by applying a using a Variance Inflation Factor (VIF) threshold of \< 5 with a stepwise procedure on all variables [@Naimi2014].
+
+```{r}
+#| warning: false
+# create groups
+data_groups_vif <- data.frame(
+  variable = setdiff(colnames(data_all), c("site", "plot", "lon", "lat", "T_stock"))
+) |> # vif selection by group, based on variables selected at previous stage
+  mutate(vif = vif_select(variable, data_all))
+list_vars <- data_groups_vif |> filter(vif) |> select(variable) |> 
+  unlist() |> paste(collapse = "; ")
+```
+
+The variables kept were: `r list_vars`.
+
+```{r}
+#| eval: false
+formula_soc_vif <- data_groups_vif %>%
+  filter(vif) %>% select(variable) %>% t() %>%
+  paste(collapse = " + ") %>% paste("T_stock ~", .) %>%
+  as.formula()
+training_index <- lapply(unique(data_all$site), function(s) which(data_all$site != s))
+rf_vif <- train(
+  form = formula_soc_vif,
+  data = data_all,
+  method = "rf",
+  metric = "RMSE",
+  trControl = trainControl(method = "cv", index = training_index),
+  ntree = 500, importance = TRUE
+)
+save(rf_vif, file = "data/cache/models/rf_vif.rda")
+```
+
+Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+load("data/cache/models/rf_vif.rda")
+cat("RMSE:", mean(rf_vif$resample$RMSE), 
+    "\nR²:", mean(rf_vif$resample$Rsquared))
+```
+
+## RandomForest with variable selection based on VIF + FFS {.unnumbered}
 
 This method was inspired by the work from @Traore2024.
 
-- Environmental variables were grouped as: climate - temperature / climate - precipitation / soil - physical variables / soil - chemical variables. 
+-   Environmental variables were grouped as: climate - temperature / climate - precipitation / soil - physical variables / soil - chemical variables / topography / landuse.
 
-- For each group, a first variable selection was done to avoid collinearity, by applying a using a Variance Inflation Factor (VIF) threshold of < 5 with a stepwise procedure [@Naimi2014].
+-   For each group, a first variable selection was done to avoid collinearity, by applying a using a Variance Inflation Factor (VIF) threshold of \< 5 with a stepwise procedure [@Naimi2014].
 
-- A second variable selection step is then performed for each group of variables using a foward feature selection (FFS) procedure [@Meyer2025]. 
+-   A second variable selection step is then performed for each group of variables using a forward feature selection (FFS) procedure [@Meyer2025].
 
-- All selected variables are then grouped, and the VIF + FFS are applied to this subset of variables. 
+-   All selected variables are then grouped, and the VIF + FFS are applied to this subset of variables.
 
-- The RandomForest model is then calibrated with the final subset of variables. 
+-   The RandomForest model is then calibrated with the final subset of variables.
 
 ```{r}
 #| warning: false
 #| eval: false
-
-vif_select <- function(vars, data, select = NULL, thres = 5) {
-  if (is.null(select)) select <- rep(TRUE, length(vars))
-  vif_res <- data[, vars[select]] |> vifstep(th = thres)
-  return(vars %in% vif_res@results$Variables)
-}
-
-ffs_select <- function(vars, data, select = NULL, response = "T_stock") {
-  if (is.null(select)) select <- rep(TRUE, length(vars))
-  ffsel <-  data[, vars[select]] |> 
-    ffs(data[, response], metric = "Rsquared") #, importance = TRUE, seed = 1000
-  # get list of predictor
-  return(vars %in% ffsel$selectedvars)
-}
-
-data_all <- read.csv("data/cache/data_stocks.csv") %>% 
-  merge(read.csv("data/cache/climate_data.csv")) %>% 
-  merge(read.csv("data/cache/soilgrids_data.csv")) %>% 
-  drop_na() 
-
 # create groups
 data_groups <- data.frame(
-  variable = grep("bio|cm", colnames(data_all), value = TRUE)
+  variable = setdiff(colnames(data_all), c("site", "plot", "lon", "lat", "T_stock"))
 ) |> 
   mutate(group = ifelse(variable %in% paste0("bio", 1:11), "clim-temp", NA)) |> 
   mutate(group = ifelse(variable %in% paste0("bio", 12:19), "clim-prec", group)) |> 
   mutate(group = ifelse(grepl("cec|nitrogen|phh2o", variable), "soil-chem", group)) |>
   mutate(group = ifelse(grepl("bdod|cfvo|clay|sand|silt", variable), "soil-phys", group)) |> 
+  mutate(group = ifelse(grepl("elevation|slope|aspect", variable), "topography", group)) |> 
+  mutate(group = ifelse(grepl("landuse", variable), "landuse", group)) |>
   group_by(group) |> 
   # vif selection by group, based on variables selected at previous stage
   mutate(vif1 = vif_select(variable, data_all)) |> 
@@ -64,18 +143,13 @@ data_groups <- data.frame(
   mutate(vif2 = vif_select(variable, data_all, ffs1)) |> 
   # ffs for all, based on variables selected at previous stage
   mutate(ffs2 = ffs_select(variable, data_all, vif2))
-
 write.csv(data_groups, file = "data/cache/var_selection.csv", row.names = FALSE)
 ```
-
-
-
 
 The following variables were selected for each group at the different steps:
 
 ```{r}
 #| warning: false
-
 read.csv("data/cache/var_selection.csv") |> 
   pivot_longer(cols = paste0(rep(c("vif", "ffs")), rep(1:2, each = 2))) |> 
   group_by(group, name) |> 
@@ -87,55 +161,58 @@ read.csv("data/cache/var_selection.csv") |>
                                       sep = "_")))
 ```
 
-### Results of the RF model
-
-We first partition the data by site, keeping 20% of sites for validation. 
-
 ```{r}
-data <- read.csv("data/cache/data_stocks.csv") %>% 
-  merge(read.csv("data/cache/climate_data.csv")) %>% 
-  merge(read.csv("data/cache/soilgrids_data.csv")) %>% 
-  drop_na() 
-
-# partition data in train/validation
-# randomly select 20% of sites for validation
-validation_sites <- data %>%
-  group_by(site) %>%
-  summarise(type = c("cal", "val")[1+rbinom(1, 1, 0.2)])
-
-data <- data %>%
-  merge(validation_sites)
+#| eval: false
+formula_soc_ffs <- read.csv("data/cache/var_selection.csv") %>%
+  filter(ffs2) %>% select(variable) %>% t() %>%
+  paste(collapse = " + ") %>% paste("T_stock ~", .) %>%
+  as.formula()
+training_index <- lapply(unique(data_all$site), function(s) which(data_all$site != s))
+rf_ffs <- train(
+  form = formula_soc_ffs,
+  data = data_all,
+  method = "rf",
+  metric = "RMSE",
+  trControl = trainControl(method = "cv", index = training_index),
+  ntree = 500, importance = TRUE
+)
+save(rf_ffs, file = "data/cache/models/rf_ffs.rda")
 ```
 
-
-We only keep the explanatory variables selected (as described above). 
+Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:
 
 ```{r}
-data_groups <- read.csv("data/cache/var_selection.csv")
-
-rf_sel <- data |> 
-  select(data_groups$variable[data_groups$ffs2]) |> 
-  randomForest(
-    data$T_stock,
-    subset = (data$type == "cal"),
-    ntree=500,
-    importance=TRUE
-  )
+#| message: false
+#| warning: false
+#| echo: false
+load("data/cache/models/rf_ffs.rda")
+cat("RMSE:", mean(rf_ffs$resample$RMSE), 
+    "\nR²:", mean(rf_ffs$resample$Rsquared))
 ```
 
-The importance of each selected variable in the final model is represented below. 
+## Comparison of Random forest models performance {.unnumbered}
 
 ```{r}
-importance_sel <- importance(rf_sel, type=1) |> 
-  as.data.frame()
-importance_sel$variable <- rownames(importance_sel)
-
-importance_sel |> 
-  merge(data_groups) |> 
-  ggplot(aes(x = reorder(variable, `%IncMSE`), y = `%IncMSE`, fill = group)) +
-  geom_bar(stat = "identity") +
-  coord_flip() +
-  xlab("Variables") +
-  ylab("Increase in OOB Measn Square Error (%)") +
-  theme_minimal()
+#| message: false
+#| warning: false
+rf_models <- lapply(c("all", "vif", "ffs"), function(model) {
+  load(paste0("data/cache/models/rf_", model, ".rda"))
+  get(paste0("rf_", model))
+})
+names(rf_models) <- c("All Variables", "VIF selection", "VIF+FFS selection")
+lapply(rf_models, function(md) md$results) %>% 
+  data.table::rbindlist(idcol="model") %>%
+  select(model, mtry, RMSE, Rsquared, MAE) %>%
+  pivot_longer(cols = c(RMSE, Rsquared, MAE), 
+               names_to = "metric", values_to = "value") |> 
+  ggplot(aes(x = mtry, y = value, color = model)) +
+  geom_line() +
+  geom_point(size = 2) +
+  facet_wrap(~ metric, scales = "free_y") +
+  labs(
+    title = "Comparison of performance by mtry",
+    x = "mtry (number of variables sampled)",
+    y = "Metric value",
+    color = "Model"
+  ) + theme_minimal()
 ```

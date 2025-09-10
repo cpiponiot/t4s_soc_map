@@ -1,0 +1,10 @@
+```{r setup}
+#| message: false
+#| warning: false
+```
+
+# Methodological choices {.unnumbered}
+
+We tested different methodological choices: (i) adding a variable selection step to reduce the number of predictors; (ii) adding a spatially-explicit component.
+
+We evaluated model performance using a leave-one-site-out cross-validation approach. The dataset was partitioned by sampling sites, such that all observations from a given site were withheld as the test set, while the remaining sites were used for model training. For each iteration, model predictions were compared to observed values in the test fold. Model accuracy was quantified using the root mean squared error (RMSE) and the coefficient of determination (R²), averaged across all validation folds.

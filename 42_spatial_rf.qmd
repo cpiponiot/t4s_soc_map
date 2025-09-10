@@ -1,0 +1,75 @@
+```{r setup}
+#| message: false
+#| warning: false
+#| echo: false
+#| results: 'hide'
+library(tidyverse)
+library(meteo)
+library(ranger)
+library(sf)
+library(caret)
+list.files("r", pattern = "\\.R", full.names = TRUE) |> lapply(source)
+```
+
+# Spatial structure {.unnumbered}
+
+As the samples were grouped by sampling site, our dataset is spatially aggregated. Traditional random forest models do not account for the spatial structure of such data, particularly the presence of spatial autocorrelation. To address this issue, we evaluated the impact of incorporating spatial autocorrelation by using the Random Forest Spatial Interpolation (RFSI) approach [@Sekulic2020]. This approach was found to offer slightly improved performance while remaining computationally efficient in a separate national-scale study of soil organic carbon stock mapping [@Kmoch2025].
+
+```{r}
+#| message: false
+#| warning: false
+data_all <- read.csv("data/cache/data_stocks.csv") %>% 
+  merge(read.csv("data/cache/climate_data.csv")) %>% 
+  merge(read.csv("data/cache/soilgrids_data.csv")) %>% 
+  merge(read.csv("data/cache/bnedt_data.csv")) %>% 
+  merge(read.csv("data/cache/srtm_data.csv")) %>% 
+  drop_na() 
+
+# write rf formula with previously selected variables
+formula_soc <- read.csv("data/cache/var_selection.csv") %>%
+  select(variable) %>% t() %>%
+  paste(collapse = " + ") %>% paste("T_stock ~", .) %>%
+  as.formula()
+```
+
+## Non-spatial random forest {.unnumbered}
+
+A Random Forest model was trained using the `ranger` package in R. The model was fitted with the response variable (soil organic carbon stock) and the complete set of predictor variables. Model accuracy metrics from the cross validation steps were:
+
+```{r}
+#| message: false
+#| warning: false
+load("data/cache/models/rf_all.rda")
+cat("RMSE:", mean(rf_all$resample$RMSE), 
+    "\nR²:", mean(rf_all$resample$Rsquared))
+```
+
+## Random Forest with Spatial Interpolation (RFSI) {.unnumbered}
+
+To account for spatial autocorrelation, a Random Forest Spatial Interpolation (RFSI) model was implemented using the `rfsi` package. The RFSI model incorporates spatial neighborhood information into the Random Forest framework, allowing predictions that combine covariates with spatial proximity. Model accuracy metrics from the cross validation steps were:
+
+```{r}
+#| message: false
+#| warning: false
+data_sp <- data_all %>%
+  rename(staid = site) %>% 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326) %>%
+  st_transform(2041)
+fun_model_rfsi <- function(df)  {
+  df %>%
+    st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% 
+    st_transform(2041) %>% 
+    rfsi(formula = formula_soc, data = .)
+}
+fun_pred_rfsi <- function(model, df1, df2) {
+  df1 <- df1 %>%
+    st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% 
+    st_transform(2041)
+  df2 <- df2 %>%
+    st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% 
+    st_transform(2041)
+  pred.rfsi(model, data = df1, newdata = df2)$pred
+}
+kfold_rfsi <- kfold(data_all, "T_stock", "site", fun_model_rfsi, fun_pred_rfsi)
+cat("RMSE:", kfold_rfsi[1])
+```

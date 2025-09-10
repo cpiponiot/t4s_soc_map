@@ -20,17 +20,15 @@ book:
         - 33_tmf.qmd
         - 34_topography.qmd
         - 35_landuse.qmd
-    - part: 40_var_selection.qmd
+    - part: 40_methodology.qmd
       chapters:
         - 41_variable_selection.qmd
-        - 42_all_variables.qmd
-        - 43_var_comparison.qmd
-    - part: 50_autocorrelation.qmd
+        - 42_spatial_rf.qmd
+    - part: 50_results.qmd
       chapters:
-        - 51_without_spat.qmd
-        - 52_with_spat.qmd
-        - 53_aut_comparison.qmd
-    - 60_results.qmd
+        - 51_variable_effect.qmd
+        - 52_soc_map.qmd
+        - 53_postprocessing.qmd
 
 bibliography: references.bib
 

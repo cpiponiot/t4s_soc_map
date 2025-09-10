@@ -1,0 +1,43 @@
+```{r setup}
+#| message: false
+#| warning: false
+library(tidyverse)
+library(randomForest)
+library(caret)
+```
+
+# Effect of explanatory variables {.unnumbered}
+
+The importance of each selected variable in the final model is represented below.
+
+```{r}
+#| message: false
+#| warning: false
+load("data/cache/models/rf_all.rda")
+bioclim_names <- data.frame(
+  variable = paste0("bio", 1:19),
+  var_name = c(
+  "Annual Mean Temperature", "Mean Diurnal Range", "Isothermality", 
+  "Temperature Seasonality", "Max Temperature of Warmest Month", 
+  "Min Temperature of Coldest Month", "Temperature Annual Range", 
+  "Mean Temperature of Wettest Quarter", "Mean Temperature of Driest Quarter", 
+  "Mean Temperature of Warmest Quarter", "Mean Temperature of Coldest Quarter", 
+  "Annual Precipitation", "Precipitation of Wettest Month", 
+  "Precipitation of Driest Month", "Precipitation Seasonality", 
+  "Precipitation of Wettest Quarter", "Precipitation of Driest Quarter", 
+  "Precipitation of Warmest Quarter", "Precipitation of Coldest Quarter")
+)
+
+data.frame(
+  variable = rownames(varImp(rf_all)$importance),
+  mse = varImp(rf_all)$importance$Overall) |>
+  left_join(bioclim_names) |> 
+  merge(read.csv("data/cache/var_selection.csv")) |>
+  mutate(variable = ifelse(is.na(var_name), variable, var_name)) |>
+  ggplot(aes(x = reorder(variable, mse), y = mse, fill = group)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  xlab("Variables") +
+  ylab("%Increase in MSE") +
+  theme_minimal()
+```

@@ -1,6 +1,0 @@
-```{r setup}
-#| message: false
-#| warning: false
-```
-
-## Methods - Spatial autocorrelation {.unnumbered}

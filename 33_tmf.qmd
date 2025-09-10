@@ -9,9 +9,9 @@ library(tidyterra)
 
 ## TMF data {.unnumbered}
 
-We used data from the Tropical Moist Forests (TMF) product, which is based on Landsat images [@Vancutsem2021], to estimate the time since deforestation and the age of secondary forests. These classify tropical areas annually as follows: (i) undisturbed forests, (ii) disturbed forests, (iii) deforested areas, (iv) regrowing forests, (v) water, and (vi) other. 
+We used data from the Tropical Moist Forests (TMF) product, which is based on Landsat images [@Vancutsem2021], to estimate the time since deforestation and the age of secondary forests. These classify tropical areas annually as follows: (i) undisturbed forests, (ii) disturbed forests, (iii) deforested areas, (iv) regrowing forests, (v) water, and (vi) other.
 
-We estimated the age of secondary forests in 2022 as the number of years a pixel of regrowing forest in 2022 had continuously been classified as such. We estimated the time since deforestation as the time since a pixel that was classified as undisturbed or disturbed forest in 1990 (i.e. the first year of the TMF time series) had changed to another class. 
+We estimated the age of secondary forests in 2022 as the number of years a pixel of regrowing forest in 2022 had continuously been classified as such. We estimated the time since deforestation as the time since a pixel that was classified as undisturbed or disturbed forest in 1990 (i.e. the first year of the TMF time series) had changed to another class.
 
 ```{r}
 #| message: false
@@ -108,14 +108,12 @@ list.files("data/cache/tiles", "def", full.names = TRUE) |>
 list.files("data/cache/tiles", full.names = TRUE) |> file.remove()
 ```
 
-
 ```{r include=FALSE}
 #| message: false
 #| warning: false
 #| results: hide
 area <- st_read("data/rci_south.shp") |> st_transform(4326)
 ```
-
 
 ```{r}
 #| message: false
@@ -152,5 +150,3 @@ plots$tmf_class <-
 plots |> 
   with(table(tmf_class, present_landuse))
 ```
-
-

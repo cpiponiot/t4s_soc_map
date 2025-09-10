@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>General framework – Soil Organic Carbon map of Cote d’Ivoire</title>
+<title>Spatial structure – Soil Organic Carbon map of Cote d’Ivoire</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -30,8 +84,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./20_terri4sol_database.html" rel="next">
-<link href="./index.html" rel="prev">
+<link href="./50_results.html" rel="next">
+<link href="./41_variable_selection.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -81,7 +135,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11_general_framework.html">General framework</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_methodology.html">Methodological choices</a></li><li class="breadcrumb-item"><a href="./42_spatial_rf.html">Spatial structure</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -114,7 +168,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./11_general_framework.html" class="sidebar-item-text sidebar-link active">
+  <a href="./11_general_framework.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">General framework</span></a>
   </div>
 </li>
@@ -205,7 +259,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./42_spatial_rf.html" class="sidebar-item-text sidebar-link">
+  <a href="./42_spatial_rf.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Spatial structure</span></a>
   </div>
 </li>
@@ -250,18 +304,17 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#context-and-motivation" id="toc-context-and-motivation" class="nav-link active" data-scroll-target="#context-and-motivation">Context and motivation</a></li>
-  <li><a href="#research-questions" id="toc-research-questions" class="nav-link" data-scroll-target="#research-questions">Research questions</a></li>
-  <li><a href="#methodological-approach" id="toc-methodological-approach" class="nav-link" data-scroll-target="#methodological-approach">Methodological approach</a></li>
+  <li><a href="#non-spatial-random-forest" id="toc-non-spatial-random-forest" class="nav-link active" data-scroll-target="#non-spatial-random-forest">Non-spatial random forest</a></li>
+  <li><a href="#random-forest-with-spatial-interpolation-rfsi" id="toc-random-forest-with-spatial-interpolation-rfsi" class="nav-link" data-scroll-target="#random-forest-with-spatial-interpolation-rfsi">Random Forest with Spatial Interpolation (RFSI)</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_methodology.html">Methodological choices</a></li><li class="breadcrumb-item"><a href="./42_spatial_rf.html">Spatial structure</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">General framework</h1>
+<h1 class="title">Spatial structure</h1>
 </div>
 
 
@@ -278,16 +331,82 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="context-and-motivation" class="level2">
-<h2 class="anchored" data-anchor-id="context-and-motivation">Context and motivation</h2>
+<p>As the samples were grouped by sampling site, our dataset is spatially aggregated. Traditional random forest models do not account for the spatial structure of such data, particularly the presence of spatial autocorrelation. To address this issue, we evaluated the impact of incorporating spatial autocorrelation by using the Random Forest Spatial Interpolation (RFSI) approach <span class="citation" data-cites="Sekulic2020">(<a href="#ref-Sekulic2020" role="doc-biblioref">Sekulić et al. 2020</a>)</span>. This approach was found to offer slightly improved performance while remaining computationally efficient in a separate national-scale study of soil organic carbon stock mapping <span class="citation" data-cites="Kmoch2025">(<a href="#ref-Kmoch2025" role="doc-biblioref">Kmoch et al. 2025</a>)</span>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data_all <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/climate_data.csv"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/soilgrids_data.csv"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/bnedt_data.csv"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/srtm_data.csv"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># write rf formula with previously selected variables</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>formula_soc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/var_selection.csv"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(variable) <span class="sc">%&gt;%</span> <span class="fu">t</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">" + "</span>) <span class="sc">%&gt;%</span> <span class="fu">paste</span>(<span class="st">"T_stock ~"</span>, .) <span class="sc">%&gt;%</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.formula</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="non-spatial-random-forest" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="non-spatial-random-forest">Non-spatial random forest</h2>
+<p>A Random Forest model was trained using the <code>ranger</code> package in R. The model was fitted with the response variable (soil organic carbon stock) and the complete set of predictor variables. Model accuracy metrics from the cross validation steps were:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"data/cache/models/rf_all.rda"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"RMSE:"</span>, <span class="fu">mean</span>(rf_all<span class="sc">$</span>resample<span class="sc">$</span>RMSE), </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">R²:"</span>, <span class="fu">mean</span>(rf_all<span class="sc">$</span>resample<span class="sc">$</span>Rsquared))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>RMSE: 13.25197 
+R²: 0.06932912</code></pre>
+</div>
+</div>
 </section>
-<section id="research-questions" class="level2">
-<h2 class="anchored" data-anchor-id="research-questions">Research questions</h2>
-</section>
-<section id="methodological-approach" class="level2">
-<h2 class="anchored" data-anchor-id="methodological-approach">Methodological approach</h2>
+<section id="random-forest-with-spatial-interpolation-rfsi" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="random-forest-with-spatial-interpolation-rfsi">Random Forest with Spatial Interpolation (RFSI)</h2>
+<p>To account for spatial autocorrelation, a Random Forest Spatial Interpolation (RFSI) model was implemented using the <code>rfsi</code> package. The RFSI model incorporates spatial neighborhood information into the Random Forest framework, allowing predictions that combine covariates with spatial proximity. Model accuracy metrics from the cross validation steps were:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data_sp <span class="ot">&lt;-</span> data_all <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">staid =</span> site) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="dv">2041</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>fun_model_rfsi <span class="ot">&lt;-</span> <span class="cf">function</span>(df)  {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_transform</span>(<span class="dv">2041</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rfsi</span>(<span class="at">formula =</span> formula_soc, <span class="at">data =</span> .)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>fun_pred_rfsi <span class="ot">&lt;-</span> <span class="cf">function</span>(model, df1, df2) {</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  df1 <span class="ot">&lt;-</span> df1 <span class="sc">%&gt;%</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_transform</span>(<span class="dv">2041</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  df2 <span class="ot">&lt;-</span> df2 <span class="sc">%&gt;%</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_transform</span>(<span class="dv">2041</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pred.rfsi</span>(model, <span class="at">data =</span> df1, <span class="at">newdata =</span> df2)<span class="sc">$</span>pred</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>kfold_rfsi <span class="ot">&lt;-</span> <span class="fu">kfold</span>(data_all, <span class="st">"T_stock"</span>, <span class="st">"site"</span>, fun_model_rfsi, fun_pred_rfsi)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"RMSE:"</span>, kfold_rfsi[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>RMSE: 14.11882</code></pre>
+</div>
+</div>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Kmoch2025" class="csl-entry" role="listitem">
+Kmoch, Alexander, Clay Taylor Harrison, Jeonghwan Choi, and Evelyn Uuemaa. 2025. <span>“Spatial Autocorrelation in Machine Learning for Modelling Soil Organic Carbon.”</span> <em>Ecological Informatics</em> 86: 103057.
+</div>
+<div id="ref-Sekulic2020" class="csl-entry" role="listitem">
+Sekulić, Aleksandar, Milan Kilibarda, Gerard BM Heuvelink, Mladen Nikolić, and Branislav Bajat. 2020. <span>“Random Forest Spatial Interpolation.”</span> <em>Remote Sensing</em> 12 (10): 1687.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
@@ -710,13 +829,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link" aria-label="Introduction">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Introduction</span>
+      <a href="./41_variable_selection.html" class="pagination-link" aria-label="Variable selection">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Variable selection</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./20_terri4sol_database.html" class="pagination-link" aria-label="terri4sol soil database">
-        <span class="nav-page-text">terri4sol soil database</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./50_results.html" class="pagination-link" aria-label="Model results">
+        <span class="nav-page-text">Model results</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

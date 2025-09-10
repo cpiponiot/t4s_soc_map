@@ -3,4 +3,4 @@
 #| warning: false
 ```
 
-## With spatial autocorrelation {.unnumbered}
+# Results interpretation {.unnumbered}

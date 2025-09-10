@@ -1,0 +1,8 @@
+```{r setup}
+#| message: false
+#| warning: false
+```
+
+# Model results {.unnumbered}
+
+Based on the tests in the "Methodological choices" section, we used the model with all variables and no spatial interpolation. 
