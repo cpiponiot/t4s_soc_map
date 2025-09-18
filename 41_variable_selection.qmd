@@ -45,7 +45,6 @@ rf_all <- train(
   trControl = trainControl(method = "cv", index = training_index),
   ntree = 500, importance = TRUE
 )
-if (!dir.exists("data/cache/models")) dir.create("data/cache/models")
 save(rf_all, file = "data/cache/models/rf_all.rda")
 ```
 

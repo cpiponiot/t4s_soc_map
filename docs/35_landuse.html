@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./40_var_selection.html" rel="next">
+<link href="./40_methodology.html" rel="next">
 <link href="./34_topography.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -224,8 +224,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./40_var_selection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RandomForest model</span></a>
+            <a href="./40_methodology.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Methodological choices</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -234,27 +234,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_variable_selection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RF with variable selection</span></a>
+ <span class="menu-text">Variable selection</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./42_all_variables.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RF without variable selection</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./43_var_comparison.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Comparison of Random forest models results</span></a>
+  <a href="./42_spatial_rf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Spatial structure</span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./50_autocorrelation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Methods - Spatial autocorrelation</span></a>
+            <a href="./50_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model results</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -262,30 +256,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./51_without_spat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Without spatial autocorrelation</span></a>
+  <a href="./51_variable_effect.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Effect of explanatory variables</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./52_with_spat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">With spatial autocorrelation</span></a>
+  <a href="./52_soc_map.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SOC stocks prediction</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./53_aut_comparison.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Comparison</span></a>
+  <a href="./53_postprocessing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Results interpretation</span></a>
   </div>
 </li>
       </ul>
   </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./60_results.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">SOC stocks prediction</span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
@@ -365,15 +353,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"data/download/BNEDT/"</span>, <span class="at">pattern =</span> <span class="st">"tif$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rast</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">project</span>(<span class="st">"EPSG: 4326"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">extract</span>(<span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.4.csv"</span>)[, <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>)]) <span class="sc">|&gt;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.4.csv"</span>)[, <span class="fu">c</span>(<span class="st">"site"</span>, <span class="st">"plot"</span>)]) <span class="sc">|&gt;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>ID) <span class="sc">|&gt;</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">landuse =</span> BNEDT_OCS_2020.tif) <span class="sc">|&gt;</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(site, plot) <span class="sc">|&gt;</span> </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(<span class="st">"data/cache/bnedt_data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plot_coords <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.4.csv"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(lon)) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vect</span>(<span class="at">geom=</span><span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>), <span class="at">crs =</span> <span class="st">"EPSG:4326"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">project</span>(<span class="st">"EPSG:32630"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>(<span class="at">geom =</span> <span class="st">"XY"</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"data/download/BNEDT/"</span>, <span class="at">pattern =</span> <span class="st">"tif$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rast</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">extract</span>(plot_coords[, <span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>)]) <span class="sc">|&gt;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(plot_coords) <span class="sc">|&gt;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>ID) <span class="sc">|&gt;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">read.csv</span>(<span class="st">"data/download/BNEDT/legend_bnedt.csv"</span>), </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">join_by</span>(BNEDT_OCS_2020.tif<span class="sc">==</span>value)) <span class="sc">|&gt;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">landuse =</span> label) <span class="sc">|&gt;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, landuse) <span class="sc">|&gt;</span> </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(<span class="st">"data/cache/bnedt_data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <section id="comparison-with-landuse-recorded-in-the-t4s-dataset" class="level2">
@@ -383,94 +377,82 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/cache/bnedt_data.csv"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">landuse =</span> <span class="fu">round</span>(landuse)) <span class="sc">|&gt;</span> </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">read.csv</span>(<span class="st">"data/download/BNEDT/legend_bnedt.csv"</span>), </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">join_by</span>(landuse<span class="sc">==</span>value)) <span class="sc">|&gt;</span> </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.4.csv"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(label, present_landuse) <span class="sc">|&gt;</span> </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.4.csv"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(landuse, present_landuse) <span class="sc">|&gt;</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                                           present_landuse
-label                                                       cassava cocoa
-  Agricultural development/Other crops/Orchards/Fallow land      17    13
-  Body of water,Courses and waterways                             0     0
-  Cashew plantation                                               1    10
-  Cocoa Plantation                                                3    81
-  Coconut Plantation                                              0     4
-  Coffee Plantation                                               1     4
-  Dense forest                                                    1    16
-  Forest gallery                                                  0     2
+landuse                                                     cassava cocoa
+  Agricultural development/Other crops/Orchards/Fallow land      20    19
+  Cashew plantation                                               0     4
+  Cocoa Plantation                                                4    97
+  Coconut Plantation                                              0     1
+  Coffee Plantation                                               0     4
+  Dense forest                                                    1    18
+  Forest gallery                                                  1     0
   Forest plantation/Reforestation                                 0     2
-  Fruit plantation / Arboriculture                                6     9
+  Fruit plantation / Arboriculture                                4    10
   Light forest                                                    0     1
-  Mangrove                                                        1     3
-  Oil palm plantation                                             1    15
-  Rubber plantation                                              10    59
-  Secondary forest/degraded forest                                3     3
-  Swamp forest/Forest on hydromorphic soil                        1     5
+  Oil palm plantation                                             1     7
+  Rubber plantation                                              10    56
+  Secondary forest/degraded forest                                4     6
+  Swamp forest/Forest on hydromorphic soil                        0     2
   Tree savannah                                                   0     0
                                                            present_landuse
-label                                                       fallow food_crop
-  Agricultural development/Other crops/Orchards/Fallow land     12         2
-  Body of water,Courses and waterways                            1         0
-  Cashew plantation                                              3         0
-  Cocoa Plantation                                              19         2
-  Coconut Plantation                                             5         0
-  Coffee Plantation                                              4         0
-  Dense forest                                                  32         0
-  Forest gallery                                                 6         0
-  Forest plantation/Reforestation                               21         1
-  Fruit plantation / Arboriculture                               2         1
-  Light forest                                                   2         0
-  Mangrove                                                       3         0
-  Oil palm plantation                                            8         0
-  Rubber plantation                                             38         8
-  Secondary forest/degraded forest                               7         1
-  Swamp forest/Forest on hydromorphic soil                       8         1
-  Tree savannah                                                 20         0
+landuse                                                     fallow food_crop
+  Agricultural development/Other crops/Orchards/Fallow land     13         3
+  Cashew plantation                                              0         0
+  Cocoa Plantation                                              20         2
+  Coconut Plantation                                             0         0
+  Coffee Plantation                                              2         0
+  Dense forest                                                  36         0
+  Forest gallery                                                 4         0
+  Forest plantation/Reforestation                               19         1
+  Fruit plantation / Arboriculture                               4         0
+  Light forest                                                   3         0
+  Oil palm plantation                                            8         1
+  Rubber plantation                                             41         7
+  Secondary forest/degraded forest                              10         2
+  Swamp forest/Forest on hydromorphic soil                       8         0
+  Tree savannah                                                 23         0
                                                            present_landuse
-label                                                       forest foretanc jvc
+landuse                                                     forest foretanc jvc
   Agricultural development/Other crops/Orchards/Fallow land      1        0   0
-  Body of water,Courses and waterways                            0        0   0
   Cashew plantation                                              0        0   0
-  Cocoa Plantation                                               2        3   1
-  Coconut Plantation                                             0        0   1
+  Cocoa Plantation                                               2        1   1
+  Coconut Plantation                                             0        0   0
   Coffee Plantation                                              0        0   0
-  Dense forest                                                   1       10   5
+  Dense forest                                                   3       11   6
   Forest gallery                                                 0        2   0
-  Forest plantation/Reforestation                                4        6   0
+  Forest plantation/Reforestation                                3        6   0
   Fruit plantation / Arboriculture                               0        0   0
-  Light forest                                                   1        1   1
-  Mangrove                                                       1        0   0
-  Oil palm plantation                                            1        0   2
-  Rubber plantation                                              1        1  12
-  Secondary forest/degraded forest                               1        0   1
-  Swamp forest/Forest on hydromorphic soil                       0        2   1
-  Tree savannah                                                  1        5   0
+  Light forest                                                   1        1   0
+  Oil palm plantation                                            1        0   3
+  Rubber plantation                                              1        2  12
+  Secondary forest/degraded forest                               0        0   1
+  Swamp forest/Forest on hydromorphic soil                       1        1   1
+  Tree savannah                                                  1        6   0
                                                            present_landuse
-label                                                       palm rubber
-  Agricultural development/Other crops/Orchards/Fallow land    2      1
-  Body of water,Courses and waterways                          0      0
+landuse                                                     palm rubber
+  Agricultural development/Other crops/Orchards/Fallow land    3      1
   Cashew plantation                                            0      0
   Cocoa Plantation                                             1      2
   Coconut Plantation                                           0      0
-  Coffee Plantation                                            0      2
+  Coffee Plantation                                            0      0
   Dense forest                                                 0      7
   Forest gallery                                               0      0
-  Forest plantation/Reforestation                              1      1
-  Fruit plantation / Arboriculture                             1      0
+  Forest plantation/Reforestation                              1      0
+  Fruit plantation / Arboriculture                             0      0
   Light forest                                                 0      0
-  Mangrove                                                     0      0
-  Oil palm plantation                                          1      2
-  Rubber plantation                                            2     17
-  Secondary forest/degraded forest                             0      0
-  Swamp forest/Forest on hydromorphic soil                     0      0
+  Oil palm plantation                                          1      4
+  Rubber plantation                                            2     16
+  Secondary forest/degraded forest                             0      1
+  Swamp forest/Forest on hydromorphic soil                     0      1
   Tree savannah                                                0      0
                                                            present_landuse
-label                                                       trees plantation
+landuse                                                     trees plantation
   Agricultural development/Other crops/Orchards/Fallow land                0
-  Body of water,Courses and waterways                                      0
   Cashew plantation                                                        0
   Cocoa Plantation                                                         0
   Coconut Plantation                                                       0
@@ -480,7 +462,6 @@ label                                                       trees plantation
   Forest plantation/Reforestation                                          5
   Fruit plantation / Arboriculture                                         0
   Light forest                                                             0
-  Mangrove                                                                 0
   Oil palm plantation                                                      0
   Rubber plantation                                                        0
   Secondary forest/degraded forest                                         0
@@ -917,8 +898,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./40_var_selection.html" class="pagination-link" aria-label="RandomForest model">
-        <span class="nav-page-text">RandomForest model</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./40_methodology.html" class="pagination-link" aria-label="Methodological choices">
+        <span class="nav-page-text">Methodological choices</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

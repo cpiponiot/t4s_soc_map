@@ -360,8 +360,8 @@ div.csl-indent {
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">R²:"</span>, <span class="fu">mean</span>(rf_all<span class="sc">$</span>resample<span class="sc">$</span>Rsquared))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>RMSE: 13.25197 
-R²: 0.06932912</code></pre>
+<pre><code>RMSE: 13.19634 
+R²: 0.07496982</code></pre>
 </div>
 </div>
 </section>
@@ -391,10 +391,11 @@ R²: 0.06932912</code></pre>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pred.rfsi</span>(model, <span class="at">data =</span> df1, <span class="at">newdata =</span> df2)<span class="sc">$</span>pred</span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>kfold_rfsi <span class="ot">&lt;-</span> <span class="fu">kfold</span>(data_all, <span class="st">"T_stock"</span>, <span class="st">"site"</span>, fun_model_rfsi, fun_pred_rfsi)</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"RMSE:"</span>, kfold_rfsi[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"RMSE:"</span>, kfold_rfsi[<span class="dv">1</span>], <span class="st">"</span><span class="sc">\n</span><span class="st">R²:"</span>, kfold_rfsi[<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>RMSE: 14.11882</code></pre>
+<pre><code>RMSE: 14.14108 
+R²: -0.03839664</code></pre>
 </div>
 </div>
 

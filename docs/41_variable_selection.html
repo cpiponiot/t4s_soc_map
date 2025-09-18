@@ -363,15 +363,14 @@ div.csl-indent {
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"cv"</span>, <span class="at">index =</span> training_index),</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">ntree =</span> <span class="dv">500</span>, <span class="at">importance =</span> <span class="cn">TRUE</span></span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="st">"data/cache/models"</span>)) <span class="fu">dir.create</span>(<span class="st">"data/cache/models"</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(rf_all, <span class="at">file =</span> <span class="st">"data/cache/models/rf_all.rda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(rf_all, <span class="at">file =</span> <span class="st">"data/cache/models/rf_all.rda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>RMSE: 13.24671 
-R²: 0.0551292</code></pre>
+<pre><code>RMSE: 13.19634 
+R²: 0.07496982</code></pre>
 </div>
 </div>
 </section>

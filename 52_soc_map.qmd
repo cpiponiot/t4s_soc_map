@@ -1,11 +1,14 @@
 ```{r setup}
 #| message: false
 #| warning: false
-
+#| echo: false
+#| results: 'hide'
 library(tidyverse)
 library(randomForest)
 library(usdm)
 library(exactextractr)
+library(quantregForest)
+list.files("r", pattern = "\\.R", full.names = TRUE) |> lapply(source)
 ```
 
 # SOC stocks prediction {.unnumbered}
@@ -25,13 +28,16 @@ soilgrids <-
   rast() |> 
   project("EPSG: 4326")
 names(soilgrids) <- list.files("data/download/ISRIC", pattern = "tif$") |> 
-  gsub(pattern = "_mean.tif", replacement = "")
+  gsub(pattern = "_mean.tif", replacement = "") |> 
+  gsub(pattern = "-", replacement = ".")
 topography <- list.files("data/download/SRTM/", pattern = "tif$", full.names = TRUE) |> 
   rast() |>
   project("EPSG: 4326")
 landcover <- list.files("data/download/BNEDT/", pattern = "tif$", full.names = TRUE) |> 
-  rast() |>
+  rast() |> 
   project("EPSG: 4326")
+levels(landcover) <- read.csv("data/download/BNEDT/legend_bnedt.csv") |> 
+  select(value, label) |> rename(landuse = label)
 # resample to finest resolution - topography
 # for now: use coarsest resolution (chelsa)
 topography <- topography |> 
@@ -45,29 +51,38 @@ soilgrids <- soilgrids |>
 names(soilgrids) <- list.files("data/download/ISRIC", pattern = "tif$") |> 
   gsub(pattern = "_mean.tif", replacement = "")
 landcover <- landcover |> 
-  lapply(function(x) exact_resample(x, chelsa[[1]], 'mean')) |> 
+  lapply(function(x) exact_resample(x, chelsa[[1]], 'mode')) |> 
   rast()
 names(landcover) <- "landuse"
-as.data.frame(chelsa, xy = TRUE) |> 
+data_vars <- as.data.frame(chelsa, xy = TRUE) |> 
   inner_join(as.data.frame(soilgrids, xy = TRUE)) |> 
   inner_join(as.data.frame(topography, xy = TRUE)) |> 
   inner_join(as.data.frame(landcover, xy = TRUE)) |> 
+  inner_join(read.csv("data/download/BNEDT/legend_bnedt.csv"), by = join_by(landuse == value)) |> 
+  mutate(landuse = NULL, color = NULL) |> rename(landuse = label) 
+# model prediction
+load("data/cache/models/qrf_final.rda")
+predict.qrf_llo(
+  qrf_final,
+  parallel = FALSE,
+  newdata = select(drop_na(data_vars), -x, -y)
+) |> 
+  bind_cols(select(drop_na(data_vars), x, y)) |> 
+  right_join(data_vars) |>
   write.csv("data/cache/data_vars.csv", row.names = FALSE)
 ```
 
 ```{r}
 #| message: false
 #| warning: false
-data_vars <- read.csv("data/cache/data_vars.csv") |> 
-  drop_na()
-load("data/cache/models/rf_all.rda")
-data_vars$T_stock <- predict(rf_all, data_vars)
-
-ggplot(data_vars, aes(x, y, fill = T_stock)) +
+read.csv("data/cache/data_vars.csv") |>
+  select(x, y, contains("Q")) |> 
+  pivot_longer(cols = contains("Q")) |> 
+  ggplot(aes(x, y, fill = value)) +
   geom_raster() +
-  coord_equal()+
+  coord_equal() +
   labs(x = NULL, y = NULL) +
+  facet_wrap(~name) + 
   scale_fill_viridis_c(name = "Stocks de C\nprédits\n(Mg/ha)", option = "D") +
   theme_minimal()
-ggsave("D:/projets-cirad/terri4sol/presentations/carte_c_preds.png")
 ```

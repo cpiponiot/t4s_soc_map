@@ -71,5 +71,5 @@ fun_pred_rfsi <- function(model, df1, df2) {
   pred.rfsi(model, data = df1, newdata = df2)$pred
 }
 kfold_rfsi <- kfold(data_all, "T_stock", "site", fun_model_rfsi, fun_pred_rfsi)
-cat("RMSE:", kfold_rfsi[1])
+cat("RMSE:", kfold_rfsi[1], "\nR²:", kfold_rfsi[2])
 ```

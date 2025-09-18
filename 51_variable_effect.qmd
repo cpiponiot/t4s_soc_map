@@ -1,9 +1,11 @@
 ```{r setup}
 #| message: false
 #| warning: false
+#| include: false
 library(tidyverse)
 library(randomForest)
 library(caret)
+list.files("r", pattern = "\\.R", full.names = TRUE) |> lapply(source)
 ```
 
 # Effect of explanatory variables {.unnumbered}
@@ -13,7 +15,7 @@ The importance of each selected variable in the final model is represented below
 ```{r}
 #| message: false
 #| warning: false
-load("data/cache/models/rf_all.rda")
+load("data/cache/models/qrf_final.rda")
 bioclim_names <- data.frame(
   variable = paste0("bio", 1:19),
   var_name = c(
@@ -27,17 +29,14 @@ bioclim_names <- data.frame(
   "Precipitation of Wettest Quarter", "Precipitation of Driest Quarter", 
   "Precipitation of Warmest Quarter", "Precipitation of Coldest Quarter")
 )
-
-data.frame(
-  variable = rownames(varImp(rf_all)$importance),
-  mse = varImp(rf_all)$importance$Overall) |>
+importance.qrf_llo(qrf_final, type = 1) |>
   left_join(bioclim_names) |> 
   merge(read.csv("data/cache/var_selection.csv")) |>
   mutate(variable = ifelse(is.na(var_name), variable, var_name)) |>
-  ggplot(aes(x = reorder(variable, mse), y = mse, fill = group)) +
+  ggplot(aes(x = reorder(variable, importance), y = importance, fill = group)) +
   geom_bar(stat = "identity") +
   coord_flip() +
   xlab("Variables") +
-  ylab("%Increase in MSE") +
+  ylab("Increase in Node Purity") +
   theme_minimal()
 ```
