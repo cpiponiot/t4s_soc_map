@@ -11,31 +11,30 @@ library(knitr)
 The following sites have missing coordinates:
 
 ```{r}
-read.csv("data/plot_0.2.4.csv") |> 
-  subset(is.na(lon) | is.na(lat)) |> 
-  group_by(site) |> 
-  summarise(n()) |> 
+read.csv("data/plot_0.2.6.csv") |>
+  subset(is.na(lon) | is.na(lat)) |>
+  group_by(site) |>
+  summarise(n()) |>
   kable(col.names = c("site", "number of plots"))
 ```
 
 Plot information is missing in the following sites:
 
 ```{r}
-read.csv("data/plot_0.2.4.csv") |> 
-  subset(is.na(plot)) |> 
-  group_by(site) |> 
-  summarise(n()) |> 
+read.csv("data/plot_0.2.6.csv") |>
+  subset(is.na(plot)) |>
+  group_by(site) |>
+  summarise(n()) |>
   kable(col.names = c("site", "number of plots"))
 ```
 
 Plot area varies as follows (in log-scale):
 
 ```{r}
-read.csv("data/plot_0.2.4.csv") |> 
- ggplot(aes(x = plot_area)) +
+read.csv("data/plot_0.2.6.csv") |>
+  ggplot(aes(x = plot_area)) +
   geom_histogram() +
   labs(x = "Plot area (ha)") +
   theme_classic() +
   scale_x_log10()
 ```
-

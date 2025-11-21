@@ -1,16 +1,22 @@
 ```{r setup}
 #| message: false
 #| warning: false
+#| include: false
 
 library(tidyverse)
+library(readxl)
+list.files("r", pattern = "\\.R", full.names = TRUE) |> lapply(source)
 ```
 
 ## Open and prepare the raw dataset {.unnumbered}
 
+A summary of the data from the terri4sol project is presented below. 
+
 ```{r}
-data_t4s <- read.csv("data/soil_0.2.4.csv") 
+data_t4s <- read.csv("data/soil_0.2.6.csv")
 summary(data_t4s)
 ```
+
 
 Soil organic carbon stocks were estimated as
 
@@ -19,17 +25,35 @@ $$ stock = C \cdot (\Delta d \cdot area) \cdot fine \cdot bd$$
 where $C$ is the soil organic carbon content, $\Delta d$ is the measurement depth (0.1 m), $area$ is the standardisation area (1 ha = $10^4$ m), $fine$ is the fine fraction of the soil, and $bd$ is the bulk density of the fine fraction (in Mg m$^3$).
 
 ```{r}
-data_t4s <- data_t4s |> 
-  mutate(stock = C/100 * 1e3 * fine_fraction * bulk_density_g_cm3)
+data_t4s <- data_t4s |>
+  mutate(stock = C / 100 * 1e3 * fine_fraction * bulk_density_g_cm3)
+```
+
+We also added data from the RévaTéné project that collected SOC data in the Téné forest plots. 
+
+```{r}
+data_tene <- read_excel("data/BdD_Mathus_TENE.xls", 2) |>
+  mutate(T_stock = `CCOS_0-30cm` / 100 *
+           (`Dapp_0-10cm` + `Dapp_10-20cm` + `Dapp_20-30cm`) / 3 *
+           (1 - `%EG_0-30cm`) * 1e3) |>
+  mutate(site = "tene", plot = SUBPLOT) |>
+  separate(SUBPLOT, c("pl", "sub")) |>
+  reframe(get_tene_coords(pl, sub), across()) |>
+  select(site, plot, lon, lat, T_stock)
 ```
 
 We then sum the carbon stocks over all depths at each site to get the total carbon stocks, and save the results.
 
 ```{r}
-read.csv("data/plot_0.2.4.csv") |> 
-  select(site, plot, lon, lat) |> 
-  merge(data_t4s) |> 
-  group_by(site, plot, lon, lat) |> 
-  summarise(T_stock = sum(stock), .groups = "drop") |> 
+read.csv("data/plot_0.2.6.csv") |>
+  # correct plot coordinates
+  mutate(lonc = ifelse(lon > 0, lat, lon), latc = ifelse(lat < 0, lon, lat)) |>
+  select(site, plot, lonc, latc) |>
+  rename(lon = lonc, lat = latc) |>
+  merge(data_t4s) |>
+  group_by(site, plot, lon, lat) |>
+  summarise(T_stock = sum(stock), .groups = "drop") |>
+  bind_rows(data_tene) |>
   write.csv("data/cache/data_stocks.csv", row.names = FALSE)
 ```
+

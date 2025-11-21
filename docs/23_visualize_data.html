@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.42">
+<meta name="generator" content="quarto-1.7.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -21,8 +21,9 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -33,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -66,15 +67,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="./">
 <link href="./30_ancillary_data.html" rel="next">
 <link href="./22_check_errors.html" rel="prev">
-<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8da5b4427184b79ecddefad3d342027e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-364982630eef5352dd1537128a8ed5cb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -120,17 +122,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
 
-<script src="site_libs/leaflet-binding-2.2.2/leaflet.js"></script>
+<script src="site_libs/leaflet-binding-2.2.3/leaflet.js"></script>
 
 <script src="site_libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
 
-<script src="site_libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js"></script>
+<script src="site_libs/leaflet-providers-plugin-2.2.3/leaflet-providers-plugin.js"></script>
 
 
 
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -248,8 +250,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./40_var_selection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RandomForest model</span></a>
+            <a href="./40_methodology.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Methodological choices</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -258,27 +260,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_variable_selection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RF with variable selection</span></a>
+ <span class="menu-text">Variable selection</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./42_all_variables.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RF without variable selection</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./43_var_comparison.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Comparison of Random forest models results</span></a>
+  <a href="./42_spatial_rf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Spatial structure</span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./50_autocorrelation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Methods - Spatial autocorrelation</span></a>
+            <a href="./50_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model results</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -286,30 +282,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./51_without_spat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Without spatial autocorrelation</span></a>
+  <a href="./51_variable_effect.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Effect of explanatory variables</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./52_with_spat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">With spatial autocorrelation</span></a>
+  <a href="./52_soc_map.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SOC stocks prediction</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./53_aut_comparison.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Comparison</span></a>
+  <a href="./53_postprocessing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Results interpretation</span></a>
   </div>
 </li>
       </ul>
   </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./60_results.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">SOC stocks prediction</span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
@@ -361,8 +351,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>loc_plots <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.4.csv"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, lat, lon) <span class="sc">|&gt;</span> </span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>loc_plots <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, lat, lon) <span class="sc">|&gt;</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">leaflet</span>() <span class="sc">|&gt;</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>Esri.WorldImagery) <span class="sc">|&gt;</span></span>
@@ -370,8 +360,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">label =</span> <span class="fu">paste</span>(loc_plots<span class="sc">$</span>site, loc_plots<span class="sc">$</span>plot))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-2ca6a0cdd94d215635e9" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-2ca6a0cdd94d215635e9">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldImagery",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[6.943489965,6.941795982,6.88710398,6.882849997,6.92754901,6.935630003,6.923468029,6.923038037,6.921685031,6.925108032,6.925501982,6.942867022,6.923455037,6.923765,6.923737004,6.935038995,5.886479001,5.876414012,5.881506018,5.88271603,5.877322024,5.877675992,5.932293981,5.932312002,5.932957996,5.932957996,5.964710992,5.944517981,5.950332005,5.926763015,5.927688042,5.909091029,5.762168001,5.776712028,5.777429016,5.777406972,5.778868021,5.797377024,5.79753804,5.803777026,5.801369995,5.801692028,5.796535984,5.793789988,5.791253038,5.786119038,5.788302021,5.779952975,6.184511986,6.183212036,6.183460979,6.181434989,6.198540023,6.198887033,6.194745032,6.19863499,6.183446981,6.192127028,6.191693014,6.196473967,6.195844989,6.194370026,6.194027038,6.220129039,6.833588965,6.830156995,6.819206038,6.838189038,6.840851968,6.814170023,6.828930974,6.847785981,6.886155987,6.886568964,6.883607972,6.831270028,6.830971967,6.846252009,6.832242999,6.853006985,5.876038,5.875028986,5.880647041,5.900838962,5.917432029,5.905047012,5.902227005,5.926340986,5.929473974,5.929367021,5.926662013,5.926019037,5.925557027,5.899596009,5.89748201,5.901026968,5.428425008,5.431056004,5.416321959,5.41912403,5.422737971,5.42461996,5.425076019,5.245842012,5.252612997,5.246551959,5.244135037,5.244640969,5.423926022,5.427869959,5.422092983,5.254424997,6.474801,6.472609,6.530608,6.481319,6.51208,6.516257,6.548024,6.568785,6.564219,6.556096,6.558309,6.488468,6.489549,6.481437,6.564826,6.572147,6.48804,6.521067,6.533104,4.923580969,4.920484023,4.919074019,4.911902966,4.923783978,4.912143024,4.913029997,4.915062021,4.91470403,4.917676002,4.918385027,4.909171974,4.901766982,4.898010967,4.889499983,4.890137007,4.778207,4.78192999,4.780396018,4.778950978,4.806132987,4.80631697,4.807480965,4.792190026,4.790460002,4.79593196,4.789507985,4.79819499,4.797917968,4.794948008,4.791125022,4.785643006,6.915938,6.933183,6.926284,6.92956,6.931208,6.932132,6.939377,6.941521,6.943518,6.938236,6.936641,6.944493,6.937398,6.941838,6.937724,6.939392,6.946584,6.943265,6.996369,7.011029,5.375947002,5.375567973,5.372343035,5.372843016,5.375465965,5.369190015,5.366436979,5.366055015,5.434011966,5.433733016,5.434384039,5.437061973,5.436510025,5.437121987,5.445974031,5.447309017,5.975059038,5.973937958,5.978498971,6.082466003,6.081747003,6.088123033,6.073300978,6.074349973,6.073179021,6.072799992,6.014215015,6.027954966,6.043983009,6.051052976,5.948838014,5.962369004,5.651223,5.657237,5.698436,5.615502,5.627809,5.631692,5.551299,5.559315,5.630231,5.637034,5.632846,5.636421,5.624452,5.624276,5.630658,5.631466,5.642856,5.615771,5.606895,5.643942,5.0962,5.100874,5.101568,5.10394,5.111572,5.095558,5.095785,5.120252,5.117748,5.116856,5.096544,5.097118,5.097697,5.124114,5.126869,5.123618,5.122831,5.150082,5.1401,5.140756,6.57258396,6.573307989,6.58283704,6.575162988,6.573803024,6.616935963,6.616761032,6.618787022,6.569885993,6.60524304,6.567020975,6.572401989,6.538807992,6.572842039,6.570153963,6.583260996,7.558191,7.559160031,7.569814017,7.60029003,7.600841979,7.59915797,7.577853017,7.567688031,7.566003017,7.563710986,7.563685002,7.601635996,7.60186499,7.578040017,7.559562027,7.561940979,5.139132002,5.148827014,5.148947965,5.150825009,5.170730017,5.159988021,5.18078696,5.179537972,5.143569969,5.143745989,5.147737032,5.147538967,5.147880027,5.147292037,5.137280021,5.143406019,5.665462967,5.622631023,5.627482971,5.631536962,5.665977029,5.656186966,5.662315981,5.660747979,5.657839039,5.65131004,5.650344025,5.649587978,5.649411036,5.631877016,5.641592983,5.648512999,9.842936999999999,9.840657,9.839888999999999,9.844609,9.844833,9.788518,9.786080999999999,9.781411,9.780193000000001,9.803887,9.80728,9.767953,9.769748,9.768715,9.770951,9.775842000000001,9.777296,9.776557,9.778098,9.777958999999999,9.776717,8.917382999999999,8.917600999999999,8.913606,8.916225000000001,8.914726999999999,8.910968,8.908948000000001,8.908424999999999,8.912523999999999,8.918628999999999,8.903026000000001,8.901899999999999,8.909632,8.908643,8.902801999999999,8.919693000000001,8.917894,8.911111,8.894892,8.904617,5.677165,5.676046,5.740059,5.738043,5.766651,5.76583,5.768397,5.853723,5.836914,5.798648,5.79841,5.809184,5.809865,5.826336,5.82635,5.852952,6.502012,5.702279,5.687038,5.689001,6.436678715,6.428162798,6.422139619,6.424199657,6.430577265,6.376214271,6.48712554,6.490710745,6.481824153,6.422776953,6.394230555,6.427724002,6.422793852,6.423246944,6.359941938,6.358776076,6.354669728,6.359689237,6.358554218,5.950036962,5.948828962,5.948327975,5.948386984,5.949349981,5.949509991,5.951149995,5.95011902,5.950583965,5.948842959,5.948039973,5.948425038,5.949373031,5.947665973,5.947170015,5.946529973,5.945711983,5.945502017,5.945769986,5.944991978,5.946897017,5.943302019,5.943276035,5.941137979,5.943266982,5.943870982,5.945390034467,5.944157979,5.944013977,5.9423999581486,5.944546983,5.944323018,5.944030993,5.944661982,5.945618022,5.94456098,5.944527034,5.944455033,5.94368197,5.943116024,5.9441579785198,5.944231991,5.943575017,5.944783017,5.9451320394874,5.943981037,5.943400003,5.942940004,5.9341990202665,5.941575011,5.94201196,5.9341309592128,5.941829989,5.942477994,5.941320034,5.9350920282304,5.940605979,5.94011304,5.94064001,5.9345339611173,5.9347669780254,5.9352930262685,5.937361009419,5.9370500408113,5.9365020319819,5.9363540075719,5.9377520252019,5.9376670327038,5.9377559646964,5.9370979852974,5.9386069793254,5.938228033483,5.9378279652447,5.940862968564,5.9395719878376,5.9389829915017,5.9390040300787,5.9397279750556,5.9394080378115,5.9382080007344,5.9386120084673,5.9396439883858,5.9393470175564,5.9390819817781,5.9409479610622,5.9416630212218,5.9418530389667,5.9430649783462,5.942121008411,5.9404540155083,5.9429460391402,5.9436279907823,5.9423879720271,5.9477780386806,5.9481050167233,5.9465240221471,5.9505240339786,5.9508360084146,5.9446169715375,5.84181284531951,5.84040502086282,5.83933398127556,5.83839504048228,5.83754100836813,5.84055899642408,5.84285999648273,5.84234601818025,5.84162601269782,5.84123097360134,5.84067600779235,5.8415250107646,5.83673902787268,5.83788801915944,5.83670197986066,5.8399929665029,5.84046302363276,5.84172902628779,5.82168496213853,5.82077200524509,5.8213859796524,5.82086596637964,5.82083403132856,5.81962997093797,5.82222299650311,5.82323301583529,5.82380197942257,5.82262197509408,5.8213500212878,5.82081098109484,5.81936200149357,5.81977598369122,5.82089396193624,5.82004797644913,5.82132998853922,5.82109495997429,5.82194396294653,5.82128003239632,5.81931598484516,5.81915304064751,5.81935001537204,5.81927700899541,5.82014000974595,5.81922504119575,5.82310100086033,5.83522701635957,5.83528803661466,5.83606101572514,5.82755698822439,5.82920998334885,5.82677504047751,5.82557098008692,5.82598001696169,5.84217603318393,5.84216002374887,5.84145996719599,5.83126698620617,5.8312379848212,5.83040297962725,5.82987500354648,5.82957702688873,5.82924602553248,5.82837397232652,5.83644297905266,5.83680499345064,5.83700297400355,5.8376170322299,5.8372179698199,5.83757503889501,5.83829403854907,5.83622395992279,5.83732098340988,5.83819999359548,5.83879703655839,5.83143102005124,5.83360997959971,5.83374903537333,5.83523196168244,5.83593604154885,5.83482200279832,5.83496198058128,5.83598700352013,5.83696299232543,5.83484304137528,5.83515300415456,5.83546799607575,5.83591097965837,5.718519,5.994965,5.95603,5.990892,5.752652,5.968039,5.985093,5.99075,5.971735,5.765559,5.994984,5.949275,5.941725,5.9582,5.9811,5.9811,5.948775,5.941675,5.9582,5.9811,5.9811,5.7006,5.96725,5.7006,5.7052,5.7006,5.7052,5.967075,5.7006,5.7006,5.943393,5.978624,5.734458,5.964349,5.987337,5.96421,5.964807,5.982751,5.984162,5.988717,5.727987,5.950054,5.947868,5.978786,5.949654,5.987873,5.950413,5.7342,5.737066,5.97755,5.9582,5.9474,5.961075,5.96635,5.9582,5.9474,5.9611,5.9663,5.9375,5.700525,5.971675,5.966025,5.75795,5.938,5.701075,5.9713,5.96615,5.758575,5.735371,5.958887,5.966241,5.723052,5.943282,5.949803,5.983575,5.990806,5.7525,5.971879,5.968137,5.984777,5.73431,5.964725,5.964445,5.990453,5.7182,5.76566,5.982617,5.988075,5.987496,5.735187,5.72799,5.950115,5.99492,5.950302,5.956118,5.947851,5.958754,5.7342,5.984003,5.995032,5.966316,5.978671,5.737057,5.723171,5.977586,5.988513,6.52324975129841,6.51501467011509,6.53001604335626,6.52974896619074,6.53014904550651,6.53041728204176,6.5317000816879,6.53052946567027],[-5.997247025,-5.997353978,-5.973574016,-5.989315985,-5.98211199,-5.98523601,-5.992631027,-5.991499973,-5.989804985,-5.989379017,-5.989648998,-5.982192038,-5.989670036,-5.98962402,-5.989628965,-5.986796971,-5.211878037,-5.232591983,-5.230082022,-5.228075981,-5.232655015,-5.221268032,-5.183249982,-5.183260962,-5.182213979,-5.182213979,-5.175031023,-5.181141011,-5.174890039,-5.189672029,-5.189397018,-5.19991396,-6.117015034,-6.120263021,-6.123044975,-6.161120022,-6.161814965,-6.167999972,-6.168567007,-6.169117028,-6.167868963,-6.167724961,-6.166155031,-6.184491031,-6.182621028,-6.177220987,-6.177135995,-6.174254967,-6.138795996,-6.139579033,-6.137960991,-6.136813005,-6.111993017,-6.113157012,-6.113007981,-6.116168965,-6.106400024,-6.110289982,-6.110227033,-6.114840014,-6.114383033,-6.157176001,-6.157749994,-6.218478978,-3.261830024,-3.297337024,-3.300071033,-3.303544996,-3.300834959,-3.237451008,-3.244752986,-3.301505009,-3.266093982,-3.264137981,-3.262502002,-3.277708031,-3.278231984,-3.276351001,-3.261209009,-3.28844198,-6.639113976,-6.638885988,-6.638193978,-6.642098017,-6.650816035,-6.650137017,-6.649226993,-6.652583024,-6.652358975,-6.652152026,-6.656819992,-6.656452026,-6.656906996,-6.649709959,-6.650415966,-6.656456972,-6.659267005,-6.657605041,-6.629297007,-6.629349981,-6.621413995,-6.618403969,-6.612767978,-6.573849041,-6.57688899,-6.569478968,-6.572568035,-6.569190966,-6.660828972,-6.659583002,-6.653865036,-6.566434996,-5.401578,-5.397214,-5.502547,-5.493736,-5.497938,-5.497859,-5.439055,-5.453374,-5.370277,-5.350236,-5.365151,-5.496345,-5.4959,-5.493437,-5.359848,-5.413252,-5.497568,-5.486924,-5.468128,-6.488913037,-6.492432011,-6.501298975,-6.50181002,-6.489718035,-6.494936021,-6.495440025,-6.497027976,-6.502902014,-6.494652964,-6.493329965,-6.502103973,-6.501208032,-6.503640041,-6.509433025,-6.464233026,-7.013558988,-7.01128196,-7.011253964,-6.997336987,-6.989225987,-6.987417005,-6.989364959,-7.006279975,-7.004436962,-6.984581994,-7.001483012,-7.003708994,-7.003750987,-7.002500994,-7.004892016,-7.003916027,-6.917143,-6.897604,-6.90403,-6.902884,-6.905424,-6.895102,-6.886305,-6.878054,-6.881701,-6.8837,-6.882969,-6.87672,-6.895297,-6.8974,-6.900354,-6.87456,-6.871615,-6.871671,-6.913459,-6.918715,-3.015148016,-3.01451996,-3.02260397,-3.022490982,-3.014941989,-3.031830015,-3.032033024,-3.031200031,-2.979141036,-2.979189986,-2.980036978,-2.976442985,-2.981313039,-2.98454904,-2.98448802,-2.982177967,-3.725942038,-3.726533968,-3.733162042,-3.653288037,-3.65237399,-3.660379965,-3.688637037,-3.688097997,-3.686236041,-3.686236041,-3.667770959,-3.660044018,-3.68413101,-3.590384033,-3.569715014,-3.582974011,-4.739958,-4.73594,-4.724093,-4.762195,-4.759724,-4.752275,-4.790675,-4.78641,-4.753124,-4.747802,-4.736261,-4.741309,-4.759617,-4.756431,-4.752127,-4.752892,-4.746919,-4.728095,-4.787606,-4.75022,-6.122683,-6.128424,-6.131271,-6.134304,-6.138228,-6.118743,-6.157914,-6.154505,-6.154471,-6.155336,-6.177797,-6.176681,-6.180367,-6.182582,-6.18012,-6.190479,-6.191081,-6.192301,-6.188123,-6.18762,-7.390633989,-7.391092982,-7.409250028,-7.400795035,-7.402125997,-7.410491975,-7.440252006,-7.444722997,-7.453513015,-7.485776972,-7.45286501,-7.44093203,-7.432514001,-7.40745496,-7.400574004,-7.41043699,-7.761121988,-7.754915021,-7.750903023,-7.762776995,-7.763290973,-7.752493992,-7.76158601,-7.748196004,-7.747153966,-7.747655036,-7.746947017,-7.767635984,-7.766296975,-7.762365025,-7.750961026,-7.752718041,-5.574303987,-5.589539018,-5.589234,-5.592959002,-5.589338019,-5.592024,-5.578428973,-5.590881966,-5.597348018,-5.595502993,-5.580131002,-5.586254988,-5.586652039,-5.585549986,-5.603618016,-5.586835016,-4.039534014,-4.001362994,-4.028137978,-4.04808104,-4.008603031,-4.012533976,-4.006049987,-4.005640028,-3.999386961,-4.010816021,-4.009496039,-4.011782035,-4.009965006,-4.049550975,-4.025315959,-4.008719958,-5.709373,-5.716338,-5.716417,-5.701607,-5.69494,-5.654408,-5.655671,-5.655816,-5.657452,-5.656775,-5.658494,-5.675588,-5.676578,-5.675544,-5.676684,-5.685539,-5.68629,-5.690412,-5.691381,-5.69536,-5.676794,-6.08313,-6.085601,-6.092895,-6.072848,-6.070925,-6.069222,-6.111877,-6.110554,-6.107781,-6.101483,-6.08503,-6.087474,-6.085202,-6.095611,-6.095277,-6.092828,-6.091945,-6.070405,-6.084922,-6.092633,-3.620128,-3.621827,-3.561806,-3.564086,-3.606,-3.610638,-3.615948,-3.61799,-3.624069,-3.627431,-3.626958,-3.625396,-3.623659,-3.625355,-3.625374,-3.616351,-5.469071,-3.595473,-3.610251,-3.610702,-4.081823074,-4.08842354,-4.088184701,-4.084925074,-4.075806483,-4.14116506,-4.057930871,-4.060569812,-4.045431873,-4.08192931,-4.07408481,-4.124037323,-4.120328558,-4.119931725,-4.082954448,-4.086839386,-4.082572763,-4.145639654,-4.147653111,-3.569719959,-3.569664974,-3.570629982,-3.569161976,-3.568977993,-3.568012984,-3.566384967,-3.566185981,-3.566978993,-3.566835998,-3.565940978,-3.564816965,-3.565314012,-3.565444015,-3.568249019,-3.563910965,-3.564762985,-3.562516971,-3.561465964,-3.56294604,-3.566184975,-3.560555018,-3.561321963,-3.560542027,-3.559064968,-3.559149038,-3.5623179841787,-3.560226029,-3.560619978,-3.5600680299103,-3.561394969,-3.562398031,-3.562793992,-3.562485036,-3.567591039,-3.567931009,-3.568698037,-3.56962298,-3.569708979,-3.569746027,-3.5631000157446,-3.570712963,-3.568636011,-3.566829041,-3.564419997856,-3.565925974,-3.56644297,-3.567149984,-3.5634089726955,-3.566436013,-3.565823967,-3.5650899633765,-3.565506041,-3.56537302,-3.563354993,-3.5672939848155,-3.562816037,-3.56182999,-3.561712978,-3.5671889595687,-3.5674769617617,-3.5651529952884,-3.5684670321643,-3.5671069845557,-3.5676000081003,-3.5665329918265,-3.5654919594526,-3.5646000411361,-3.5637180134654,-3.5631339624524,-3.5633819829673,-3.5671720281243,-3.566381027922,-3.5652880277485,-3.566055977717,-3.565218038857,-3.564744964242,-3.5642490070313,-3.5623149666935,-3.568325964734,-3.5689270310104,-3.5686989594251,-3.5679699853063,-3.5671860259026,-3.5675929673016,-3.5689449682832,-3.5695229843259,-3.5706039983779,-3.5702569875866,-3.5692949965596,-3.5682699736208,-3.5723920259625,-3.566381027922,-3.568207025528,-3.5694649815559,-3.5694049671292,-3.5702249687165,-3.5708260349929,-3.5781570151448,-5.17847112379968,-5.17837096005678,-5.17811397090554,-5.17802503891289,-5.17817599698901,-5.17646198160946,-5.17628202214837,-5.17525498755276,-5.17549898475409,-5.17547702416778,-5.17526596784592,-5.17603198997676,-5.16731003299356,-5.16738102771342,-5.16894601285458,-5.17276698723435,-5.17119001597166,-5.17287100665271,-5.17321801744402,-5.17304199747741,-5.17443599179387,-5.16990599222481,-5.16283099539578,-5.1620249915868,-5.16409196890891,-5.16370296478271,-5.16364404000342,-5.16310097649693,-5.16238801181316,-5.16595400869846,-5.16658801585436,-5.16746702603996,-5.16759300604463,-5.16861601732671,-5.16969501972198,-5.1682919729501,-5.16917802393436,-5.17932800576091,-5.17864395864308,-5.17788296565413,-5.17663397826254,-5.17533604055643,-5.17258300445974,-5.17313000746071,-5.17406299710274,-5.17618998885155,-5.17547802999616,-5.17527502030134,-5.17336101271212,-5.17381003126502,-5.17335497774184,-5.17273899167776,-5.17373300157487,-5.16753600910306,-5.1684769615531,-5.16734196804464,-5.16408702358603,-5.16611703671515,-5.16564102843404,-5.16552401706576,-5.1664150133729,-5.16706502996385,-5.16538001596928,-5.17098499462008,-5.17225300893188,-5.17324500717223,-5.17382302321494,-5.17195201478899,-5.17165303230286,-5.17247102223337,-5.16971396282315,-5.16939000226557,-5.16923896037042,-5.16907601617277,-5.18111603334546,-5.18019796349108,-5.1810949947685,-5.18121703527868,-5.18288402818143,-5.18222101964056,-5.18471295945346,-5.18463299609721,-5.18586203455925,-5.18531796522439,-5.1862239651382,-5.18639503978193,-5.18638799898326,-3.602035,-3.579403,-3.720675,-3.748186,-3.579167,-3.450268,-3.473747,-3.579457,-3.725362,-3.607634,-3.577996,-3.5697,-3.57,-3.6903,-3.6977,-3.6977,-3.570075,-3.57025,-3.6902,-3.6977,-3.6977,-3.6164,-3.593425,-3.6164,-3.6132,-3.6164,-3.6132,-3.593425,-3.6164,-3.6164,-3.56749,-3.734364,-3.625351,-3.580513,-3.716421,-3.580398,-3.581011,-3.463096,-3.472665,-3.456081,-3.61465,-3.566491,-3.574903,-3.734239,-3.570839,-3.714742,-3.564709,-3.5906,-3.603511,-3.708407,-3.690225,-3.7128,-3.703275,-3.737025,-3.6902,-3.7128,-3.7033,-3.737825,-3.583575,-3.616275,-3.620025,-3.5927,-3.628125,-3.583725,-3.615475,-3.6206,-3.59275,-3.62765,-3.598474,-3.728235,-3.584931,-3.60273,-3.567682,-3.57074,-3.733802,-3.747899,-3.5792,-3.725334,-3.450591,-3.473714,-3.625553,-3.580901,-3.580599,-3.57955,-3.602114,-3.607773,-3.462952,-3.714879,-3.716292,-3.598411,-3.614556,-3.566621,-3.579516,-3.564861,-3.721015,-3.574755,-3.728103,-3.5906,-3.472885,-3.577838,-3.584824,-3.734458,-3.603341,-3.60287,-3.70825,-3.456171,-5.48923414278295,-5.4895730315175,-5.38721265280898,-5.38635283957576,-5.38775552379743,-5.38646445485009,-5.48923071605856,-5.38758561808144],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,["bonon 9","bonon 10","bonon 11","bonon 12","bonon 13","bonon 14","bonon 15","bonon 16","bonon 17","bonon 18","bonon 19","bonon 20","bonon 21","bonon 22","bonon 23","bonon 24","ble 1","ble 2","ble 3","ble 4","ble 5","ble 6","ble 7","ble 8","ble 9","ble 10","ble 11","ble 12","ble 13","ble 14","ble 15","ble 16","gueyo 1","gueyo 2","gueyo 3","gueyo 4","gueyo 5","gueyo 6","gueyo 7","gueyo 8","gueyo 9","gueyo 10","gueyo 11","gueyo 12","gueyo 13","gueyo 14","gueyo 15","gueyo 16","guiberoua 1","guiberoua 2","guiberoua 3","guiberoua 4","guiberoua 5","guiberoua 6","guiberoua 7","guiberoua 8","guiberoua 9","guiberoua 10","guiberoua 11","guiberoua 12","guiberoua 13","guiberoua 14","guiberoua 15","guiberoua 16","agnibilekrou 1","agnibilekrou 2","agnibilekrou 3","agnibilekrou 4","agnibilekrou 5","agnibilekrou 6","agnibilekrou 7","agnibilekrou 8","agnibilekrou 9","agnibilekrou 10","agnibilekrou 11","agnibilekrou 12","agnibilekrou 13","agnibilekrou 14","agnibilekrou 15","agnibilekrou 16","soubre 1","soubre 2","soubre 3","soubre 4","soubre 5","soubre 6","soubre 7","soubre 8","soubre 9","soubre 10","soubre 11","soubre 12","soubre 13","soubre 14","soubre 15","soubre 16","meagui 1","meagui 2","meagui 3","meagui 4","meagui 5","meagui 6","meagui 7","meagui 8","meagui 9","meagui 10","meagui 11","meagui 12","meagui 13","meagui 14","meagui 15","meagui 16","tene 1","tene 2","tene 3","tene 4","tene 5","tene 6","tene 7","tene 8","tene 9","tene 10","tene 11","tene 12","tene 13","tene 14","tene 15","tene 16","tene FA1","tene FA2","tene FA4","san_pedro 1","san_pedro 2","san_pedro 3","san_pedro 4","san_pedro 5","san_pedro 6","san_pedro 7","san_pedro 8","san_pedro 9","san_pedro 10","san_pedro 11","san_pedro 12","san_pedro 13","san_pedro 14","san_pedro 15","san_pedro 16","grand_bereby 1","grand_bereby 2","grand_bereby 3","grand_bereby 4","grand_bereby 5","grand_bereby 6","grand_bereby 7","grand_bereby 8","grand_bereby 9","grand_bereby 10","grand_bereby 11","grand_bereby 12","grand_bereby 13","grand_bereby 14","grand_bereby 15","grand_bereby 16","ht_sassandra FA1","ht_sassandra 2","ht_sassandra 3","ht_sassandra 4","ht_sassandra 5","ht_sassandra 6","ht_sassandra 7","ht_sassandra 8","ht_sassandra 9","ht_sassandra 10","ht_sassandra 11","ht_sassandra 12","ht_sassandra 13","ht_sassandra 14","ht_sassandra 15","ht_sassandra 16","ht_sassandra FA2","ht_sassandra 18","ht_sassandra FA3","ht_sassandra FA4","mafere 1","mafere 2","mafere 3","mafere 4","mafere 5","mafere 6","mafere 7","mafere 8","mafere 9","mafere 10","mafere 11","mafere 12","mafere 13","mafere 14","mafere 15","mafere 16","adzope 1","adzope 2","adzope 3","adzope 4","adzope 5","adzope 6","adzope 7","adzope 8","adzope 9","adzope 10","adzope 11","adzope 12","adzope 13","adzope 14","adzope 15","adzope 16","irobo 1","irobo 2","irobo 3","irobo 4","irobo FA1","irobo 6","irobo 7","irobo 8","irobo FA2","irobo FA3","irobo 11","irobo FA4","irobo 13","irobo 14","irobo 15","irobo 16","irobo 17","irobo 18","irobo 19","irobo 20","niegre FA1","niegre 2","niegre 3","niegre 4","niegre FA2","niegre 6","niegre FA3","niegre 8","niegre 9","niegre 10","niegre 11","niegre FA4","niegre 13","niegre 14","niegre 15","niegre 16","niegre 17","niegre 18","niegre 19","niegre 20","guiglo 1","guiglo 2","guiglo 3","guiglo 4","guiglo 5","guiglo 6","guiglo 7","guiglo 8","guiglo 9","guiglo 10","guiglo 11","guiglo 12","guiglo 13","guiglo 14","guiglo 15","guiglo 16","biankouma 1","biankouma 2","biankouma 3","biankouma 4","biankouma 5","biankouma 6","biankouma 7","biankouma 8","biankouma 9","biankouma 10","biankouma 11","biankouma 12","biankouma 13","biankouma 14","biankouma 15","biankouma 16","fresco 1","fresco 2","fresco 3","fresco 4","fresco 5","fresco 6","fresco 7","fresco 8","fresco 9","fresco 10","fresco 11","fresco 12","fresco 13","fresco 14","fresco 15","fresco 16","azaguie 1","azaguie 2","azaguie 3","azaguie 4","azaguie 5","azaguie 6","azaguie 7","azaguie 8","azaguie 9","azaguie 10","azaguie 11","azaguie 12","azaguie 13","azaguie 14","azaguie 15","azaguie 16","badenou 1","badenou 2","badenou FA1","badenou FA2","badenou FA3","badenou 6","badenou 7","badenou 8","badenou 9","badenou FA4","badenou 11","badenou 12","badenou 13","badenou 14","badenou 15","badenou 16","badenou 17","badenou 18","badenou 19","badenou 20","badenou FA5","foumbou 1","foumbou 2","foumbou 3","foumbou 4","foumbou 5","foumbou 6","foumbou 7","foumbou 8","foumbou 9","foumbou 10","foumbou 11","foumbou 12","foumbou 13","foumbou 14","foumbou 15","foumbou 16","foumbou FA1","foumbou FA2","foumbou FA3","foumbou FA4","yaya 1","yaya 2","yaya 3","yaya 4","yaya 5","yaya 6","yaya 7","yaya 8","yaya 9","yaya 10","yaya 11","yaya 12","yaya 13","yaya 14","yaya 15","yaya 16","yaya FA1","yaya FA2","yaya FA3","yaya FA4","agbo 1","agbo 4","agbo FA1","agbo 6","agbo 7","agbo 12","agbo FA2","agbo 19","agbo 34","agbo 45","agbo 62","agbo 72","agbo 73","agbo 74","agbo 76","agbo 80","agbo 85","agbo 90","agbo 91","mebifon 1","mebifon 2","mebifon 3","mebifon 4","mebifon 5","mebifon 6","mebifon 7","mebifon 8","mebifon 9","mebifon 10","mebifon 11","mebifon 12","mebifon 13","mebifon 14","mebifon 15","mebifon 16","mebifon 17","mebifon 18","mebifon 19","mebifon 20","mebifon 21","mebifon 22","mebifon 23","mebifon 24","mebifon 25","mebifon 26","mebifon 27","mebifon 28","mebifon 29","mebifon 30","mebifon 31","mebifon 32","mebifon 33","mebifon 34","mebifon 35","mebifon 36","mebifon 37","mebifon 38","mebifon 39","mebifon 40","mebifon 41","mebifon 42","mebifon 43","mebifon 44","mebifon 45","mebifon 46","mebifon 47","mebifon 48","mebifon 49","mebifon 50","mebifon 51","mebifon 52","mebifon 53","mebifon 54","mebifon 55","mebifon 56","mebifon 57","mebifon 58","mebifon 59","mebifon 60","mebifon 61","mebifon 62","mebifon 63","mebifon 64","mebifon 65","mebifon 66","mebifon 67","mebifon 68","mebifon 69","mebifon 70","mebifon 71","mebifon 72","mebifon 73","mebifon 74","mebifon 75","mebifon 76","mebifon 77","mebifon 78","mebifon 79","mebifon 80","mebifon 81","mebifon 82","mebifon 83","mebifon 84","mebifon 85","mebifon 86","mebifon 87","mebifon 88","mebifon 89","mebifon 90","mebifon 91","mebifon 92","mebifon 93","mebifon 94","mebifon 95","mebifon 96","mebifon 97","mebifon 98","mebifon 99","behiri 1","behiri 2","behiri 3","behiri 4","behiri 5","behiri 6","behiri 7","behiri 8","behiri 9","behiri 10","behiri 11","behiri 12","behiri 13","behiri 14","behiri 15","behiri 16","behiri 17","behiri 18","behiri 19","behiri 20","behiri 21","behiri 22","behiri 23","behiri 24","behiri 25","behiri 26","behiri 27","behiri 28","behiri 29","behiri 30","behiri 31","behiri 32","behiri 33","behiri 34","behiri 35","behiri 36","behiri 37","behiri 38","behiri 39","behiri 40","behiri 41","behiri 42","behiri 43","behiri 44","behiri 45","behiri 46","behiri 47","behiri 48","behiri 49","behiri 50","behiri 51","behiri 52","behiri 53","behiri 54","behiri 55","behiri 56","behiri 57","behiri 58","behiri 59","behiri 60","behiri 61","behiri 62","behiri 63","behiri 64","behiri 65","behiri 66","behiri 67","behiri 68","behiri 69","behiri 70","behiri 71","behiri 72","behiri 73","behiri 74","behiri 75","behiri 76","behiri 77","behiri 78","behiri 79","behiri 80","behiri 81","behiri 82","behiri 83","behiri 84","behiri 85","behiri 86","behiri 87","adzopeN 1","adzopeN 2","adzopeN 3","adzopeN 4","adzopeN 5","adzopeN 6","adzopeN 7","adzopeN 8","adzopeN 9","adzopeN 10","adzopeN 11","adzopeN 12","adzopeN 13","adzopeN 14","adzopeN 16","adzopeN 17","adzopeN 18","adzopeN 19","adzopeN 20","adzopeN 22","adzopeN 23","adzopeN 24","adzopeN 25","adzopeN 26","adzopeN 27","adzopeN 28","adzopeN 30","adzopeN 31","adzopeN 32","adzopeN 33","adzopeN 34","adzopeN 35","adzopeN 36","adzopeN 37","adzopeN 38","adzopeN 39","adzopeN 40","adzopeN 41","adzopeN 42","adzopeN 43","adzopeN 44","adzopeN 45","adzopeN 46","adzopeN 47","adzopeN 52","adzopeN 53","adzopeN 54","adzopeN 55","adzopeN 56","adzopeN 57","adzopeN 58","adzopeN 59","adzopeN 60","adzopeN 61","adzopeN 62","adzopeN 63","adzopeN 64","adzopeN 65","adzopeN 66","adzopeN 67","adzopeN 69","adzopeN 70","adzopeN 71","adzopeN 72","adzopeN 73","adzopeN 75","adzopeN 76","adzopeN 77","adzopeN 78","adzopeN 79","adzopeN 80","adzopeN 81","adzopeN 82","adzopeN 83","adzopeN 84","adzopeN 85","adzopeN 86","adzopeN 87","adzopeN 88","adzopeN 89","adzopeN 90","adzopeN 91","adzopeN 92","adzopeN 93","adzopeN 94","adzopeN 95","adzopeN 96","adzopeN 97","adzopeN 98","adzopeN 99","adzopeN 100","adzopeN 101","adzopeN 102","adzopeN 103","adzopeN 104","adzopeN 105","adzopeN 106","adzopeN 107","adzopeN 108","adzopeN 109","adzopeN 110","adzopeN 111","adzopeN 112","adzopeN 113","adzopeN 114","adzopeN 115","tene_oume 1","tene_oume 2","tene_oume 3","tene_oume 4","tene_oume 5","tene_oume 6","tene_oume 7","tene_oume 8"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[4.778207,9.844833],"lng":[-7.767635984,-2.976442985]}},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-32d0ce59e2e545aa307a" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-32d0ce59e2e545aa307a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.WorldImagery",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[5.975059038,6.072799992,6.014215015,6.027954966,6.043983009,6.051052976,5.948838014,5.962369004,5.973937958,5.978498971,6.082466003,6.081747003,6.088123033,6.073300978,6.074349973,6.073179021,5.7182,5.765559,5.728,5.950054,5.99489,5.950302,5.95581,5.947867,5.95871,5.7343,5.98419,5.99505,5.994984,5.966283,5.9787,5.737052933,5.723171,5.97757,5.988717,5.9494,5.942183,5.949567,5.9782,5.98128,5.9488,5.941676,5.994965,5.95005,5.98139,5.98124,5.727387,5.9674,5.9672217,5.70524,5.7006,5.72679,5.95609,5.7055,5.9675171,5.72204,5.7006,5.943393,5.98381,5.734458,5.964349,5.987337,5.96421,5.990892,5.964807,5.982751,5.984003,5.98849,5.727987,5.95014,5.947868,5.97858,5.752652,5.949654,5.987873,5.950413,5.73415,5.737066,5.97754,5.9581722,5.9522347,5.9681379,5.96116,5.96631,5.9585992,5.9518294,5.96095,5.96621,5.9373314,5.7005,5.971675,5.985093,5.9656228,5.75767,5.9380251,5.7010828,5.9713,5.96615,5.75841,5.735371,5.95892,5.99075,5.966517,5.723052,5.943282,5.94985,5.98352,5.990806,5.75243,5.972,5.9680365,5.984777,5.971735,5.73431,5.96464,5.96457,5.990453,5.718519,5.76566,5.98258,5.988075,5.987496,5.735187,6.436678715,6.376214271,6.490710745,6.481824153,6.428162798,6.422776953,6.424199657,6.394230555,6.430577265,6.427724002,6.422793852,6.423246944,6.359941938,6.358776076,6.354669728,6.359689237,6.358554218,6.422139619,6.48712554,6.833588965,6.886568964,6.883607972,6.831270028,6.830971967,6.846252009,6.832242999,6.853006985,6.830156995,6.819206038,6.838189038,6.840851968,6.814170023,6.828930974,6.847785981,6.886155987,5.665462967,5.65131004,5.650344025,5.649587978,5.649411036,5.631877016,5.641592983,5.648512999,5.622631023,5.627482971,5.631536962,5.665977029,5.656186966,5.662315981,5.660747979,5.657839039,9.842936999999999,9.80728,9.767953,9.769748,9.768715,9.770951,9.775842000000001,9.777296,9.776557,9.778098,9.840657,9.777958999999999,9.788518,9.786080999999999,9.781411,9.780193000000001,9.839888999999999,9.844609,9.844833,9.803887,9.776717,5.84181284531951,5.84123097360134,5.84067600779235,5.8415250107646,5.83673902787268,5.83788801915944,5.83670197986066,5.8399929665029,5.84046302363276,5.84172902628779,5.82168496213853,5.84040502086282,5.82077200524509,5.8213859796524,5.82086596637964,5.82083403132856,5.81962997093797,5.82222299650311,5.82323301583529,5.82380197942257,5.82262197509408,5.8213500212878,5.83933398127556,5.82081098109484,5.81936200149357,5.81977598369122,5.82089396193624,5.82004797644913,5.82132998853922,5.82109495997429,5.82194396294653,5.82128003239632,5.81931598484516,5.83839504048228,5.81915304064751,5.81935001537204,5.81927700899541,5.82014000974595,5.81922504119575,5.82310100086033,5.83522701635957,5.83528803661466,5.83606101572514,5.82755698822439,5.83754100836813,5.82920998334885,5.82677504047751,5.82557098008692,5.82598001696169,5.84217603318393,5.84216002374887,5.84145996719599,5.83126698620617,5.8312379848212,5.83040297962725,5.84055899642408,5.82987500354648,5.82957702688873,5.82924602553248,5.82837397232652,5.83644297905266,5.83680499345064,5.83700297400355,5.8376170322299,5.8372179698199,5.83757503889501,5.84285999648273,5.83829403854907,5.83622395992279,5.83732098340988,5.83819999359548,5.83879703655839,5.83143102005124,5.83360997959971,5.83374903537333,5.83523196168244,5.83593604154885,5.84234601818025,5.83482200279832,5.83496198058128,5.83598700352013,5.83696299232543,5.83484304137528,5.83515300415456,5.83546799607575,5.83591097965837,5.84162601269782,7.558191,7.563710986,7.563685002,7.601635996,7.60186499,7.578040017,7.559562027,7.561940979,7.559160031,7.569814017,7.60029003,7.600841979,7.59915797,7.577853017,7.567688031,7.566003017,5.886479001,5.932957996,5.964710992,5.944517981,5.950332005,5.926763015,5.927688042,5.909091029,5.876414012,5.881506018,5.88271603,5.877322024,5.877675992,5.932293981,5.932312002,5.932957996,6.941795982,6.88710398,6.882849997,6.92754901,6.935630003,6.923468029,6.923038037,6.921685031,6.925108032,6.925501982,6.942867022,6.923455037,6.923765,6.923737004,6.935038995,6.943489965,8.917382999999999,8.918628999999999,8.903026000000001,8.901899999999999,8.909632,8.908643,8.902801999999999,8.919693000000001,8.917600999999999,8.913606,8.916225000000001,8.914726999999999,8.910968,8.908948000000001,8.908424999999999,8.912523999999999,8.917894,8.911111,8.894892,8.904617,5.139132002,5.143745989,5.147737032,5.147538967,5.147880027,5.147292037,5.137280021,5.143406019,5.148827014,5.148947965,5.150825009,5.170730017,5.159988021,5.18078696,5.179537972,5.143569969,4.778207,4.79593196,4.789507985,4.79819499,4.797917968,4.794948008,4.791125022,4.785643006,4.78192999,4.780396018,4.778950978,4.806132987,4.80631697,4.807480965,4.792190026,4.790460002,5.762168001,5.801692028,5.796535984,5.793789988,5.791253038,5.786119038,5.788302021,5.779952975,5.776712028,5.777429016,5.777406972,5.778868021,5.797377024,5.79753804,5.803777026,5.801369995,6.184511986,6.192127028,6.191693014,6.196473967,6.195844989,6.194370026,6.194027038,6.220129039,6.183212036,6.183460979,6.181434989,6.198540023,6.198887033,6.194745032,6.19863499,6.183446981,6.57258396,6.60524304,6.567020975,6.572401989,6.538807992,6.572842039,6.570153963,6.583260996,6.573307989,6.58283704,6.575162988,6.573803024,6.616935963,6.616761032,6.618787022,6.569885993,6.938236,6.936641,6.944493,6.937398,6.941838,6.937724,6.939392,6.943265,6.933183,6.926284,6.92956,6.931208,6.932132,6.939377,6.941521,6.943518,6.915938,6.946584,6.996369,7.011029,5.651223,5.632846,5.624452,5.624276,5.630658,5.631466,5.642856,5.615771,5.606895,5.657237,5.643942,5.698436,5.615502,5.631692,5.551299,5.559315,5.627809,5.630231,5.637034,5.636421,5.375947002,5.433733016,5.434384039,5.437061973,5.436510025,5.437121987,5.445974031,5.447309017,5.375567973,5.372343035,5.372843016,5.375465965,5.369190015,5.366436979,5.366055015,5.434011966,5.428425008,5.246551959,5.244135037,5.244640969,5.423926022,5.427869959,5.422092983,5.254424997,5.431056004,5.416321959,5.41912403,5.422737971,5.42461996,5.425076019,5.245842012,5.252612997,5.950036962,5.948842959,5.948039973,5.948425038,5.949373031,5.947665973,5.947170015,5.946529973,5.945711983,5.945502017,5.945769986,5.948828962,5.944991978,5.946897017,5.943302019,5.943276035,5.941137979,5.943266982,5.943870982,5.945390034467,5.944157979,5.944013977,5.948327975,5.9423999581486,5.944546983,5.944323018,5.944030993,5.944661982,5.945618022,5.94456098,5.944527034,5.944455033,5.94368197,5.948386984,5.943116024,5.9441579785198,5.944231991,5.943575017,5.944783017,5.9451320394874,5.943981037,5.943400003,5.942940004,5.9341990202665,5.949349981,5.941575011,5.94201196,5.9341309592128,5.941829989,5.942477994,5.941320034,5.9350920282304,5.940605979,5.94011304,5.94064001,5.949509991,5.9345339611173,5.9347669780254,5.9352930262685,5.937361009419,5.9370500408113,5.9365020319819,5.9363540075719,5.9377520252019,5.9376670327038,5.9377559646964,5.951149995,5.9370979852974,5.9386069793254,5.938228033483,5.9378279652447,5.940862968564,5.9395719878376,5.9389829915017,5.9390040300787,5.9397279750556,5.9394080378115,5.95011902,5.9382080007344,5.9386120084673,5.9396439883858,5.9393470175564,5.9390819817781,5.9409479610622,5.9416630212218,5.9418530389667,5.9430649783462,5.942121008411,5.950583965,5.9404540155083,5.9429460391402,5.9436279907823,5.9423879720271,5.9477780386806,5.9481050167233,5.9465240221471,5.9505240339786,5.9508360084146,5.9446169715375,5.116856,5.096544,5.097697,5.124114,5.126869,5.123618,5.122831,5.150082,5.1401,5.100874,5.140756,5.101568,5.10394,5.095558,5.120252,5.117748,5.0962,5.111572,5.095785,5.097118,4.923580969,4.917676002,4.918385027,4.909171974,4.901766982,4.898010967,4.889499983,4.890137007,4.920484023,4.919074019,4.911902966,4.923783978,4.912143024,4.913029997,4.915062021,4.91470403,5.876038,5.929367021,5.926662013,5.926019037,5.925557027,5.899596009,5.89748201,5.901026968,5.875028986,5.880647041,5.900838962,5.917432029,5.905047012,5.902227005,5.926340986,5.929473974,5.85195559352583,5.92776650414645,5.93009484171676,5.93802801466083,5.88872104412126,5.85130518523053,5.84603786492259,6.474801,6.556096,6.558309,6.488468,6.489549,6.481437,6.564826,6.572147,6.472609,6.530608,6.481319,6.51208,6.516257,6.548024,6.568785,6.564219,6.48804,6.521067,6.533104,6.52324975129841,6.51501467011509,6.53001604335626,6.52974896619074,6.53014904550651,6.53041728204176,6.5317000816879,6.53052946567027,5.677165,5.798648,5.79841,5.809184,5.809865,5.826336,5.82635,5.852952,5.676046,5.740059,5.738043,5.766651,5.76583,5.768397,5.853723,5.836914,6.502012,5.702279,5.687038,5.689001,6.53035105384011,6.53035551637685,6.52944730314714,6.52945176506074,6.53036889428408,6.53037335035214,6.5294651410999,6.52946959654572,6.53038670885321,6.5303911584525,6.52948295318143,6.52948740215938,6.53040449754713,6.53040894067758,6.52950073939137,6.52950518190138,6.53042226036551,6.53042669702701,6.52951849972937,6.52952293577134,6.52673605085054,6.52674051089473,6.52583230001246,6.52583675943351,6.52675388132971,6.52675833490884,6.52585012800046,6.52585458095735,6.5267716859485,6.52677613306247,6.52586793013168,6.52587237662432,6.52678946470654,6.52679390535526,6.52588570640577,6.52589014643407,6.52680721760348,6.52681165178687,6.52590345682237,6.52590789038625,6.52312104728067,6.52312550483234,6.52221729629757,6.52222175322611,6.52313886779519,6.52314331888541,6.52223511432095,6.52223956478894,6.52315666246377,6.52316110709244,6.52225290650199,6.52225735050935,6.52317443128605,6.5231788694531,6.52227067284036,6.522275110387,6.5231921742617,6.52319660596703,6.5222884133357,6.52229284442152,6.51950604313082,6.51951049819,6.51860229200277,6.51860674643883,6.51952385368082,6.51952830228216,6.51862010006166,6.51862454804079,6.51954163839933,6.51954608054274,6.51863788229267,6.51864232381478,6.519559397286,6.5195638329714,6.51865563869546,6.51866007376045,6.51957713034047,6.51958155956777,6.51867336926967,6.51867779787746,6.51589103840128,6.51589549096802,6.51498728712836,6.51499173907199,6.5159088389869,6.51591328509941,6.51500508522291,6.51500953071321,6.51592661375548,6.51593105341367,6.51502285750402,6.51502729654092,6.51594436270667,6.51594879591046,6.51504060397136,6.51504503655475,6.51596208584012,6.51596651258941,6.51505832462457,6.51506275075438],[-3.725942038,-3.686236041,-3.667770959,-3.660044018,-3.68413101,-3.590384033,-3.569715014,-3.582974011,-3.726533968,-3.733162042,-3.653288037,-3.65237399,-3.660379965,-3.688637037,-3.688097997,-3.686236041,-3.602114,-3.607634,-3.61444,-3.566491,-3.5796,-3.564861,-3.721,-3.574733,-3.72826,-3.59039,-3.47269,-3.57778,-3.577996,-3.584883,-3.7345,-3.603276732,-3.60287,-3.70826,-3.456081,-3.5698,-3.570133,-3.565817,-3.706,-3.69773,-3.57,-3.57026,-3.579403,-3.5655,-3.69806,-3.69774,-3.6202517,-3.5935,-3.5934117,-3.61324,-3.6164,-3.61999,-3.72102,-3.61353,-3.5931078,-3.60022,-3.6164,-3.56749,-3.73373,-3.625351,-3.580513,-3.716421,-3.580398,-3.748186,-3.581011,-3.463096,-3.472885,-3.45645,-3.61465,-3.56667,-3.574903,-3.73431,-3.579167,-3.570839,-3.714742,-3.564709,-3.59064,-3.603511,-3.70846,-3.690291,-3.7096846,-3.4506208,-3.70343,-3.73692,-3.6885588,-3.7095035,-3.70305,-3.73774,-3.5839862,-3.6163,-3.620025,-3.473747,-3.5926227,-3.62825,-3.5838958,-3.6153874,-3.6206,-3.59275,-3.62771,-3.598474,-3.72818,-3.579457,-3.58485,-3.60273,-3.567682,-3.57071,-3.73381,-3.747899,-3.57922,-3.7253,-3.45039,-3.473714,-3.725362,-3.625553,-3.5809,-3.58059,-3.57955,-3.602035,-3.607773,-3.46296,-3.714879,-3.716292,-3.598411,-4.081823074,-4.14116506,-4.060569812,-4.045431873,-4.08842354,-4.08192931,-4.084925074,-4.07408481,-4.075806483,-4.124037323,-4.120328558,-4.119931725,-4.082954448,-4.086839386,-4.082572763,-4.145639654,-4.147653111,-4.088184701,-4.057930871,-3.261830024,-3.264137981,-3.262502002,-3.277708031,-3.278231984,-3.276351001,-3.261209009,-3.28844198,-3.297337024,-3.300071033,-3.303544996,-3.300834959,-3.237451008,-3.244752986,-3.301505009,-3.266093982,-4.039534014,-4.010816021,-4.009496039,-4.011782035,-4.009965006,-4.049550975,-4.025315959,-4.008719958,-4.001362994,-4.028137978,-4.04808104,-4.008603031,-4.012533976,-4.006049987,-4.005640028,-3.999386961,-5.709373,-5.658494,-5.675588,-5.676578,-5.675544,-5.676684,-5.685539,-5.68629,-5.690412,-5.691381,-5.716338,-5.69536,-5.654408,-5.655671,-5.655816,-5.657452,-5.716417,-5.701607,-5.69494,-5.656775,-5.676794,-5.17847112379968,-5.17547702416778,-5.17526596784592,-5.17603198997676,-5.16731003299356,-5.16738102771342,-5.16894601285458,-5.17276698723435,-5.17119001597166,-5.17287100665271,-5.17321801744402,-5.17837096005678,-5.17304199747741,-5.17443599179387,-5.16990599222481,-5.16283099539578,-5.1620249915868,-5.16409196890891,-5.16370296478271,-5.16364404000342,-5.16310097649693,-5.16238801181316,-5.17811397090554,-5.16595400869846,-5.16658801585436,-5.16746702603996,-5.16759300604463,-5.16861601732671,-5.16969501972198,-5.1682919729501,-5.16917802393436,-5.17932800576091,-5.17864395864308,-5.17802503891289,-5.17788296565413,-5.17663397826254,-5.17533604055643,-5.17258300445974,-5.17313000746071,-5.17406299710274,-5.17618998885155,-5.17547802999616,-5.17527502030134,-5.17336101271212,-5.17817599698901,-5.17381003126502,-5.17335497774184,-5.17273899167776,-5.17373300157487,-5.16753600910306,-5.1684769615531,-5.16734196804464,-5.16408702358603,-5.16611703671515,-5.16564102843404,-5.17646198160946,-5.16552401706576,-5.1664150133729,-5.16706502996385,-5.16538001596928,-5.17098499462008,-5.17225300893188,-5.17324500717223,-5.17382302321494,-5.17195201478899,-5.17165303230286,-5.17628202214837,-5.17247102223337,-5.16971396282315,-5.16939000226557,-5.16923896037042,-5.16907601617277,-5.18111603334546,-5.18019796349108,-5.1810949947685,-5.18121703527868,-5.18288402818143,-5.17525498755276,-5.18222101964056,-5.18471295945346,-5.18463299609721,-5.18586203455925,-5.18531796522439,-5.1862239651382,-5.18639503978193,-5.18638799898326,-5.17549898475409,-7.761121988,-7.747655036,-7.746947017,-7.767635984,-7.766296975,-7.762365025,-7.750961026,-7.752718041,-7.754915021,-7.750903023,-7.762776995,-7.763290973,-7.752493992,-7.76158601,-7.748196004,-7.747153966,-5.211878037,-5.182213979,-5.175031023,-5.181141011,-5.174890039,-5.189672029,-5.189397018,-5.19991396,-5.232591983,-5.230082022,-5.228075981,-5.232655015,-5.221268032,-5.183249982,-5.183260962,-5.182213979,-5.997353978,-5.973574016,-5.989315985,-5.98211199,-5.98523601,-5.992631027,-5.991499973,-5.989804985,-5.989379017,-5.989648998,-5.982192038,-5.989670036,-5.98962402,-5.989628965,-5.986796971,-5.997247025,-6.08313,-6.101483,-6.08503,-6.087474,-6.085202,-6.095611,-6.095277,-6.092828,-6.085601,-6.092895,-6.072848,-6.070925,-6.069222,-6.111877,-6.110554,-6.107781,-6.091945,-6.070405,-6.084922,-6.092633,-5.574303987,-5.595502993,-5.580131002,-5.586254988,-5.586652039,-5.585549986,-5.603618016,-5.586835016,-5.589539018,-5.589234,-5.592959002,-5.589338019,-5.592024,-5.578428973,-5.590881966,-5.597348018,-7.013558988,-6.984581994,-7.001483012,-7.003708994,-7.003750987,-7.002500994,-7.004892016,-7.003916027,-7.01128196,-7.011253964,-6.997336987,-6.989225987,-6.987417005,-6.989364959,-7.006279975,-7.004436962,-6.117015034,-6.167724961,-6.166155031,-6.184491031,-6.182621028,-6.177220987,-6.177135995,-6.174254967,-6.120263021,-6.123044975,-6.161120022,-6.161814965,-6.167999972,-6.168567007,-6.169117028,-6.167868963,-6.138795996,-6.110289982,-6.110227033,-6.114840014,-6.114383033,-6.157176001,-6.157749994,-6.218478978,-6.139579033,-6.137960991,-6.136813005,-6.111993017,-6.113157012,-6.113007981,-6.116168965,-6.106400024,-7.390633989,-7.485776972,-7.45286501,-7.44093203,-7.432514001,-7.40745496,-7.400574004,-7.41043699,-7.391092982,-7.409250028,-7.400795035,-7.402125997,-7.410491975,-7.440252006,-7.444722997,-7.453513015,-6.8837,-6.882969,-6.87672,-6.895297,-6.8974,-6.900354,-6.87456,-6.871671,-6.897604,-6.90403,-6.902884,-6.905424,-6.895102,-6.886305,-6.878054,-6.881701,-6.917143,-6.871615,-6.913459,-6.918715,-4.739958,-4.736261,-4.759617,-4.756431,-4.752127,-4.752892,-4.746919,-4.728095,-4.787606,-4.73594,-4.75022,-4.724093,-4.762195,-4.752275,-4.790675,-4.78641,-4.759724,-4.753124,-4.747802,-4.741309,-3.015148016,-2.979189986,-2.980036978,-2.976442985,-2.981313039,-2.98454904,-2.98448802,-2.982177967,-3.01451996,-3.02260397,-3.022490982,-3.014941989,-3.031830015,-3.032033024,-3.031200031,-2.979141036,-6.659267005,-6.569478968,-6.572568035,-6.569190966,-6.660828972,-6.659583002,-6.653865036,-6.566434996,-6.657605041,-6.629297007,-6.629349981,-6.621413995,-6.618403969,-6.612767978,-6.573849041,-6.57688899,-3.569719959,-3.566835998,-3.565940978,-3.564816965,-3.565314012,-3.565444015,-3.568249019,-3.563910965,-3.564762985,-3.562516971,-3.561465964,-3.569664974,-3.56294604,-3.566184975,-3.560555018,-3.561321963,-3.560542027,-3.559064968,-3.559149038,-3.5623179841787,-3.560226029,-3.560619978,-3.570629982,-3.5600680299103,-3.561394969,-3.562398031,-3.562793992,-3.562485036,-3.567591039,-3.567931009,-3.568698037,-3.56962298,-3.569708979,-3.569161976,-3.569746027,-3.5631000157446,-3.570712963,-3.568636011,-3.566829041,-3.564419997856,-3.565925974,-3.56644297,-3.567149984,-3.5634089726955,-3.568977993,-3.566436013,-3.565823967,-3.5650899633765,-3.565506041,-3.56537302,-3.563354993,-3.5672939848155,-3.562816037,-3.56182999,-3.561712978,-3.568012984,-3.5671889595687,-3.5674769617617,-3.5651529952884,-3.5684670321643,-3.5671069845557,-3.5676000081003,-3.5665329918265,-3.5654919594526,-3.5646000411361,-3.5637180134654,-3.566384967,-3.5631339624524,-3.5633819829673,-3.5671720281243,-3.566381027922,-3.5652880277485,-3.566055977717,-3.565218038857,-3.564744964242,-3.5642490070313,-3.5623149666935,-3.566185981,-3.568325964734,-3.5689270310104,-3.5686989594251,-3.5679699853063,-3.5671860259026,-3.5675929673016,-3.5689449682832,-3.5695229843259,-3.5706039983779,-3.5702569875866,-3.566978993,-3.5692949965596,-3.5682699736208,-3.5723920259625,-3.566381027922,-3.568207025528,-3.5694649815559,-3.5694049671292,-3.5702249687165,-3.5708260349929,-3.5781570151448,-6.155336,-6.177797,-6.180367,-6.182582,-6.18012,-6.190479,-6.191081,-6.192301,-6.188123,-6.128424,-6.18762,-6.131271,-6.134304,-6.118743,-6.154505,-6.154471,-6.122683,-6.138228,-6.157914,-6.176681,-6.488913037,-6.494652964,-6.493329965,-6.502103973,-6.501208032,-6.503640041,-6.509433025,-6.464233026,-6.492432011,-6.501298975,-6.50181002,-6.489718035,-6.494936021,-6.495440025,-6.497027976,-6.502902014,-6.639113976,-6.652152026,-6.656819992,-6.656452026,-6.656906996,-6.649709959,-6.650415966,-6.656456972,-6.638885988,-6.638193978,-6.642098017,-6.650816035,-6.650137017,-6.649226993,-6.652583024,-6.652358975,-7.36763636917828,-7.40998810984797,-7.40206096609814,-7.39670053988011,-7.41699897151032,-7.3772189889527,-7.38195678786929,-5.401578,-5.350236,-5.365151,-5.496345,-5.4959,-5.493437,-5.359848,-5.413252,-5.397214,-5.502547,-5.493736,-5.497938,-5.497859,-5.439055,-5.453374,-5.370277,-5.497568,-5.486924,-5.468128,-5.48923414278295,-5.4895730315175,-5.38721265280898,-5.38635283957576,-5.38775552379743,-5.38646445485009,-5.48923071605856,-5.38758561808144,-3.620128,-3.627431,-3.626958,-3.625396,-3.623659,-3.625355,-3.625374,-3.616351,-3.621827,-3.561806,-3.564086,-3.606,-3.610638,-3.615948,-3.61799,-3.624069,-5.469071,-3.595473,-3.610251,-3.610702,-5.48783784185407,-5.48693420009341,-5.48783337936351,-5.48692973921966,-5.48422327102565,-5.4833196267419,-5.48421881500236,-5.48331517233543,-5.48060869011034,-5.47970504330716,-5.48060424055441,-5.47970059536807,-5.47699409912279,-5.47609044980383,-5.4769896560343,-5.47608600833221,-5.47337949807763,-5.47247584624655,-5.47337506145667,-5.47247141124249,-5.48781999567984,-5.48691636038504,-5.4878155357146,-5.4869119020357,-5.484205450715,-5.4833018128972,-5.48420099721337,-5.48329736101149,-5.48059089566363,-5.47968725532648,-5.4805864486257,-5.47968280990449,-5.47697633054036,-5.47607268768753,-5.47697188996621,-5.47606824872934,-5.47336175535984,-5.47245810999498,-5.47335732124957,-5.47245367750069,-5.48780215960678,-5.48689853077418,-5.48779770216677,-5.48689407494916,-5.48418764049087,-5.48328400913536,-5.48418318951082,-5.48327955977031,-5.4805731112888,-5.47966947741403,-5.48056866676878,-5.47966503450903,-5.47695857201518,-5.47605493562482,-5.47695413395529,-5.47605049917997,-5.47334402268467,-5.47244038378236,-5.47333959108499,-5.47243595379775,-5.48778433363451,-5.48688071126046,-5.48777987871966,-5.48687625795967,-5.48416984035292,-5.48326621545603,-5.48416539189435,-5.48326176861155,-5.4805553369855,-5.47965170956945,-5.4805508949833,-5.47964726918137,-5.47694082354689,-5.47603719361533,-5.47693638800117,-5.47603275968374,-5.47332630005174,-5.47242266760834,-5.47332187096257,-5.47241824013332,-5.4877665177627,-5.48686290184353,-5.4877620653729,-5.48685845106688,-5.48415205030077,-5.48324843185886,-5.48414760436359,-5.48324398753486,-5.48053757275337,-5.47963395179238,-5.48053313326891,-5.47962951392112,-5.47692308513514,-5.47601946165873,-5.47691865210349,-5.4760150302403,-5.47330858746072,-5.47240496147255,-5.47330416088197,-5.47240053650704],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,["adzope 1","adzope 10","adzope 11","adzope 12","adzope 13","adzope 14","adzope 15","adzope 16","adzope 2","adzope 3","adzope 4","adzope 5","adzope 6","adzope 7","adzope 8","adzope 9","adzopeN 1","adzopeN 10","adzopeN 100","adzopeN 101","adzopeN 102","adzopeN 103","adzopeN 104","adzopeN 105","adzopeN 106","adzopeN 107","adzopeN 108","adzopeN 109","adzopeN 11","adzopeN 110","adzopeN 111","adzopeN 112","adzopeN 113","adzopeN 114","adzopeN 115","adzopeN 12","adzopeN 13","adzopeN 14","adzopeN 16","adzopeN 17","adzopeN 18","adzopeN 19","adzopeN 2","adzopeN 20","adzopeN 22","adzopeN 23","adzopeN 24","adzopeN 25","adzopeN 26","adzopeN 27","adzopeN 28","adzopeN 29","adzopeN 3","adzopeN 30","adzopeN 31","adzopeN 32","adzopeN 33","adzopeN 34","adzopeN 35","adzopeN 36","adzopeN 37","adzopeN 38","adzopeN 39","adzopeN 4","adzopeN 40","adzopeN 41","adzopeN 42","adzopeN 43","adzopeN 44","adzopeN 45","adzopeN 46","adzopeN 47","adzopeN 5","adzopeN 52","adzopeN 53","adzopeN 54","adzopeN 55","adzopeN 56","adzopeN 57","adzopeN 58","adzopeN 59","adzopeN 6","adzopeN 60","adzopeN 61","adzopeN 62","adzopeN 63","adzopeN 64","adzopeN 65","adzopeN 66","adzopeN 67","adzopeN 69","adzopeN 7","adzopeN 70","adzopeN 71","adzopeN 72","adzopeN 73","adzopeN 75","adzopeN 76","adzopeN 77","adzopeN 78","adzopeN 79","adzopeN 8","adzopeN 80","adzopeN 81","adzopeN 82","adzopeN 83","adzopeN 84","adzopeN 85","adzopeN 86","adzopeN 87","adzopeN 88","adzopeN 89","adzopeN 9","adzopeN 90","adzopeN 91","adzopeN 92","adzopeN 93","adzopeN 94","adzopeN 95","adzopeN 96","adzopeN 97","adzopeN 98","adzopeN 99","agbo 1","agbo 12","agbo 19","agbo 34","agbo 4","agbo 45","agbo 6","agbo 62","agbo 7","agbo 72","agbo 73","agbo 74","agbo 76","agbo 80","agbo 85","agbo 90","agbo 91","agbo FA1","agbo FA2","agnibilekrou 1","agnibilekrou 10","agnibilekrou 11","agnibilekrou 12","agnibilekrou 13","agnibilekrou 14","agnibilekrou 15","agnibilekrou 16","agnibilekrou 2","agnibilekrou 3","agnibilekrou 4","agnibilekrou 5","agnibilekrou 6","agnibilekrou 7","agnibilekrou 8","agnibilekrou 9","azaguie 1","azaguie 10","azaguie 11","azaguie 12","azaguie 13","azaguie 14","azaguie 15","azaguie 16","azaguie 2","azaguie 3","azaguie 4","azaguie 5","azaguie 6","azaguie 7","azaguie 8","azaguie 9","badenou 1","badenou 11","badenou 12","badenou 13","badenou 14","badenou 15","badenou 16","badenou 17","badenou 18","badenou 19","badenou 2","badenou 20","badenou 6","badenou 7","badenou 8","badenou 9","badenou FA1","badenou FA2","badenou FA3","badenou FA4","badenou FA5","behiri 1","behiri 10","behiri 11","behiri 12","behiri 13","behiri 14","behiri 15","behiri 16","behiri 17","behiri 18","behiri 19","behiri 2","behiri 20","behiri 21","behiri 22","behiri 23","behiri 24","behiri 25","behiri 26","behiri 27","behiri 28","behiri 29","behiri 3","behiri 30","behiri 31","behiri 32","behiri 33","behiri 34","behiri 35","behiri 36","behiri 37","behiri 38","behiri 39","behiri 4","behiri 40","behiri 41","behiri 42","behiri 43","behiri 44","behiri 45","behiri 46","behiri 47","behiri 48","behiri 49","behiri 5","behiri 50","behiri 51","behiri 52","behiri 53","behiri 54","behiri 55","behiri 56","behiri 57","behiri 58","behiri 59","behiri 6","behiri 60","behiri 61","behiri 62","behiri 63","behiri 64","behiri 65","behiri 66","behiri 67","behiri 68","behiri 69","behiri 7","behiri 70","behiri 71","behiri 72","behiri 73","behiri 74","behiri 75","behiri 76","behiri 77","behiri 78","behiri 79","behiri 8","behiri 80","behiri 81","behiri 82","behiri 83","behiri 84","behiri 85","behiri 86","behiri 87","behiri 9","biankouma 1","biankouma 10","biankouma 11","biankouma 12","biankouma 13","biankouma 14","biankouma 15","biankouma 16","biankouma 2","biankouma 3","biankouma 4","biankouma 5","biankouma 6","biankouma 7","biankouma 8","biankouma 9","ble 1","ble 10","ble 11","ble 12","ble 13","ble 14","ble 15","ble 16","ble 2","ble 3","ble 4","ble 5","ble 6","ble 7","ble 8","ble 9","bonon 10","bonon 11","bonon 12","bonon 13","bonon 14","bonon 15","bonon 16","bonon 17","bonon 18","bonon 19","bonon 20","bonon 21","bonon 22","bonon 23","bonon 24","bonon 9","foumbou 1","foumbou 10","foumbou 11","foumbou 12","foumbou 13","foumbou 14","foumbou 15","foumbou 16","foumbou 2","foumbou 3","foumbou 4","foumbou 5","foumbou 6","foumbou 7","foumbou 8","foumbou 9","foumbou FA1","foumbou FA2","foumbou FA3","foumbou FA4","fresco 1","fresco 10","fresco 11","fresco 12","fresco 13","fresco 14","fresco 15","fresco 16","fresco 2","fresco 3","fresco 4","fresco 5","fresco 6","fresco 7","fresco 8","fresco 9","grand_bereby 1","grand_bereby 10","grand_bereby 11","grand_bereby 12","grand_bereby 13","grand_bereby 14","grand_bereby 15","grand_bereby 16","grand_bereby 2","grand_bereby 3","grand_bereby 4","grand_bereby 5","grand_bereby 6","grand_bereby 7","grand_bereby 8","grand_bereby 9","gueyo 1","gueyo 10","gueyo 11","gueyo 12","gueyo 13","gueyo 14","gueyo 15","gueyo 16","gueyo 2","gueyo 3","gueyo 4","gueyo 5","gueyo 6","gueyo 7","gueyo 8","gueyo 9","guiberoua 1","guiberoua 10","guiberoua 11","guiberoua 12","guiberoua 13","guiberoua 14","guiberoua 15","guiberoua 16","guiberoua 2","guiberoua 3","guiberoua 4","guiberoua 5","guiberoua 6","guiberoua 7","guiberoua 8","guiberoua 9","guiglo 1","guiglo 10","guiglo 11","guiglo 12","guiglo 13","guiglo 14","guiglo 15","guiglo 16","guiglo 2","guiglo 3","guiglo 4","guiglo 5","guiglo 6","guiglo 7","guiglo 8","guiglo 9","ht_sassandra 10","ht_sassandra 11","ht_sassandra 12","ht_sassandra 13","ht_sassandra 14","ht_sassandra 15","ht_sassandra 16","ht_sassandra 18","ht_sassandra 2","ht_sassandra 3","ht_sassandra 4","ht_sassandra 5","ht_sassandra 6","ht_sassandra 7","ht_sassandra 8","ht_sassandra 9","ht_sassandra FA1","ht_sassandra FA2","ht_sassandra FA3","ht_sassandra FA4","irobo 1","irobo 11","irobo 13","irobo 14","irobo 15","irobo 16","irobo 17","irobo 18","irobo 19","irobo 2","irobo 20","irobo 3","irobo 4","irobo 6","irobo 7","irobo 8","irobo FA1","irobo FA2","irobo FA3","irobo FA4","mafere 1","mafere 10","mafere 11","mafere 12","mafere 13","mafere 14","mafere 15","mafere 16","mafere 2","mafere 3","mafere 4","mafere 5","mafere 6","mafere 7","mafere 8","mafere 9","meagui 1","meagui 10","meagui 11","meagui 12","meagui 13","meagui 14","meagui 15","meagui 16","meagui 2","meagui 3","meagui 4","meagui 5","meagui 6","meagui 7","meagui 8","meagui 9","mebifon 1","mebifon 10","mebifon 11","mebifon 12","mebifon 13","mebifon 14","mebifon 15","mebifon 16","mebifon 17","mebifon 18","mebifon 19","mebifon 2","mebifon 20","mebifon 21","mebifon 22","mebifon 23","mebifon 24","mebifon 25","mebifon 26","mebifon 27","mebifon 28","mebifon 29","mebifon 3","mebifon 30","mebifon 31","mebifon 32","mebifon 33","mebifon 34","mebifon 35","mebifon 36","mebifon 37","mebifon 38","mebifon 39","mebifon 4","mebifon 40","mebifon 41","mebifon 42","mebifon 43","mebifon 44","mebifon 45","mebifon 46","mebifon 47","mebifon 48","mebifon 49","mebifon 5","mebifon 50","mebifon 51","mebifon 52","mebifon 53","mebifon 54","mebifon 55","mebifon 56","mebifon 57","mebifon 58","mebifon 59","mebifon 6","mebifon 60","mebifon 61","mebifon 62","mebifon 63","mebifon 64","mebifon 65","mebifon 66","mebifon 67","mebifon 68","mebifon 69","mebifon 7","mebifon 70","mebifon 71","mebifon 72","mebifon 73","mebifon 74","mebifon 75","mebifon 76","mebifon 77","mebifon 78","mebifon 79","mebifon 8","mebifon 80","mebifon 81","mebifon 82","mebifon 83","mebifon 84","mebifon 85","mebifon 86","mebifon 87","mebifon 88","mebifon 89","mebifon 9","mebifon 90","mebifon 91","mebifon 92","mebifon 93","mebifon 94","mebifon 95","mebifon 96","mebifon 97","mebifon 98","mebifon 99","niegre 10","niegre 11","niegre 13","niegre 14","niegre 15","niegre 16","niegre 17","niegre 18","niegre 19","niegre 2","niegre 20","niegre 3","niegre 4","niegre 6","niegre 8","niegre 9","niegre FA1","niegre FA2","niegre FA3","niegre FA4","san_pedro 1","san_pedro 10","san_pedro 11","san_pedro 12","san_pedro 13","san_pedro 14","san_pedro 15","san_pedro 16","san_pedro 2","san_pedro 3","san_pedro 4","san_pedro 5","san_pedro 6","san_pedro 7","san_pedro 8","san_pedro 9","soubre 1","soubre 10","soubre 11","soubre 12","soubre 13","soubre 14","soubre 15","soubre 16","soubre 2","soubre 3","soubre 4","soubre 5","soubre 6","soubre 7","soubre 8","soubre 9","tai 1","tai 11","tai 12","tai 13","tai 14","tai 2","tai 3","tene 1","tene 10","tene 11","tene 12","tene 13","tene 14","tene 15","tene 16","tene 2","tene 3","tene 4","tene 5","tene 6","tene 7","tene 8","tene 9","tene FA1","tene FA2","tene FA4","tene_oume 1","tene_oume 2","tene_oume 3","tene_oume 4","tene_oume 5","tene_oume 6","tene_oume 7","tene_oume 8","yaya 1","yaya 10","yaya 11","yaya 12","yaya 13","yaya 14","yaya 15","yaya 16","yaya 2","yaya 3","yaya 4","yaya 5","yaya 6","yaya 7","yaya 8","yaya 9","yaya FA1","yaya FA2","yaya FA3","yaya FA4","tene 1_1","tene 1_2","tene 1_3","tene 1_4","tene 2_1","tene 2_2","tene 2_3","tene 2_4","tene 3_1","tene 3_2","tene 3_3","tene 3_4","tene 4_1","tene 4_2","tene 4_3","tene 4_4","tene 5_1","tene 5_2","tene 5_3","tene 5_4","tene 6_1","tene 6_2","tene 6_3","tene 6_4","tene 7_1","tene 7_2","tene 7_3","tene 7_4","tene 8_1","tene 8_2","tene 8_3","tene 8_4","tene 9_1","tene 9_2","tene 9_3","tene 9_4","tene 10_1","tene 10_2","tene 10_3","tene 10_4","tene 11_1","tene 11_2","tene 11_3","tene 11_4","tene 12_1","tene 12_2","tene 12_3","tene 12_4","tene 13_1","tene 13_2","tene 13_3","tene 13_4","tene 14_1","tene 14_2","tene 14_3","tene 14_4","tene 15_1","tene 15_2","tene 15_3","tene 15_4","tene 16_1","tene 16_2","tene 16_3","tene 16_4","tene 17_1","tene 17_2","tene 17_3","tene 17_4","tene 18_1","tene 18_2","tene 18_3","tene 18_4","tene 19_1","tene 19_2","tene 19_3","tene 19_4","tene 20_1","tene 20_2","tene 20_3","tene 20_4","tene 21_1","tene 21_2","tene 21_3","tene 21_4","tene 22_1","tene 22_2","tene 22_3","tene 22_4","tene 23_1","tene 23_2","tene 23_3","tene 23_4","tene 24_1","tene 24_2","tene 24_3","tene 24_4","tene 25_1","tene 25_2","tene 25_3","tene 25_4"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[4.778207,9.844833],"lng":[-7.767635984,-2.976442985]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -380,7 +370,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.4.csv"</span>) <span class="sc">|&gt;</span> </span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site) <span class="sc">|&gt;</span> </span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Site"</span>, <span class="st">"Number of plots"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -476,7 +466,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td style="text-align: left;">mebifon</td>
-<td style="text-align: right;">104</td>
+<td style="text-align: right;">99</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">niegre</td>
@@ -491,14 +481,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">16</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">tene</td>
-<td style="text-align: right;">19</td>
+<td style="text-align: left;">tai</td>
+<td style="text-align: right;">7</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">tene</td>
+<td style="text-align: right;">119</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">tene_oume</td>
 <td style="text-align: right;">8</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">yaya</td>
 <td style="text-align: right;">20</td>
 </tr>
@@ -507,11 +501,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.4.csv"</span>) <span class="sc">|&gt;</span> </span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.6.csv"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(<span class="sc">!</span><span class="fu">is.na</span>(present_landuse)) <span class="sc">|&gt;</span> </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(present_landuse) <span class="sc">|&gt;</span> </span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Landuse"</span>, <span class="st">"Number of plots"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add revatene data</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n =</span> n <span class="sc">+</span> <span class="fu">ifelse</span>(present_landuse <span class="sc">==</span> <span class="st">"foretanc"</span>, <span class="dv">100</span>, <span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Landuse"</span>, <span class="st">"Number of plots"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -531,27 +527,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">227</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">dist_for</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">fallow</td>
 <td style="text-align: right;">191</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">food_crop</td>
 <td style="text-align: right;">16</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">forest</td>
 <td style="text-align: right;">14</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">foretanc</td>
-<td style="text-align: right;">30</td>
-</tr>
 <tr class="odd">
+<td style="text-align: left;">foretanc</td>
+<td style="text-align: right;">130</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">jvc</td>
 <td style="text-align: right;">24</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">old_mining</td>
+<td style="text-align: right;">8</td>
+</tr>
 <tr class="even">
+<td style="text-align: left;">others</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">palm</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">prim_for</td>
 <td style="text-align: right;">8</td>
 </tr>
 <tr class="odd">
@@ -559,6 +571,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">32</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">sec_for</td>
+<td style="text-align: right;">117</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">trees plantation</td>
 <td style="text-align: right;">5</td>
 </tr>
@@ -579,10 +595,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
-<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 9 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 16 rows containing non-finite outside the scale range
 (`stat_bin()`).</code></pre>
 </div>
 <div class="cell-output-display">
@@ -599,236 +615,242 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const onCopySuccess = function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
-  });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
         }
       }
+      return false;
     }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
         }
-        return container.innerHTML
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -836,185 +858,161 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      }, function(instance) {
       });
     }
-  }
-});
-</script>
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./22_check_errors.html" class="pagination-link" aria-label="Error checks">

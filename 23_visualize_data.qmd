@@ -12,36 +12,40 @@ library(leaflet)
 ## Site location
 
 ```{r}
-loc_plots <- read.csv("data/plot_0.2.4.csv") |> 
-  select(site, plot, lat, lon) |> 
+loc_plots <- read.csv("data/cache/data_stocks.csv") |>
+  select(site, plot, lat, lon) |>
   drop_na()
 leaflet() |>
   addProviderTiles(providers$Esri.WorldImagery) |>
-  addMarkers(lng=loc_plots$lon, lat=loc_plots$lat, 
-             label = paste(loc_plots$site, loc_plots$plot))
+  addMarkers(
+    lng = loc_plots$lon, lat = loc_plots$lat,
+    label = paste(loc_plots$site, loc_plots$plot)
+  )
 ```
 
 ## Dataset size
 
 ```{r}
-read.csv("data/plot_0.2.4.csv") |> 
-  group_by(site) |> 
-  summarise(n = n()) |> 
+read.csv("data/cache/data_stocks.csv") |>
+  group_by(site) |>
+  summarise(n = n()) |>
   kable(col.names = c("Site", "Number of plots"))
 
-read.csv("data/plot_0.2.4.csv") |> 
-  subset(!is.na(present_landuse)) |> 
-  group_by(present_landuse) |> 
-  summarise(n = n()) |> 
+read.csv("data/plot_0.2.6.csv") |>
+  subset(!is.na(present_landuse)) |>
+  group_by(present_landuse) |>
+  summarise(n = n()) |>
+  # add revatene data
+  mutate(n = n + ifelse(present_landuse == "foretanc", 100, 0)) |>
   kable(col.names = c("Landuse", "Number of plots"))
 ```
 
 ## Distribution of soil organic carbon stocks
 
 ```{r}
-read.csv("data/cache/data_stocks.csv") |> 
-  ggplot(aes(x = T_stock)) + 
+read.csv("data/cache/data_stocks.csv") |>
+  ggplot(aes(x = T_stock)) +
   geom_histogram() +
-  labs(x = expression("Soil organic carbon stocks [ Mg."*ha^-1*" ]")) +
+  labs(x = expression("Soil organic carbon stocks [ Mg." * ha^-1 * " ]")) +
   theme_classic()
 ```
