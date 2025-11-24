@@ -18,17 +18,19 @@ As the samples were grouped by sampling site, our dataset is spatially aggregate
 ```{r}
 #| message: false
 #| warning: false
-data_all <- read.csv("data/cache/data_stocks.csv") %>% 
-  merge(read.csv("data/cache/climate_data.csv")) %>% 
-  merge(read.csv("data/cache/soilgrids_data.csv")) %>% 
-  merge(read.csv("data/cache/bnedt_data.csv")) %>% 
-  merge(read.csv("data/cache/srtm_data.csv")) %>% 
-  drop_na() 
-
+data_all <- read.csv("data/cache/data_stocks.csv") %>%
+  merge(read.csv("data/cache/climate_data.csv")) %>%
+  merge(read.csv("data/cache/spectral_data.csv")) %>%
+  merge(read.csv("data/cache/topo_data.csv")) %>%
+  merge(read.csv("data/cache/thermal_data.csv")) %>%
+  drop_na()
 # write rf formula with previously selected variables
 formula_soc <- read.csv("data/cache/var_selection.csv") %>%
-  select(variable) %>% t() %>%
-  paste(collapse = " + ") %>% paste("T_stock ~", .) %>%
+  filter(ffs2) %>%
+  select(variable) %>%
+  t() %>%
+  paste(collapse = " + ") %>%
+  paste("T_stock ~", .) %>%
   as.formula()
 ```
 
@@ -40,8 +42,10 @@ A Random Forest model was trained using the `ranger` package in R. The model was
 #| message: false
 #| warning: false
 load("data/cache/models/rf_all.rda")
-cat("RMSE:", mean(rf_all$resample$RMSE), 
-    "\nR²:", mean(rf_all$resample$Rsquared))
+cat(
+  "RMSE:", mean(rf_all$resample$RMSE),
+  "\nR²:", mean(rf_all$resample$Rsquared)
+)
 ```
 
 ## Random Forest with Spatial Interpolation (RFSI) {.unnumbered}
@@ -49,27 +53,20 @@ cat("RMSE:", mean(rf_all$resample$RMSE),
 To account for spatial autocorrelation, a Random Forest Spatial Interpolation (RFSI) model was implemented using the `rfsi` package. The RFSI model incorporates spatial neighborhood information into the Random Forest framework, allowing predictions that combine covariates with spatial proximity. Model accuracy metrics from the cross validation steps were:
 
 ```{r}
+#| eval: false
+data_spatial <- st_as_sf(data_all, coords = c("lon", "lat"), crs = 4326)
+rfsi_model <- rfsi_llo(data_spatial, formula_soc, data_all$site)
+rfsi_results <- rfsi_model$cv_results
+save(rfsi_results, file = "data/cache/models/rfsi_results.rda")
+```
+
+
+```{r}
 #| message: false
 #| warning: false
-data_sp <- data_all %>%
-  rename(staid = site) %>% 
-  st_as_sf(coords = c("lon", "lat"), crs = 4326) %>%
-  st_transform(2041)
-fun_model_rfsi <- function(df)  {
-  df %>%
-    st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% 
-    st_transform(2041) %>% 
-    rfsi(formula = formula_soc, data = .)
-}
-fun_pred_rfsi <- function(model, df1, df2) {
-  df1 <- df1 %>%
-    st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% 
-    st_transform(2041)
-  df2 <- df2 %>%
-    st_as_sf(coords = c("lon", "lat"), crs = 4326) %>% 
-    st_transform(2041)
-  pred.rfsi(model, data = df1, newdata = df2)$pred
-}
-kfold_rfsi <- kfold(data_all, "T_stock", "site", fun_model_rfsi, fun_pred_rfsi)
-cat("RMSE:", kfold_rfsi[1], "\nR²:", kfold_rfsi[2])
+load("data/cache/models/rfsi_results.rda")
+cat(
+  "RMSE:", rfsi_results[which.min(rfsi_results$RMSE), 2],
+  "\nR²:", rfsi_results[which.min(rfsi_results$RMSE), 3]
+)
 ```
