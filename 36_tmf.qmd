@@ -34,7 +34,7 @@ for (yr in 1990:2024) {
     ) |>
       download.file(file, mode = "wb")
   }
-  crop_file <- 
+  crop_file <-
     paste0("data/download/TMF/JRC_TMF_AnnualChange_v1_", yr, "_RCI.tif")
   if (!file.exists(crop_file)) {
     rast(file) |>
@@ -50,8 +50,8 @@ if (!dir.exists("data/cache/tiles")) dir.create("data/cache/tiles")
 makeTiles(tmf, 2000, filename = "data/cache/tiles/tmf_.tif")
 
 for (fl in list.files("data/cache/tiles", "tmf", full.names = TRUE)) {
-  if (!file.exists(gsub("tmf", "tmf_sec", fl)) |
-    !file.exists(gsub("tmf", "tmf_def", fl))) {
+  if (!file.exists(gsub("tmf", "tmf_sec", fl)) | # nolint
+    !file.exists(gsub("tmf", "tmf_def", fl))) { # nolint
     r <- rast(fl)
     vals <- values(r)
   }
@@ -143,10 +143,11 @@ ggplot() +
 #| message: false
 #| warning: false
 tmf2022 <- rast("data/download/TMF/JRC_TMF_AnnualChange_v1_2022_RCI.tif")
-plots <- read.csv("data/plot_0.2.4.csv")
-plots$tmf_class <- 
+plots <- read.csv("data/plot_0.2.6.csv")
+plots$tmf_class <-
   c("Undisturbed", "Degraded", "Deforested", "Regrowth", "Water", "Other")[
-  terra::extract(tmf2022, plots[, c("lon", "lat")])$Dec2022]
-plots |> 
+    terra::extract(tmf2022, plots[, c("lon", "lat")])$Dec2022
+  ]
+plots |>
   with(table(tmf_class, present_landuse))
 ```

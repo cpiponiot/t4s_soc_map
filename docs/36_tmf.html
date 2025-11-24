@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Open and prepare the raw dataset – Soil Organic Carbon map of Cote d’Ivoire</title>
+<title>TMF data – Soil Organic Carbon map of Cote d’Ivoire</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -55,7 +55,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -65,8 +85,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./22_check_errors.html" rel="next">
-<link href="./20_terri4sol_database.html" rel="prev">
+<link href="./40_methodology.html" rel="next">
+<link href="./35_landuse.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -105,35 +125,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -146,7 +137,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20_terri4sol_database.html">terri4sol soil database</a></li><li class="breadcrumb-item"><a href="./21_prepare_raw_data.html">Open and prepare the raw dataset</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30_ancillary_data.html">Ancillary data</a></li><li class="breadcrumb-item"><a href="./36_tmf.html">TMF data</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -194,7 +185,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./21_prepare_raw_data.html" class="sidebar-item-text sidebar-link active">
+  <a href="./21_prepare_raw_data.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Open and prepare the raw dataset</span></a>
   </div>
 </li>
@@ -229,14 +220,14 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./32_soilgrids.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Soilgrids data</span></a>
+  <a href="./32_spectral.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Spectral variables</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./33_tmf.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">TMF data</span></a>
+  <a href="./33_thermal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Thermal variable</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -249,6 +240,12 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="./35_landuse.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Landuse data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./36_tmf.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">TMF data</span></a>
   </div>
 </li>
       </ul>
@@ -310,15 +307,21 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#comparison-of-tmf-and-field-based-plot-classification" id="toc-comparison-of-tmf-and-field-based-plot-classification" class="nav-link active" data-scroll-target="#comparison-of-tmf-and-field-based-plot-classification">Comparison of TMF and field-based plot classification</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20_terri4sol_database.html">terri4sol soil database</a></li><li class="breadcrumb-item"><a href="./21_prepare_raw_data.html">Open and prepare the raw dataset</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30_ancillary_data.html">Ancillary data</a></li><li class="breadcrumb-item"><a href="./36_tmf.html">TMF data</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Open and prepare the raw dataset</h1>
+<h1 class="title">TMF data</h1>
 </div>
 
 
@@ -335,100 +338,187 @@ window.Quarto = {
 </header>
 
 
-<p>A summary of the data from the terri4sol project is presented below.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data_t4s <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/soil_0.2.6.csv"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_t4s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyterra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>We used data from the Tropical Moist Forests (TMF) product, which is based on Landsat images <span class="citation" data-cites="Vancutsem2021">(<a href="#ref-Vancutsem2021" role="doc-biblioref">Vancutsem et al. 2021</a>)</span>, to estimate the time since deforestation and the age of secondary forests. These classify tropical areas annually as follows: (i) undisturbed forests, (ii) disturbed forests, (iii) deforested areas, (iv) regrowing forests, (v) water, and (vi) other.</p>
+<p>We estimated the age of secondary forests in 2022 as the number of years a pixel of regrowing forest in 2022 had continuously been classified as such. We estimated the time since deforestation as the time since a pixel that was classified as undisturbed or disturbed forest in 1990 (i.e.&nbsp;the first year of the TMF time series) had changed to another class.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># South Cote d'Ivoire ("zone forestiere") area</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>area <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/rci_south.shp"</span>) <span class="sc">|&gt;</span> <span class="fu">st_transform</span>(<span class="dv">4326</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># download tmf annual change for Cote d'Ivoire</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="st">"data/download/TMF"</span>)) <span class="fu">dir.create</span>(<span class="st">"data/download/TMF"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (yr <span class="cf">in</span> <span class="dv">1990</span><span class="sc">:</span><span class="dv">2024</span>) {</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  file <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/download/TMF/JRC_TMF_AnnualChange_v1_"</span>, yr,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"_AFR_ID52_N10_W10.tif"</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(file)) {</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>      <span class="st">"https://ies-ows.jrc.ec.europa.eu/iforce/tmf_v1/download.py?"</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      <span class="st">"type=tile&amp;dataset=AnnualChange_"</span>, yr, <span class="st">"&amp;lat=N10&amp;lon=W10"</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">download.file</span>(file, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  crop_file <span class="ot">&lt;-</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"data/download/TMF/JRC_TMF_AnnualChange_v1_"</span>, yr, <span class="st">"_RCI.tif"</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(crop_file)) {</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rast</span>(file) <span class="sc">|&gt;</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">crop</span>(<span class="fu">ext</span>(area)) <span class="sc">|&gt;</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">writeRaster</span>(crop_file)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>tmf <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">"data/download/TMF"</span>, <span class="st">"RCI"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grep</span>(<span class="at">pattern =</span> <span class="fu">paste</span>(<span class="fu">seq</span>(<span class="dv">1990</span>, <span class="dv">2022</span>), <span class="at">collapse =</span> <span class="st">"|"</span>), <span class="at">value =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rast</span>()</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="st">"data/cache/tiles"</span>)) <span class="fu">dir.create</span>(<span class="st">"data/cache/tiles"</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co"># create 25 smaller raster stacks</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="fu">makeTiles</span>(tmf, <span class="dv">2000</span>, <span class="at">filename =</span> <span class="st">"data/cache/tiles/tmf_.tif"</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (fl <span class="cf">in</span> <span class="fu">list.files</span>(<span class="st">"data/cache/tiles"</span>, <span class="st">"tmf"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_sec"</span>, fl)) <span class="sc">|</span> <span class="co"># nolint</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_def"</span>, fl))) { <span class="co"># nolint</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    r <span class="ot">&lt;-</span> <span class="fu">rast</span>(fl)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    vals <span class="ot">&lt;-</span> <span class="fu">values</span>(r)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># age of secondary forests in 2022</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_sec"</span>, fl))) {</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    ind <span class="ot">&lt;-</span> <span class="fu">which</span>(vals[, <span class="dv">33</span>] <span class="sc">==</span> <span class="dv">4</span>)</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    age_sec <span class="ot">&lt;-</span> vals[ind, ] <span class="sc">|&gt;</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>      <span class="fu">apply</span>(<span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">any</span>(<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> x <span class="sc">!=</span> <span class="dv">4</span>)) {</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>          <span class="fu">length</span>(x) <span class="sc">-</span> <span class="fu">max</span>(<span class="fu">which</span>(x <span class="sc">!=</span> <span class="dv">4</span>))</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>          <span class="cn">NA</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>      })</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    vals_sec <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">nrow</span>(vals))</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    vals_sec[ind] <span class="ot">&lt;-</span> age_sec</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    r_sec <span class="ot">&lt;-</span> <span class="fu">rast</span>(</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>      <span class="fu">matrix</span>(vals_sec, <span class="at">nrow =</span> <span class="fu">nrow</span>(r), <span class="at">ncol =</span> <span class="fu">ncol</span>(r), <span class="at">byrow =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>      <span class="at">extent =</span> <span class="fu">ext</span>(r), <span class="at">crs =</span> <span class="fu">crs</span>(r)</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeRaster</span>(r_sec, <span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_sec"</span>, fl))</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>  <span class="co"># deforestation age in 2022</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_def"</span>, fl))) {</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    ind <span class="ot">&lt;-</span> <span class="fu">which</span>(vals[, <span class="dv">1</span>] <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    age_def <span class="ot">&lt;-</span> vals[ind, ] <span class="sc">|&gt;</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>      <span class="fu">apply</span>(<span class="dv">1</span>, <span class="cf">function</span>(x) {</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">any</span>(<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> x <span class="sc">&gt;</span> <span class="dv">2</span>)) {</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>          <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> x <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>          <span class="cn">NA</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>      })</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    vals_def <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">nrow</span>(vals))</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>    vals_def[ind] <span class="ot">&lt;-</span> age_def</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>    r_def <span class="ot">&lt;-</span> <span class="fu">rast</span>(</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>      <span class="fu">matrix</span>(vals_def, <span class="at">nrow =</span> <span class="fu">nrow</span>(r), <span class="at">ncol =</span> <span class="fu">ncol</span>(r), <span class="at">byrow =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>      <span class="at">extent =</span> <span class="fu">ext</span>(r), <span class="at">crs =</span> <span class="fu">crs</span>(r)</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeRaster</span>(r_def, <span class="fu">gsub</span>(<span class="st">"tmf"</span>, <span class="st">"tmf_def"</span>, fl))</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"data/cache/tiles"</span>, <span class="st">"sec"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(rast) <span class="sc">|&gt;</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sprc</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mosaic</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeRaster</span>(<span class="st">"data/cache/tmf_sec_age.tif"</span>, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"data/cache/tiles"</span>, <span class="st">"def"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(rast) <span class="sc">|&gt;</span></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sprc</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mosaic</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeRaster</span>(<span class="st">"data/cache/tmf_def_age.tif"</span>, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="co"># remove tiles to save space</span></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"data/cache/tiles"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">file.remove</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data =</span> <span class="fu">rast</span>(<span class="st">"data/cache/tmf_sec_age.tif"</span>)) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">na.value =</span> <span class="st">"transparent"</span>) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> area, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Age of secondary forests in 2022"</span>, <span class="at">fill =</span> <span class="st">"Age (yr)"</span>) <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="36_tmf_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data =</span> <span class="fu">rast</span>(<span class="st">"data/cache/tmf_def_age.tif"</span>)) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">na.value =</span> <span class="st">"transparent"</span>) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> area, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">col =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Time since deforestation"</span>, <span class="at">fill =</span> <span class="st">"Time (yr)"</span>) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="36_tmf_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="comparison-of-tmf-and-field-based-plot-classification" class="level2">
+<h2 class="anchored" data-anchor-id="comparison-of-tmf-and-field-based-plot-classification">Comparison of TMF and field-based plot classification</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>tmf2022 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/download/TMF/JRC_TMF_AnnualChange_v1_2022_RCI.tif"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.6.csv"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>plots<span class="sc">$</span>tmf_class <span class="ot">&lt;-</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"Undisturbed"</span>, <span class="st">"Degraded"</span>, <span class="st">"Deforested"</span>, <span class="st">"Regrowth"</span>, <span class="st">"Water"</span>, <span class="st">"Other"</span>)[</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    terra<span class="sc">::</span><span class="fu">extract</span>(tmf2022, plots[, <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>)])<span class="sc">$</span>Dec2022</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>plots <span class="sc">|&gt;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">table</span>(tmf_class, present_landuse))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>     site               plot               depth         sampleID        
- Length:2256        Length:2256        Min.   :1.000   Length:2256       
- Class :character   Class :character   1st Qu.:1.000   Class :character  
- Mode  :character   Mode  :character   Median :2.000   Mode  :character  
-                                       Mean   :1.998                     
-                                       3rd Qu.:3.000                     
-                                       Max.   :3.000                     
-                                       NA's   :2                         
-       C                N            bulk_density_g_cm3 coarse_fraction  
- Min.   :0.1020   Min.   :-0.03744   Min.   :0.1148     Min.   :0.00000  
- 1st Qu.:0.7046   1st Qu.: 0.06761   1st Qu.:1.3798     1st Qu.:0.01504  
- Median :1.0512   Median : 0.09187   Median :1.5568     Median :0.14139  
- Mean   :1.2960   Mean   : 0.11039   Mean   :1.5415     Mean   :0.21625  
- 3rd Qu.:1.6751   3rd Qu.: 0.13708   3rd Qu.:1.7100     3rd Qu.:0.37532  
- Max.   :6.6624   Max.   : 0.67775   Max.   :2.6440     Max.   :0.87308  
- NA's   :2        NA's   :2          NA's   :156        NA's   :135      
- fine_fraction          K                Ca              Mg        
- Min.   :0.1269   Min.   :0.0690   Min.   :0.660   Min.   :0.1905  
- 1st Qu.:0.6247   1st Qu.:0.0970   1st Qu.:1.031   1st Qu.:0.4178  
- Median :0.8586   Median :0.1130   Median :1.160   Median :0.4820  
- Mean   :0.7838   Mean   :0.1169   Mean   :1.201   Mean   :0.5998  
- 3rd Qu.:0.9850   3rd Qu.:0.1270   3rd Qu.:1.314   3rd Qu.:0.6943  
- Max.   :1.0000   Max.   :0.2380   Max.   :2.689   Max.   :1.5040  
- NA's   :135      NA's   :2146     NA's   :2146    NA's   :2146    
-       Na         
- Min.   :0.06325  
- 1st Qu.:0.08892  
- Median :0.10358  
- Mean   :0.10718  
- 3rd Qu.:0.11642  
- Max.   :0.21817  
- NA's   :2146     </code></pre>
+<pre><code>             present_landuse
+tmf_class     cassava cocoa dist_for fallow food_crop forest foretanc jvc
+  Deforested       14    53        0     19         7      0        0   7
+  Degraded          3    43        1     60         0      4        5  12
+  Other            24    69        0     41         9      5        2   0
+  Regrowth          3    43        0     17         0      2        0   1
+  Undisturbed       1    19        6     22         0      3       14   4
+  Water             0     0        0      0         0      0        0   0
+             present_landuse
+tmf_class     old_mining others palm prim_for rubber sec_for trees plantation
+  Deforested           0      0    1        0      8       0                0
+  Degraded             4      0    0        1     14      52                0
+  Other                0      1    5        0      2       3                5
+  Regrowth             1      0    2        0      3      38                0
+  Undisturbed          3      0    0        6      5      22                0
+  Water                0      1    0        1      0       2                0</code></pre>
 </div>
-</div>
-<p>Soil organic carbon stocks were estimated as</p>
-<p><span class="math display">\[ stock = C \cdot (\Delta d \cdot area) \cdot fine \cdot bd\]</span></p>
-<p>where <span class="math inline">\(C\)</span> is the soil organic carbon content, <span class="math inline">\(\Delta d\)</span> is the measurement depth (0.1 m), <span class="math inline">\(area\)</span> is the standardisation area (1 ha = <span class="math inline">\(10^4\)</span> m), <span class="math inline">\(fine\)</span> is the fine fraction of the soil, and <span class="math inline">\(bd\)</span> is the bulk density of the fine fraction (in Mg m<span class="math inline">\(^3\)</span>).</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data_t4s <span class="ot">&lt;-</span> data_t4s <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stock =</span> C <span class="sc">/</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fl">1e3</span> <span class="sc">*</span> fine_fraction <span class="sc">*</span> bulk_density_g_cm3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>We also added data from the RévaTéné project that collected SOC data in the Téné forest plots.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data_tene <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/BdD_Mathus_TENE.xls"</span>, <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">T_stock =</span> <span class="st">`</span><span class="at">CCOS_0-30cm</span><span class="st">`</span> <span class="sc">/</span> <span class="dv">100</span> <span class="sc">*</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>           (<span class="st">`</span><span class="at">Dapp_0-10cm</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">Dapp_10-20cm</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">Dapp_20-30cm</span><span class="st">`</span>) <span class="sc">/</span> <span class="dv">3</span> <span class="sc">*</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>           (<span class="dv">1</span> <span class="sc">-</span> <span class="st">`</span><span class="at">%EG_0-30cm</span><span class="st">`</span>) <span class="sc">*</span> <span class="fl">1e3</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site =</span> <span class="st">"tene"</span>, <span class="at">plot =</span> SUBPLOT) <span class="sc">|&gt;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(SUBPLOT, <span class="fu">c</span>(<span class="st">"pl"</span>, <span class="st">"sub"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="fu">get_tene_coords</span>(pl, sub), <span class="fu">across</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, lon, lat, T_stock)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Linking to GEOS 3.13.1, GDAL 3.11.0, PROJ 9.6.0; sf_use_s2() is TRUE</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: There was 1 warning in `reframe()`.
-ℹ In argument: `across()`.
-Caused by warning:
-! Using `across()` without supplying `.cols` was deprecated in dplyr 1.1.0.
-ℹ Please supply `.cols` instead.</code></pre>
-</div>
-</div>
-<p>We then sum the carbon stocks over all depths at each site to get the total carbon stocks, and save the results.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.6.csv"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># correct plot coordinates</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lonc =</span> <span class="fu">ifelse</span>(lon <span class="sc">&gt;</span> <span class="dv">0</span>, lat, lon), <span class="at">latc =</span> <span class="fu">ifelse</span>(lat <span class="sc">&lt;</span> <span class="dv">0</span>, lon, lat)) <span class="sc">|&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, lonc, latc) <span class="sc">|&gt;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">lon =</span> lonc, <span class="at">lat =</span> latc) <span class="sc">|&gt;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(data_t4s) <span class="sc">|&gt;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site, plot, lon, lat) <span class="sc">|&gt;</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">T_stock =</span> <span class="fu">sum</span>(stock), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(data_tene) <span class="sc">|&gt;</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Vancutsem2021" class="csl-entry" role="listitem">
+Vancutsem, Christelle, Frédéric Achard, J-F Pekel, Ghislain Vieilledent, Silvia Carboni, Dario Simonetti, Javier Gallego, Luiz EOC Aragao, and Robert Nasi. 2021. <span>“Long-Term (1990–2019) Monitoring of Forest Cover Changes in the Humid Tropics.”</span> <em>Science Advances</em> 7 (10): eabe1603.
+</div>
+</div>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -832,13 +922,13 @@ Caused by warning:
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./20_terri4sol_database.html" class="pagination-link" aria-label="terri4sol soil database">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">terri4sol soil database</span>
+      <a href="./35_landuse.html" class="pagination-link" aria-label="Landuse data">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Landuse data</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./22_check_errors.html" class="pagination-link" aria-label="Error checks">
-        <span class="nav-page-text">Error checks</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./40_methodology.html" class="pagination-link" aria-label="Methodological choices">
+        <span class="nav-page-text">Methodological choices</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

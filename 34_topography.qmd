@@ -7,26 +7,35 @@ library(tidyverse)
 
 # Topography {.unnumbered}
 
-```{r}
-#| message: false
-#| warning: false
-topo <- list.files("data/download/SRTM/", pattern = "tif$", full.names = TRUE) |> 
-  rast()
-plot(topo)
-```
+Elevation, slope, and aspect were derived from the Shuttle Radar Topography Mission (SRTM v3) digital elevation model (USGS SRTMGL1_003; 30 m resolution). Slope and aspect were computed from the original elevation data in Google Earth Engine, after which all bands were resampled to 100 m.
+
+Topographical Wetness Index (TWI) was calculated using the same SRTM source. First, the 30 m DEM was aggregated to 100 m using a mean reducer. Sinks in the resampled DEM were filled using the Fill Sinks [@Wang2006] algorithm implemented in the SAGA GIS library (minimum slope = 0°). The SAGA Wetness Index module was then used to compute TWI (parameters: Suction = 10; Area = Specific Catchment Area; Slope type = Catchment slope; Minimum slope = 0; Offset slope = 0.1; Slope weighting = 1).
 
 ```{r}
 #| message: false
 #| warning: false
-#| eval: false
-list.files("data/download/SRTM/", pattern = "tif$", full.names = TRUE) |> 
-  rast() |> 
-  project("EPSG: 4326") |> 
-  terra::extract(read.csv("data/plot_0.2.4.csv")[, c("lon", "lat")]) |>
-  bind_cols(read.csv("data/plot_0.2.4.csv")[, c("site", "plot")]) |>
+topo <- c(
+  "data/01_Data/Environmental_variables/SRTM_V3_stack_100m_CI.tif",
+  "data/01_Data/Environmental_variables/TWI_100m_CI.tif"
+) |> rast()
+names(topo)[4] <- "twi"
+plot(topo)
+```
+
+```{r extract-thermal}
+#| message: false
+#| warning: false
+# extract values for all t4s plots
+coord_stocks <- read.csv("data/cache/data_stocks.csv") |>
+  # project into EPSG:32630
+  vect(crs = "epsg:4326") |>
+  terra::project("epsg:32630")
+topo |>
+  terra::extract(coord_stocks) |>
   select(-ID) |>
-  relocate(site, plot) |> 
-  write.csv("data/cache/srtm_data.csv", row.names = FALSE)
+  bind_cols(select(as.data.frame(coord_stocks), "site", "plot")) |>
+  relocate(site, plot) |>
+  write.csv(file = "data/cache/topo_data.csv", row.names = FALSE)
 ```
 
 ## Distribution of values in the t4s dataset
@@ -34,8 +43,8 @@ list.files("data/download/SRTM/", pattern = "tif$", full.names = TRUE) |>
 ```{r}
 #| message: false
 #| warning: false
-read.csv("data/cache/srtm_data.csv") |> 
-  pivot_longer(cols = c("elevation", "slope", "aspect")) |> 
+read.csv("data/cache/topo_data.csv") |>
+  pivot_longer(cols = c("elevation", "slope", "aspect", "twi")) |>
   ggplot(aes(x = value)) +
   geom_density() +
   facet_wrap(~name, scales = "free") +
@@ -46,20 +55,21 @@ read.csv("data/cache/srtm_data.csv") |>
 ```{r}
 #| message: false
 #| warning: false
-read.csv("data/cache/srtm_data.csv") |> 
-  ggplot(aes(x = elevation, slope, col=site)) +
+read.csv("data/cache/topo_data.csv") |>
+  ggplot(aes(x = elevation, slope, col = site)) +
   geom_point() +
-  scale_x_log10() + scale_y_log10() +
+  scale_x_log10() +
+  scale_y_log10() +
   theme_classic()
 ```
 
 ```{r}
 #| message: false
 #| warning: false
-read.csv("data/cache/srtm_data.csv") |> 
-  left_join(read.csv("data/plot_0.2.4.csv")) |> 
-  filter(!is.na(toposequence) & toposequence != "") |> 
+read.csv("data/cache/topo_data.csv") |>
+  left_join(read.csv("data/plot_0.2.6.csv")) |>
+  filter(!is.na(toposequence) & toposequence != "") |>
   ggplot(aes(x = toposequence, y = slope)) +
-  geom_violin(fill="grey") +
+  geom_violin(fill = "grey") +
   theme_classic()
 ```

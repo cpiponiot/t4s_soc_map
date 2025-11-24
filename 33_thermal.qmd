@@ -1,0 +1,48 @@
+```{r setup}
+#| message: false
+#| warning: false
+
+library(terra)
+library(gdalUtilities)
+library(tidyverse)
+library(ggcorrplot)
+library(ggfortify)
+```
+
+## Thermal variable {.unnumbered}
+
+Land surface temperature (LST) was obtained from the MODIS MOD11A1 v6.1 dataset (1 km native resolution). Low-quality observations were removed using MODIS quality flags, and a 2024 annual mean was calculated. The resulting composite was spatially upscaled to 100 m.
+
+```{r}
+#| message: false
+#| warning: false
+lst <-
+  "data/01_Data/Environmental_variables/LST_Annual_Mean_2024_100m_CI.tif" |>
+  rast()
+plot(lst)
+```
+
+```{r extract-thermal}
+#| message: false
+#| warning: false
+# extract values for all t4s plots
+coord_stocks <- read.csv("data/cache/data_stocks.csv") |>
+  # project into EPSG:32630
+  vect(crs = "epsg:4326") |>
+  terra::project("epsg:32630")
+thermal_data <- lst |>
+  terra::extract(coord_stocks) |>
+  select(-ID) |>
+  bind_cols(select(as.data.frame(coord_stocks), "site", "plot")) |>
+  relocate(site, plot)
+write.csv(thermal_data, file = "data/cache/thermal_data.csv", row.names = FALSE)
+```
+
+The following plots have NAs in at least one Bioclim variable.
+
+```{r}
+#| message: false
+#| warning: false
+thermal_data |>
+  filter(if_any(everything(), is.na))
+```

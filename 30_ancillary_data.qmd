@@ -1,6 +1,10 @@
 ```{r setup}
 #| message: false
 #| warning: false
+library(stringr)
+library(googledrive)
 ```
 
 # Ancillary data {.unnumbered}
+
+We compiled a suite of topographic, spectral, thermal, and climatic predictors from publicly available remote-sensing products and climate datasets. All variables were processed to a common spatial resolution of 100 m to ensure consistency among layers.

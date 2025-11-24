@@ -1,0 +1,101 @@
+```{r setup}
+#| message: false
+#| warning: false
+
+library(terra)
+library(gdalUtilities)
+library(tidyverse)
+library(ggcorrplot)
+library(ggfortify)
+```
+
+## Spectral variables {.unnumbered}
+
+We obtained surface reflectance data from Sentinel-2, with native spatial resolutions of 10–20 m. Low-quality pixels (e.g., clouds, shadows) were removed using the quality assurance bands. Annual mean composites for 2024 were created for the 10 optical bands (Blue, Green, Red, NIR, four Red Edge bands, and two SWIR bands), which were subsequently resampled to 100 m.
+
+We further computed the 2024 Normalized Difference Vegetation Index (NDVI) from the same Sentinel-2 source. After masking low-quality pixels, NDVI was calculated for each image, aggregated to an annual mean, and resampled to 100 m.
+
+```{r extract-spectral}
+#| message: false
+#| warning: false
+# extract values for all t4s plots
+coord_stocks <- read.csv("data/cache/data_stocks.csv") |>
+  # project into EPSG:32630
+  vect(crs = "epsg:4326") |>
+  terra::project("epsg:32630")
+
+spectral_data <- c(
+  "data/01_Data/Environmental_variables/NDVI_Annual_Mean_2024_100m_CI.tif",
+  "data/01_Data/Environmental_variables/S2_Annual_Mean_2024_100m_CI.tif"
+) |>
+  rast() |>
+  terra::extract(coord_stocks) |>
+  select(-ID) |>
+  bind_cols(select(as.data.frame(coord_stocks), "site", "plot")) |>
+  relocate(site, plot)
+write.csv(spectral_data, file = "data/cache/spectral_data.csv",
+          row.names = FALSE)
+```
+
+The following plots have NAs in at least one Bioclim variable.
+
+```{r}
+#| message: false
+#| warning: false
+spectral_data |>
+  filter(if_any(everything(), is.na)) |>
+  select(site, plot, NDVI, Blue_mean, Green_mean, Red_mean)
+```
+
+Below is the result of a Principal Component Analysis with all bioclimatic variables.
+
+```{r}
+#| message: false
+#| warning: false
+data_pca <- spectral_data |>
+  filter(!if_any(everything(), is.na))
+
+data_pca |>
+  select(-site, -plot) |>
+  prcomp(scale = TRUE) |>
+  autoplot(
+    loadings = TRUE, loadings.label = TRUE,
+    data = data_pca, colour = "site"
+  ) +
+  theme_minimal()
+```
+
+We can also plot the pairwise correlation of all climate variables.
+
+```{r}
+#| message: false
+#| warning: false
+spectral_data |>
+  select(-site, -plot) |>
+  drop_na() |>
+  cor() |>
+  ggcorrplot(type = "upper", lab = TRUE)
+```
+
+
+We could strongly reduce colinearity by reducing the number of variables.  
+
+```{r}
+#| message: false
+#| warning: false
+spectral_data |>
+  select(NDVI, Blue_mean, Red_mean, NIR_mean) |>
+  drop_na() |>
+  cor() |>
+  ggcorrplot(type = "upper", lab = TRUE)
+
+spectral_data |>
+  filter(!if_any(everything(), is.na)) |>
+  select(NDVI, Blue_mean, Red_mean, NIR_mean) |>
+  prcomp(scale = TRUE) |>
+  autoplot(
+    loadings = TRUE, loadings.label = TRUE,
+    data = data_pca, colour = "site"
+  ) +
+  theme_minimal()
+```

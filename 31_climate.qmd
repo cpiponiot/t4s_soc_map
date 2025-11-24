@@ -10,57 +10,25 @@ library(ggfortify)
 
 ## Climate data {.unnumbered}
 
-The climate data was retrieved from [Climatologies at high resolution for the earth's land surface areas (CHELSA)](https://chelsa-climate.org/).
-
-```{r download-chelsa}
-# function to download and crop CHELSA data
-dl_chelsa <- function(
-    file,
-    dir_chelsa,
-    dir_local = "CHELSA",
-    box = NULL
-) {
-  url <- paste(
-    "https://os.zhdk.cloud.switch.ch/chelsav2/GLOBAL",
-    dir_chelsa, file,
-    sep = "/"
-  )
-  destfile <- paste(dir_local, file, sep = "/")
-  # download raster from url (if it doesn't already exist in the folder)
-  if (!file.exists(destfile)) {
-    utils::download.file(url, destfile, method = "curl")
-    ## crop to reduce memory usage
-    if (!is.null(box)) {
-      destfile |> 
-        terra::rast() |> 
-        terra::crop(terra::ext(box)) |> 
-        terra::writeRaster(file = destfile, overwrite = TRUE) 
-    }
-  }
-}
-
-if (! dir.exists("data/download/CHELSA")) dir.create("data/download/CHELSA")
-for (i in 1:19) {
-  dl_chelsa(file = paste0("CHELSA_bio", i, "_1981-2010_V.2.1.tif"), 
-            dir_chelsa = "climatologies/1981-2010/bio", 
-            dir_local = "data/download/CHELSA",
-            box = c(-9, -2, 4, 11))
-}
-```
+The climate data was retrieved from [Climatologies at high resolution for the earth's land surface areas (CHELSA; 1981–2010 baseline; 1 km resolution)](https://chelsa-climate.org/). We used four bioclimatic variables: mean annual air temperature (bio01), maximum temperature of the warmest month (bio05), minimum temperature of the coldest month (bio06), and annual precipitation (bio12). All layers were resampled to 100 m.
 
 The values of all Bioclimatic variables are then extracted at the location of all terri4sol plots.
 
 ```{r extract-chelsa}
+#| message: false
+#| warning: false
 # extract values for all t4s plots
-data_stocks <- read.csv("data/cache/data_stocks.csv")
+coord_stocks <- read.csv("data/cache/data_stocks.csv") |>
+  # project into EPSG:32630
+  vect(crs = "epsg:4326") |>
+  terra::project("epsg:32630")
 
-climate_data <- 
-  list.files("data/download/CHELSA", pattern = "tif$", full.names = TRUE) |> 
-  rast() |> 
-  terra::extract(data_stocks[, c("lon", "lat")]) |> 
-  rename_with( ~ gsub(pattern = "CHELSA_|_1981-2010_V.2.1", replacement = "", x = .x)) |> 
-  select(contains("bio")) |> 
-  bind_cols(data_stocks[, c("site", "plot")]) |> 
+climate_data <-
+  "data/01_Data/Environmental_variables/CHELSA_bioclim_1981_2010_100m_CI.tif" |>
+  rast() |>
+  terra::extract(coord_stocks) |>
+  select(contains("bio")) |>
+  bind_cols(select(as.data.frame(coord_stocks), "site", "plot")) |>
   relocate(site, plot)
 
 write.csv(climate_data, file = "data/cache/climate_data.csv", row.names = FALSE)
@@ -69,31 +37,39 @@ write.csv(climate_data, file = "data/cache/climate_data.csv", row.names = FALSE)
 The following plots have NAs in at least one Bioclim variable.
 
 ```{r}
-climate_data |> 
-  filter(if_any(contains("bio"), is.na)) |> 
+#| message: false
+#| warning: false
+climate_data |>
+  filter(if_any(contains("bio"), is.na)) |>
   relocate(site, plot)
 ```
 
 Below is the result of a Principal Component Analysis with all bioclimatic variables.
 
 ```{r}
-data_pca <- climate_data |> 
-  filter(!if_any(everything(), is.na)) 
+#| message: false
+#| warning: false
+data_pca <- climate_data |>
+  filter(!if_any(everything(), is.na))
 
-data_pca |> 
-  select(contains("bio")) |> 
-  prcomp(scale = TRUE) |> 
-  autoplot(loadings = TRUE, loadings.label = TRUE, 
-           data = data_pca, colour = "site") +
+data_pca |>
+  select(contains("bio")) |>
+  prcomp(scale = TRUE) |>
+  autoplot(
+    loadings = TRUE, loadings.label = TRUE,
+    data = data_pca, colour = "site"
+  ) +
   theme_minimal()
 ```
 
 We can also plot the pairwise correlation of all climate variables.
 
 ```{r}
-climate_data |> 
-  select(contains("bio")) |> 
-  drop_na() |> 
-  cor() |> 
-  ggcorrplot()
+#| message: false
+#| warning: false
+climate_data |>
+  select(contains("bio")) |>
+  drop_na() |>
+  cor() |>
+  ggcorrplot(type = "upper", lab = TRUE)
 ```

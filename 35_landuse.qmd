@@ -14,7 +14,8 @@ We used the 2020 land use map of Côte d'Ivoire produced by the Bureau National 
 #| warning: false
 legend <- read.csv("data/download/BNEDT/legend_bnedt.csv")
 list.files("data/download/BNEDT/", pattern = "tif$", full.names = TRUE) |>
-rast() |> plot(col = legend$color)
+  rast() |>
+  plot(col = legend$color)
 ```
 
 ```{r}
@@ -22,31 +23,36 @@ rast() |> plot(col = legend$color)
 #| warning: false
 #| fig.height: 4
 #| fig.width: 12
-plot(ceiling(legend$value/12), 12*ceiling(legend$value/12)-legend$value, 
-     col = legend$col, cex = 2, pch=16, xlim = c(1,3), 
-     xlab=NA, ylab = NA, xaxt = "n", yaxt = "n")
-text(ceiling(legend$value/12)+0.5, 12*ceiling(legend$value/12)-legend$value,
-     legend$label)
+plot(ceiling(legend$value / 12), 12 * ceiling(legend$value / 12) - legend$value,
+  col = legend$col, cex = 2, pch = 16, xlim = c(1, 3),
+  xlab = NA, ylab = NA, xaxt = "n", yaxt = "n"
+)
+text(
+  ceiling(legend$value / 12) + 0.5, 12 * ceiling(legend$value / 12) -
+    legend$value,
+  legend$label
+)
 ```
 
 ```{r}
 #| message: false
 #| warning: false
 #| eval: false
-plot_coords <- read.csv("data/plot_0.2.4.csv") |> 
+plot_coords <- read.csv("data/cache/data_stocks.csv") |>
   filter(!is.na(lon)) |>
-  vect(geom=c("lon", "lat"), crs = "EPSG:4326") |> 
-  project("EPSG:32630") |> 
+  vect(geom = c("lon", "lat"), crs = "EPSG:4326") |>
+  project("EPSG:32630") |>
   as.data.frame(geom = "XY")
-list.files("data/download/BNEDT/", pattern = "tif$", full.names = TRUE) |> 
-  rast() |> 
+list.files("data/download/BNEDT/", pattern = "tif$", full.names = TRUE) |>
+  rast() |>
   terra::extract(plot_coords[, c("x", "y")]) |>
   bind_cols(plot_coords) |>
   select(-ID) |>
-  left_join(read.csv("data/download/BNEDT/legend_bnedt.csv"), 
-            by = join_by(BNEDT_OCS_2020.tif==value)) |>
+  left_join(read.csv("data/download/BNEDT/legend_bnedt.csv"),
+    by = join_by(BNEDT_OCS_2020.tif == value)
+  ) |>
   rename(landuse = label) |>
-  select(site, plot, landuse) |> 
+  select(site, plot, landuse) |>
   write.csv("data/cache/bnedt_data.csv", row.names = FALSE)
 ```
 
@@ -57,8 +63,8 @@ In the table below we compare the landuse values recorded in the terri4sol datab
 ```{r}
 #| message: false
 #| warning: false
-read.csv("data/cache/bnedt_data.csv") |> 
-  left_join(read.csv("data/plot_0.2.4.csv")) |> 
-  select(landuse, present_landuse) |> 
+read.csv("data/cache/bnedt_data.csv") |>
+  left_join(read.csv("data/plot_0.2.6.csv")) |>
+  select(landuse, present_landuse) |>
   table()
 ```
