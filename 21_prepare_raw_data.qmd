@@ -10,13 +10,12 @@ list.files("r", pattern = "\\.R", full.names = TRUE) |> lapply(source)
 
 ## Open and prepare the raw dataset {.unnumbered}
 
-A summary of the data from the terri4sol project is presented below. 
+A summary of the data from the terri4sol project is presented below.
 
 ```{r}
 data_t4s <- read.csv("data/soil_0.2.6.csv")
 summary(data_t4s)
 ```
-
 
 Soil organic carbon stocks were estimated as
 
@@ -29,7 +28,7 @@ data_t4s <- data_t4s |>
   mutate(stock = C / 100 * 1e3 * fine_fraction * bulk_density_g_cm3)
 ```
 
-We also added data from the RévaTéné project that collected SOC data in the Téné forest plots. 
+We also added data from the RévaTéné project that collected SOC data in the Téné forest plots.
 
 ```{r}
 data_tene <- read_excel("data/BdD_Mathus_TENE.xls", 2) |>
@@ -40,6 +39,19 @@ data_tene <- read_excel("data/BdD_Mathus_TENE.xls", 2) |>
   separate(SUBPLOT, c("pl", "sub")) |>
   reframe(get_tene_coords(pl, sub), across()) |>
   select(site, plot, lon, lat, T_stock)
+```
+
+We grouped the following sites because of their spatial overlap: "tene" and "tene_oume"; "adzope", "adzopeN", "yaya" and "mebifon".
+
+```{r}
+read.csv("data/plot_0.2.6.csv") |>
+  filter(lat > 0 & !(lat > 6.2 & site == "yaya")) |>
+  filter(grepl("adzope|mebifon|yaya|tene", site)) |>
+  mutate(new_site = ifelse(grepl("tene", site), "tene", "adzope")) |>
+  ggplot(aes(lon, lat, col = site)) +
+  geom_point() +
+  facet_wrap(~new_site, scales = "free") +
+  theme_bw()
 ```
 
 We then sum the carbon stocks over all depths at each site to get the total carbon stocks, and save the results.
@@ -53,7 +65,10 @@ read.csv("data/plot_0.2.6.csv") |>
   merge(data_t4s) |>
   group_by(site, plot, lon, lat) |>
   summarise(T_stock = sum(stock), .groups = "drop") |>
+  # add revatene data
   bind_rows(data_tene) |>
+  # group sites
+  mutate(site = ifelse(grepl("tene", site), "tene", site)) |>
+  mutate(site = ifelse(grepl("adzope|mebifon|yaya", site), "adzope", site)) |>
   write.csv("data/cache/data_stocks.csv", row.names = FALSE)
 ```
-
