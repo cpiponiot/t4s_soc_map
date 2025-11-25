@@ -5,7 +5,6 @@
 
 library(tidyverse)
 library(readxl)
-list.files("r", pattern = "\\.R", full.names = TRUE) |> lapply(source)
 ```
 
 ## Open and prepare the raw dataset {.unnumbered}
@@ -13,6 +12,8 @@ list.files("r", pattern = "\\.R", full.names = TRUE) |> lapply(source)
 A summary of the data from the terri4sol project is presented below.
 
 ```{r}
+#| message: false
+#| warning: false
 data_t4s <- read.csv("data/soil_0.2.6.csv")
 summary(data_t4s)
 ```
@@ -24,6 +25,8 @@ $$ stock = C \cdot (\Delta d \cdot area) \cdot fine \cdot bd$$
 where $C$ is the soil organic carbon content, $\Delta d$ is the measurement depth (0.1 m), $area$ is the standardisation area (1 ha = $10^4$ m), $fine$ is the fine fraction of the soil, and $bd$ is the bulk density of the fine fraction (in Mg m$^3$).
 
 ```{r}
+#| message: false
+#| warning: false
 data_t4s <- data_t4s |>
   mutate(stock = C / 100 * 1e3 * fine_fraction * bulk_density_g_cm3)
 ```
@@ -31,6 +34,8 @@ data_t4s <- data_t4s |>
 We also added data from the RévaTéné project that collected SOC data in the Téné forest plots.
 
 ```{r}
+#| message: false
+#| warning: false
 data_tene <- read_excel("data/BdD_Mathus_TENE.xls", 2) |>
   mutate(T_stock = `CCOS_0-30cm` / 100 *
            (`Dapp_0-10cm` + `Dapp_10-20cm` + `Dapp_20-30cm`) / 3 *
@@ -44,6 +49,8 @@ data_tene <- read_excel("data/BdD_Mathus_TENE.xls", 2) |>
 We grouped the following sites because of their spatial overlap: "tene" and "tene_oume"; "adzope", "adzopeN", "yaya" and "mebifon".
 
 ```{r}
+#| message: false
+#| warning: false
 read.csv("data/plot_0.2.6.csv") |>
   filter(lat > 0 & !(lat > 6.2 & site == "yaya")) |>
   filter(grepl("adzope|mebifon|yaya|tene", site)) |>
