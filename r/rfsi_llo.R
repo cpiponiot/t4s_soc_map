@@ -56,7 +56,7 @@ rfsi_llo <- function(data, formula_rfsi, site,
   # ---- Return object with predict method ----
   structure(list(
     models = models,
-    xcols = xcols,
+    formula = formula_rfsi,
     best_nodesize = best_nodesize,
     cv_results = cv_results
   ), class = "qrf_llo")

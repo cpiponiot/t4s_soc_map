@@ -3,9 +3,8 @@
 #| warning: false
 #| include: false
 library(tidyverse)
-library(randomForest)
-library(caret)
-list.files("r", pattern = "\\.R", full.names = TRUE) |> lapply(source)
+library(quantregForest)
+source("r/qrf_llo.R")
 ```
 
 # Effect of explanatory variables {.unnumbered}
@@ -17,20 +16,22 @@ The importance of each selected variable in the final model is represented below
 #| warning: false
 load("data/cache/models/qrf_final.rda")
 bioclim_names <- data.frame(
-  variable = paste0("bio", 1:19),
+  variable = paste0("bio", paste0(c(rep("0", 9), rep("", 10)), 1:19)),
   var_name = c(
-  "Annual Mean Temperature", "Mean Diurnal Range", "Isothermality", 
-  "Temperature Seasonality", "Max Temperature of Warmest Month", 
-  "Min Temperature of Coldest Month", "Temperature Annual Range", 
-  "Mean Temperature of Wettest Quarter", "Mean Temperature of Driest Quarter", 
-  "Mean Temperature of Warmest Quarter", "Mean Temperature of Coldest Quarter", 
-  "Annual Precipitation", "Precipitation of Wettest Month", 
-  "Precipitation of Driest Month", "Precipitation Seasonality", 
-  "Precipitation of Wettest Quarter", "Precipitation of Driest Quarter", 
-  "Precipitation of Warmest Quarter", "Precipitation of Coldest Quarter")
+    "Annual Mean Temperature", "Mean Diurnal Range", "Isothermality",
+    "Temperature Seasonality", "Max Temperature of Warmest Month",
+    "Min Temperature of Coldest Month", "Temperature Annual Range",
+    "Mean Temperature of Wettest Quarter", "Mean Temperature of Driest Quarter",
+    "Mean Temperature of Warmest Quarter",
+    "Mean Temperature of Coldest Quarter",
+    "Annual Precipitation", "Precipitation of Wettest Month",
+    "Precipitation of Driest Month", "Precipitation Seasonality",
+    "Precipitation of Wettest Quarter", "Precipitation of Driest Quarter",
+    "Precipitation of Warmest Quarter", "Precipitation of Coldest Quarter"
+  )
 )
-importance.qrf_llo(qrf_final, type = 1) |>
-  left_join(bioclim_names) |> 
+importance_qrf_llo(qrf_final, type = 1) |>
+  left_join(bioclim_names) |>
   merge(read.csv("data/cache/var_selection.csv")) |>
   mutate(variable = ifelse(is.na(var_name), variable, var_name)) |>
   ggplot(aes(x = reorder(variable, importance), y = importance, fill = group)) +
@@ -39,4 +40,37 @@ importance.qrf_llo(qrf_final, type = 1) |>
   xlab("Variables") +
   ylab("Increase in Node Purity") +
   theme_minimal()
+```
+
+The partial dependence plots are represented below.
+
+```{r}
+#| message: false
+#| warning: false
+
+data_all <- read.csv("data/cache/data_stocks.csv") %>%
+  merge(read.csv("data/cache/climate_data.csv")) %>%
+  merge(read.csv("data/cache/spectral_data.csv")) %>%
+  merge(read.csv("data/cache/topo_data.csv")) %>%
+  merge(read.csv("data/cache/thermal_data.csv")) %>%
+  drop_na() |>
+  setDT()
+
+preds <- lapply(qrf_final$xcol, function(x) {
+  data.frame(
+    value = seq(
+      min(data_all[[x]]),
+      max(data_all[[x]]),
+      length.out = 50
+    )
+  )
+})
+names(preds) <- qrf_final$xcol
+preds <- rbindlist(preds, idcol = "var")
+
+preds[, c("Q10", "Q50", "Q90") := qrf_partial(
+  qrf_final, var, value,
+  data_all, c(0.1, 0.5, 0.9)
+), .(var, value)]
+write.csv(preds, "data/cache/partial_predictions.csv", row.names = FALSE)
 ```
