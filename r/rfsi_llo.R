@@ -6,7 +6,7 @@ rfsi_llo <- function(data, formula_rfsi, site,
                      ntree = 500) {
   sites <- unique(site)
   n <- nrow(data)
-  y <- data.frame(data)[, as.character(formula_soc)[2]]
+  y <- data.frame(data)[, as.character(formula_rfsi)[2]]
 
   # ---- Hyperparameter tuning ----
   cv_results <- data.frame(nodesize = nodesizes, RMSE = NA, R2 = NA)
@@ -46,7 +46,7 @@ rfsi_llo <- function(data, formula_rfsi, site,
     train_idx <- which(site != s)
 
     models[[as.character(s)]] <- rfsi(
-      formula = formula_soc,
+      formula = formula_rfsi,
       data[train_idx, ],
       mtry = ns,
       num.trees = ntree

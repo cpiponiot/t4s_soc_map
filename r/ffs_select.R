@@ -4,7 +4,7 @@ ffs_select <- function(vars, data, select = NULL, response = "T_stock") {
     return(TRUE)
   } else {
     ffsel <- data[, vars[select]] |>
-      ffs(data[, response], metric = "Rsquared")
+      CAST::ffs(data[, response], metric = "Rsquared")
     # get list of predictor
     return(vars %in% ffsel$selectedvars)
   }

@@ -10,26 +10,29 @@ list.files("r", pattern = "\\.R", full.names = TRUE) |> lapply(source)
 
 # Model results {.unnumbered}
 
-Based on the tests in the "Methodological choices" section, we used the model with all variables and no spatial interpolation. 
+Based on the tests in the "Methodological choices" section, we used the model with variables selected with the VIF+FFS method and no spatial interpolation.
 
 ```{r}
 #| message: false
 #| warning: false
 #| eval: false
-data_all <- read.csv("data/cache/data_stocks.csv") %>% 
-  merge(read.csv("data/cache/climate_data.csv")) %>% 
-  merge(read.csv("data/cache/soilgrids_data.csv")) %>% 
-  merge(read.csv("data/cache/bnedt_data.csv")) %>% 
-  merge(read.csv("data/cache/srtm_data.csv")) %>% 
-  drop_na() 
-qrf_final <- train_qrf_llo(
+data_all <- read.csv("data/cache/data_stocks.csv") %>%
+  merge(read.csv("data/cache/climate_data.csv")) %>%
+  merge(read.csv("data/cache/spectral_data.csv")) %>%
+  merge(read.csv("data/cache/topo_data.csv")) %>%
+  merge(read.csv("data/cache/thermal_data.csv")) %>%
+  drop_na()
+sel_vars <- read.csv("data/cache/var_selection.csv") %>%
+  filter(ffs2) %>%
+  select(variable) %>%
+  unlist()
+qrf_final <- qrf_llo(
   data = data_all,
   ycol = "T_stock",
-  xcols = setdiff(colnames(data_all), c("site", "plot", "lon", "lat", "T_stock")),
+  xcols = sel_vars,
   site = data_all$site,
   nodesizes = c(5, 10, 15),
   ntree = 200
 )
 save(qrf_final, file = "data/cache/models/qrf_final.rda")
 ```
-

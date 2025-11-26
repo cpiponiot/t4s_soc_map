@@ -4,6 +4,7 @@
 #| include: false
 library(tidyverse)
 library(quantregForest)
+library(data.table)
 source("r/qrf_llo.R")
 ```
 
@@ -47,7 +48,7 @@ The partial dependence plots are represented below.
 ```{r}
 #| message: false
 #| warning: false
-
+#| eval: false
 data_all <- read.csv("data/cache/data_stocks.csv") %>%
   merge(read.csv("data/cache/climate_data.csv")) %>%
   merge(read.csv("data/cache/spectral_data.csv")) %>%
@@ -74,3 +75,31 @@ preds[, c("Q10", "Q50", "Q90") := qrf_partial(
 ), .(var, value)]
 write.csv(preds, "data/cache/partial_predictions.csv", row.names = FALSE)
 ```
+
+```{r}
+#| message: false
+#| warning: false
+#| fig.height: 8
+#| fig.width: 8
+#| fig.cap: "Partial dependence plots showing the effect of individual variables on predicted SOC stocks. Solid lines represent the median predictions, while the grey areas represent the 10–90% quantiles. The points represent observations, with each colour representing a different site." #nolint
+idcols <- c("site", "plot", "lon", "lat", "T_stock")
+data_all <- read.csv("data/cache/data_stocks.csv") %>%
+  merge(read.csv("data/cache/climate_data.csv")) %>%
+  merge(read.csv("data/cache/spectral_data.csv")) %>%
+  merge(read.csv("data/cache/topo_data.csv")) %>%
+  merge(read.csv("data/cache/thermal_data.csv")) %>%
+  drop_na() %>%
+  pivot_longer(-idcols, names_to = "var") %>%
+  filter(var %in% qrf_final$xcols)
+read.csv("data/cache/partial_predictions.csv") |>
+  ggplot(aes(value, Q50)) +
+  geom_ribbon(aes(ymin = Q10, ymax = Q90), alpha = 0.1) +
+  geom_point(data = data_all, aes(y = T_stock, col = site), alpha = 0.2) +
+  geom_line() +
+  facet_wrap(~var, scales = "free") +
+  theme_classic() +
+  theme(legend.position = "none") +
+  labs(x = "Variable value",
+       y = "Distribution of predicted and observed SOC stocks")
+```
+

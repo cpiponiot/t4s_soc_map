@@ -75,11 +75,15 @@ predict.qrf_llo <- function(object, newdata,
   xnew <- newdata[, object$xcols, drop = FALSE]
   if (parallel) {
     cl <- makeCluster(cores)
-    clusterExport(cl, varlist = c("xnew", "object", "quantiles"),
-                  envir = environment())
+    clusterExport(cl,
+      varlist = c("xnew", "object", "quantiles"),
+      envir = environment()
+    )
     clusterEvalQ(cl, library(quantregForest))
-    preds <- parLapply(cl, object$models,
-                       function(m) predict(m, xnew, what = quantiles))
+    preds <- parLapply(
+      cl, object$models,
+      function(m) predict(m, xnew, what = quantiles)
+    )
     stopCluster(cl)
   } else {
     # resample results for each prediction
@@ -122,7 +126,7 @@ importance_qrf_llo <- function(object, type = 1) {
 qrf_partial <- function(object, var, value, data, quantiles) {
   lapply(object$models, function(m) {
     predict(m, copy(data)[, (var) := value],
-      what = function(x) sample(x, 100, replace = TRUE)
+      what = function(x) sample(x, 20, replace = TRUE)
     )
   }) |>
     unlist() |>

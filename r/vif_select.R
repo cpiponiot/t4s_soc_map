@@ -4,7 +4,7 @@ vif_select <- function(vars, data, select = NULL, thres = 5) {
     return(TRUE)
   } else {
     is_num <- sapply(vars[select], function(x) is.numeric(data[, x]))
-    vif_res <- data[, vars[select & is_num]] |> vifstep(th = thres)
+    vif_res <- data[, vars[select & is_num]] |> usdm::vifstep(th = thres)
     return(vars %in% c(vif_res@results$Variables, vars[select & !is_num]))
   }
 }
