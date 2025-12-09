@@ -1,0 +1,96 @@
+```{r setup}
+#| message: false
+#| warning: false
+library(terra)
+library(tidyverse)
+library(zip)
+library(Hmisc)
+```
+
+# Soil types {.unnumbered}
+
+```{r}
+#| message: false
+#| warning: false
+if (!file.exists("data/01_Data/Environmental_variables/HWSD2.tif")) {
+  if (!dir.exists("data/download/HWSD")) dir.create("data/download/HWSD")
+  url <- "https://s3.eu-west-1.amazonaws.com/data.gaezdev.aws.fao.org/HWSD/"
+  path <- "data/download/HWSD/"
+  # download raster
+  paste0(url, "HWSD2_RASTER.zip") |>
+    download.file(destfile = paste0(path, "HWSD2_RASTER.zip"))
+  unzip(paste0(path, "HWSD2_RASTER.zip"), exdir = path)
+  # download database
+  paste0(url, "HWSD2_DB.zip") |>
+    download.file(destfile = paste0(path, "HWSD2_DB.zip"))
+  unzip(paste0(path, "HWSD2_DB.zip"), exdir = path)
+  file.remove(paste0(path, "HWSD2_", c("RASTER", "DB"), ".zip"))
+
+  # project raster and save
+  rast_ref <-
+    rast("data/01_Data/Environmental_variables/TWI_100m_CI.tif")
+  rhwsd <- "data/download/HWSD/HWSD2.bil" |>
+    rast() |>
+    as.factor() |>
+    project(rast_ref, method = "near") |>
+    crop(ext(rast_ref)) |>
+    subst(7001, NA)
+  dt <- levels(rhwsd)[[1]] |>
+    left_join(read.csv("data/download/HWSD/HWSD2_SMU.csv"),
+      by = join_by(ID == HWSD2_SMU_ID)
+    ) |>
+    select(ID, WRB2)
+  levels(rhwsd) <- dt
+  writeRaster(rhwsd, "data/01_Data/Environmental_variables/HWSD2.tif",
+    overwrite = TRUE
+  )
+}
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| fig.height: 6
+#| fig.width: 12
+rast("data/01_Data/Environmental_variables/HWSD2.tif") |>
+  plot()
+```
+
+
+```{r extract-soil}
+#| message: false
+#| warning: false
+# extract values for all t4s plots
+coord_stocks <- read.csv("data/cache/data_stocks.csv") |>
+  # project into EPSG:32630
+  vect(crs = "epsg:4326") |>
+  terra::project("epsg:32630")
+rast("data/01_Data/Environmental_variables/HWSD2.tif") |>
+  terra::extract(coord_stocks) |>
+  select(-ID) |>
+  bind_cols(select(as.data.frame(coord_stocks), "site", "plot")) |>
+  relocate(site, plot) |>
+  write.csv(file = "data/cache/soil_data.csv", row.names = FALSE)
+```
+
+## Distribution of values in the t4s dataset
+
+Only the following soil types are represented in the t4s database: 
+
+```{r}
+#| message: false
+#| warning: false
+t4s_levels <- "data/cache/soil_data.csv" |>
+  read.csv() |>
+  select(WRB2) |>
+  mutate(new = WRB2) |>
+  unique() |>
+  filter(!is.na(WRB2))
+r <- "data/01_Data/Environmental_variables/HWSD2.tif" |>
+  rast()
+levels(r) <- levels(r)[[1]] |>
+  left_join(t4s_levels) |>
+  select(ID, new)
+plot(r)
+```
+

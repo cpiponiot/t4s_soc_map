@@ -291,7 +291,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./52_soc_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">library(randomForest)</span></span></a>
+ <span class="menu-text">SOC stocks prediction</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -316,6 +316,13 @@ div.csl-indent {
   <li><a href="#randomforest-with-variable-selection-based-on-vif" id="toc-randomforest-with-variable-selection-based-on-vif" class="nav-link" data-scroll-target="#randomforest-with-variable-selection-based-on-vif">RandomForest with variable selection based on VIF</a></li>
   <li><a href="#randomforest-with-variable-selection-based-on-vif-ffs" id="toc-randomforest-with-variable-selection-based-on-vif-ffs" class="nav-link" data-scroll-target="#randomforest-with-variable-selection-based-on-vif-ffs">RandomForest with variable selection based on VIF + FFS</a></li>
   <li><a href="#comparison-of-random-forest-models-performance" id="toc-comparison-of-random-forest-models-performance" class="nav-link" data-scroll-target="#comparison-of-random-forest-models-performance">Comparison of Random forest models performance</a></li>
+  <li><a href="#test---add-soil-type-hwsd2-and-land-use-bnedt" id="toc-test---add-soil-type-hwsd2-and-land-use-bnedt" class="nav-link" data-scroll-target="#test---add-soil-type-hwsd2-and-land-use-bnedt">Test - add soil type (HWSD2) and land use (BNEDT)</a>
+  <ul class="collapse">
+  <li><a href="#randomforest-without-variable-selection-1" id="toc-randomforest-without-variable-selection-1" class="nav-link" data-scroll-target="#randomforest-without-variable-selection-1">RandomForest without variable selection</a></li>
+  <li><a href="#randomforest-with-variable-selection-based-on-vif-1" id="toc-randomforest-with-variable-selection-based-on-vif-1" class="nav-link" data-scroll-target="#randomforest-with-variable-selection-based-on-vif-1">RandomForest with variable selection based on VIF</a></li>
+  <li><a href="#randomforest-with-variable-selection-based-on-vif-ffs-1" id="toc-randomforest-with-variable-selection-based-on-vif-ffs-1" class="nav-link" data-scroll-target="#randomforest-with-variable-selection-based-on-vif-ffs-1">RandomForest with variable selection based on VIF + FFS</a></li>
+  <li><a href="#comparison-of-random-forest-models-performance-1" id="toc-comparison-of-random-forest-models-performance-1" class="nav-link" data-scroll-target="#comparison-of-random-forest-models-performance-1">Comparison of Random forest models performance</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -379,8 +386,8 @@ div.csl-indent {
 <p>Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>RMSE: 14.60768 
-R²: 0.1197349</code></pre>
+<pre><code>RMSE: 14.61644 
+R²: 0.1220424</code></pre>
 </div>
 </div>
 </section>
@@ -594,6 +601,279 @@ R²: 0.1389633</code></pre>
 </div>
 </div>
 </div>
+</section>
+<section id="test---add-soil-type-hwsd2-and-land-use-bnedt" class="level2">
+<h2 class="anchored" data-anchor-id="test---add-soil-type-hwsd2-and-land-use-bnedt">Test - add soil type (HWSD2) and land use (BNEDT)</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_all <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/climate_data.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/spectral_data.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/topo_data.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/thermal_data.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/soil_data.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/bnedt_data.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="randomforest-without-variable-selection-1" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="randomforest-without-variable-selection-1">RandomForest without variable selection</h3>
+<p>A Random Forest (RF) model was implemented using the ranger package in R to predict soil organic carbon stock from environmental and soil covariates.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>formula_soc_all <span class="ot">&lt;-</span> <span class="fu">colnames</span>(data_all) <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setdiff</span>(<span class="fu">c</span>(<span class="st">"site"</span>, <span class="st">"plot"</span>, <span class="st">"lon"</span>, <span class="st">"lat"</span>, <span class="st">"T_stock"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">" + "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">"T_stock ~"</span>, .) <span class="sc">%&gt;%</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.formula</span>()</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>training_index <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">unique</span>(data_all<span class="sc">$</span>site),</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>                         <span class="cf">function</span>(s) <span class="fu">which</span>(data_all<span class="sc">$</span>site <span class="sc">!=</span> s))</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>rf_all <span class="ot">&lt;-</span> <span class="fu">train</span>(</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">form =</span> formula_soc_all,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_all,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"rf"</span>,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">metric =</span> <span class="st">"RMSE"</span>,</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"cv"</span>, <span class="at">index =</span> training_index),</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">ntree =</span> <span class="dv">500</span>, <span class="at">importance =</span> <span class="cn">TRUE</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(rf_all, <span class="at">file =</span> <span class="st">"data/cache/models/rf_all_extended.rda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>RMSE: 14.60768 
+R²: 0.1197349</code></pre>
+</div>
+</div>
+</section>
+<section id="randomforest-with-variable-selection-based-on-vif-1" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="randomforest-with-variable-selection-based-on-vif-1">RandomForest with variable selection based on VIF</h3>
+<p>Variable selection was done to avoid collinearity, by applying a using a Variance Inflation Factor (VIF) threshold of &lt; 5 with a stepwise procedure on all variables <span class="citation" data-cites="Naimi2014">(<a href="#ref-Naimi2014" role="doc-biblioref">Naimi et al. 2014</a>)</span>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create groups</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>data_groups_vif <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable =</span> <span class="fu">setdiff</span>(<span class="fu">colnames</span>(data_all),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">"site"</span>, <span class="st">"plot"</span>, <span class="st">"lon"</span>, <span class="st">"lat"</span>, <span class="st">"T_stock"</span>))</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> <span class="co"># vif selection by group, based on variables selected at previous stage</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vif =</span> <span class="fu">vif_select</span>(variable, data_all))</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>list_vars <span class="ot">&lt;-</span> data_groups_vif <span class="sc">|&gt;</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(vif) <span class="sc">|&gt;</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(variable) <span class="sc">|&gt;</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">"; "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The variables kept were: bio01; bio06; bio12; Blue_mean; RedEdge4_mean; SWIR1_mean; elevation; slope; aspect; twi; Annual_Mean_LST; WRB2; landuse.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>formula_soc_vif <span class="ot">&lt;-</span> data_groups_vif <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(vif) <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(variable) <span class="sc">%&gt;%</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">" + "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">"T_stock ~"</span>, .) <span class="sc">%&gt;%</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.formula</span>()</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>training_index <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">unique</span>(data_all<span class="sc">$</span>site),</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>                         <span class="cf">function</span>(s) <span class="fu">which</span>(data_all<span class="sc">$</span>site <span class="sc">!=</span> s))</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>rf_vif <span class="ot">&lt;-</span> <span class="fu">train</span>(</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">form =</span> formula_soc_vif,</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_all,</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"rf"</span>,</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">metric =</span> <span class="st">"RMSE"</span>,</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"cv"</span>, <span class="at">index =</span> training_index),</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">ntree =</span> <span class="dv">500</span>, <span class="at">importance =</span> <span class="cn">TRUE</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(rf_vif, <span class="at">file =</span> <span class="st">"data/cache/models/rf_vif_extended.rda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>RMSE: 14.15249 
+R²: 0.1092524</code></pre>
+</div>
+</div>
+</section>
+<section id="randomforest-with-variable-selection-based-on-vif-ffs-1" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="randomforest-with-variable-selection-based-on-vif-ffs-1">RandomForest with variable selection based on VIF + FFS</h3>
+<p>This method was inspired by the work from <span class="citation" data-cites="Traore2024">Traoré et al. (<a href="#ref-Traore2024" role="doc-biblioref">2024</a>)</span>.</p>
+<ul>
+<li><p>Environmental variables were grouped as: climate - temperature / climate - precipitation / soil - physical variables / soil - chemical variables / topography / landuse.</p></li>
+<li><p>For each group, a first variable selection was done to avoid collinearity, by applying a using a Variance Inflation Factor (VIF) threshold of &lt; 5 with a stepwise procedure <span class="citation" data-cites="Naimi2014">(<a href="#ref-Naimi2014" role="doc-biblioref">Naimi et al. 2014</a>)</span>.</p></li>
+<li><p>A second variable selection step is then performed for each group of variables using a forward feature selection (FFS) procedure <span class="citation" data-cites="Meyer2025">(<a href="#ref-Meyer2025" role="doc-biblioref">Meyer et al. 2025</a>)</span>.</p></li>
+<li><p>All selected variables are then grouped, and the VIF + FFS are applied to this subset of variables.</p></li>
+<li><p>The RandomForest model is then calibrated with the final subset of variables.</p></li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create groups</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>data_groups <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable =</span> <span class="fu">setdiff</span>(<span class="fu">colnames</span>(data_all),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">"site"</span>, <span class="st">"plot"</span>, <span class="st">"lon"</span>, <span class="st">"lat"</span>, <span class="st">"T_stock"</span>))</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"bio|LST"</span>, variable), <span class="st">"clim"</span>, variable)) <span class="sc">|&gt;</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"_mean|NDVI"</span>, variable), <span class="st">"spectral"</span>, group)) <span class="sc">|&gt;</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"elev|slope|aspect|twi"</span>, variable), <span class="st">"topo"</span>, group)) <span class="sc">|&gt;</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># vif selection by group, based on variables selected at previous stage</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vif1 =</span> <span class="fu">vif_select</span>(variable, data_all)) <span class="sc">|&gt;</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ffs by group, based on variables selected at previous stage</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ffs1 =</span> <span class="fu">ffs_select</span>(variable, data_all, vif1)) <span class="sc">|&gt;</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># vif selection for all, based on variables selected at previous stage</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vif2 =</span> <span class="fu">vif_select</span>(variable, data_all, ffs1)) <span class="sc">|&gt;</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ffs for all, based on variables selected at previous stage</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ffs2 =</span> <span class="fu">ffs_select</span>(variable, data_all, vif2))</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(data_groups, <span class="at">file =</span> <span class="st">"data/cache/var_selection_extended.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The following variables were selected for each group at the different steps:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/cache/var_selection_extended.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">paste0</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"vif"</span>, <span class="st">"ffs"</span>)), <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">each =</span> <span class="dv">2</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group, name) <span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">vars =</span> <span class="fu">paste</span>(variable[value], <span class="at">collapse =</span> <span class="st">", "</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">values_from =</span> <span class="st">"vars"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(group, vif1, ffs1, vif2, ffs2) <span class="sc">|&gt;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Groups"</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">paste</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"VIF"</span>, <span class="st">"FFS"</span>)),</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"group"</span>, <span class="st">"all"</span>), <span class="at">each =</span> <span class="dv">2</span>), <span class="at">sep =</span> <span class="st">"_"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Groups</th>
+<th style="text-align: left;">VIF_group</th>
+<th style="text-align: left;">FFS_group</th>
+<th style="text-align: left;">VIF_all</th>
+<th style="text-align: left;">FFS_all</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">WRB2</td>
+<td style="text-align: left;">WRB2</td>
+<td style="text-align: left;">WRB2</td>
+<td style="text-align: left;">WRB2</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">clim</td>
+<td style="text-align: left;">bio01, bio06, bio12, Annual_Mean_LST</td>
+<td style="text-align: left;">bio01, bio06, bio12, Annual_Mean_LST</td>
+<td style="text-align: left;">bio01, bio06, bio12, Annual_Mean_LST</td>
+<td style="text-align: left;">bio01, bio12, Annual_Mean_LST</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">landuse</td>
+<td style="text-align: left;">landuse</td>
+<td style="text-align: left;">landuse</td>
+<td style="text-align: left;">landuse</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">spectral</td>
+<td style="text-align: left;">Blue_mean, NIR_mean, SWIR1_mean</td>
+<td style="text-align: left;">Blue_mean, NIR_mean, SWIR1_mean</td>
+<td style="text-align: left;">Blue_mean, NIR_mean, SWIR1_mean</td>
+<td style="text-align: left;">Blue_mean</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">topo</td>
+<td style="text-align: left;">elevation, slope, aspect, twi</td>
+<td style="text-align: left;">elevation, aspect, twi</td>
+<td style="text-align: left;">elevation, aspect, twi</td>
+<td style="text-align: left;">elevation, aspect, twi</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>formula_soc_ffs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/var_selection_extended.csv"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ffs2) <span class="sc">%&gt;%</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(variable) <span class="sc">%&gt;%</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">" + "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">"T_stock ~"</span>, .) <span class="sc">%&gt;%</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.formula</span>()</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>training_index <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">unique</span>(data_all<span class="sc">$</span>site),</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>                         <span class="cf">function</span>(s) <span class="fu">which</span>(data_all<span class="sc">$</span>site <span class="sc">!=</span> s))</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>rf_ffs <span class="ot">&lt;-</span> <span class="fu">train</span>(</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">form =</span> formula_soc_ffs,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_all,</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"rf"</span>,</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">metric =</span> <span class="st">"RMSE"</span>,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"cv"</span>, <span class="at">index =</span> training_index),</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">ntree =</span> <span class="dv">500</span>, <span class="at">importance =</span> <span class="cn">TRUE</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(rf_ffs, <span class="at">file =</span> <span class="st">"data/cache/models/rf_ffs_extended.rda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>RMSE: 14.25085 
+R²: 0.138039</code></pre>
+</div>
+</div>
+</section>
+<section id="comparison-of-random-forest-models-performance-1" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="comparison-of-random-forest-models-performance-1">Comparison of Random forest models performance</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>rf_models <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">"all"</span>, <span class="st">"vif"</span>, <span class="st">"ffs"</span>), <span class="cf">function</span>(model) {</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">load</span>(<span class="fu">paste0</span>(<span class="st">"data/cache/models/rf_"</span>, model, <span class="st">"_extended.rda"</span>))</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get</span>(<span class="fu">paste0</span>(<span class="st">"rf_"</span>, model))</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rf_models) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"All Variables"</span>, <span class="st">"VIF selection"</span>, <span class="st">"VIF+FFS selection"</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(rf_models, <span class="cf">function</span>(md) md<span class="sc">$</span>results) <span class="sc">%&gt;%</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  data.table<span class="sc">::</span><span class="fu">rbindlist</span>(<span class="at">idcol =</span> <span class="st">"model"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(model, mtry, RMSE, Rsquared, MAE) <span class="sc">%&gt;%</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(RMSE, Rsquared, MAE),</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"metric"</span>, <span class="at">values_to =</span> <span class="st">"value"</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mtry, <span class="at">y =</span> value, <span class="at">color =</span> model)) <span class="sc">+</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>metric, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Comparison of performance by mtry"</span>,</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"mtry (number of variables sampled)"</span>,</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Metric value"</span>,</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Model"</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="41_variable_selection_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
@@ -607,6 +887,7 @@ Naimi, Babak, Nicholas a.s. Hamm, Thomas A. Groen, Andrew K. Skidmore, and Alber
 Traoré, Soulemane, Irie Casimir Zo-Bi, Camille Piponiot, Raphaël Aussenac, and Bruno Hérault. 2024. <span>“<span class="nocase">Fragmentation is the main driver of residual forest aboveground biomass in West African low forest-high deforestation landscapes</span>.”</span> <em>Trees, Forests and People</em> 15 (March): 100477. <a href="https://doi.org/10.1016/j.tfp.2023.100477">https://doi.org/10.1016/j.tfp.2023.100477</a>.
 </div>
 </div>
+</section>
 </section>
 
 </main> <!-- /main -->
