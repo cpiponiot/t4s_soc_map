@@ -37,7 +37,6 @@ text(
 ```{r}
 #| message: false
 #| warning: false
-#| eval: false
 plot_coords <- read.csv("data/cache/data_stocks.csv") |>
   filter(!is.na(lon)) |>
   vect(geom = c("lon", "lat"), crs = "EPSG:4326") |>

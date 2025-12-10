@@ -1,4 +1,4 @@
-```{r setup}
+## ----setup--------------------------------------------------------------------------------------------------------------------
 #| message: false
 #| warning: false
 #| echo: false
@@ -11,11 +11,9 @@ library(knitr)
 library(randomForest)
 library(caret)
 list.files("r", pattern = "\\.R", full.names = TRUE) |> lapply(source)
-```
 
-# Variable selection {.unnumbered}
 
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| message: false
 #| warning: false
 data_all <- read.csv("data/cache/data_stocks.csv") %>%
@@ -24,13 +22,9 @@ data_all <- read.csv("data/cache/data_stocks.csv") %>%
   merge(read.csv("data/cache/topo_data.csv")) %>%
   merge(read.csv("data/cache/thermal_data.csv")) %>%
   drop_na()
-```
 
-## RandomForest without variable selection {.unnumbered}
 
-A Random Forest (RF) model was implemented using the ranger package in R to predict soil organic carbon stock from environmental and soil covariates.
-
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| eval: false
 formula_soc_all <- colnames(data_all) %>%
   setdiff(c("site", "plot", "lon", "lat", "T_stock")) %>%
@@ -48,11 +42,9 @@ rf_all <- train(
   ntree = 500, importance = TRUE
 )
 save(rf_all, file = "data/cache/models/rf_all.rda")
-```
 
-Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:
 
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| message: false
 #| warning: false
 #| echo: false
@@ -61,13 +53,9 @@ cat(
   "RMSE:", mean(rf_all$resample$RMSE),
   "\nR²:", mean(rf_all$resample$Rsquared)
 )
-```
 
-## RandomForest with variable selection based on VIF {.unnumbered}
 
-Variable selection was done to avoid collinearity, by applying a using a Variance Inflation Factor (VIF) threshold of \< 5 with a stepwise procedure on all variables [@Naimi2014].
-
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| warning: false
 # create groups
 data_groups_vif <- data.frame(
@@ -80,11 +68,9 @@ list_vars <- data_groups_vif |>
   select(variable) |>
   unlist() |>
   paste(collapse = "; ")
-```
 
-The variables kept were: `r list_vars`.
 
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| eval: false
 formula_soc_vif <- data_groups_vif %>%
   filter(vif) %>%
@@ -104,11 +90,9 @@ rf_vif <- train(
   ntree = 500, importance = TRUE
 )
 save(rf_vif, file = "data/cache/models/rf_vif.rda")
-```
 
-Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:
 
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| message: false
 #| warning: false
 #| echo: false
@@ -117,23 +101,9 @@ cat(
   "RMSE:", mean(rf_vif$resample$RMSE),
   "\nR²:", mean(rf_vif$resample$Rsquared)
 )
-```
 
-## RandomForest with variable selection based on VIF + FFS {.unnumbered}
 
-This method was inspired by the work from @Traore2024.
-
--   Environmental variables were grouped as: climate - temperature / climate - precipitation / soil - physical variables / soil - chemical variables / topography / landuse.
-
--   For each group, a first variable selection was done to avoid collinearity, by applying a using a Variance Inflation Factor (VIF) threshold of \< 5 with a stepwise procedure [@Naimi2014].
-
--   A second variable selection step is then performed for each group of variables using a forward feature selection (FFS) procedure [@Meyer2025].
-
--   All selected variables are then grouped, and the VIF + FFS are applied to this subset of variables.
-
--   The RandomForest model is then calibrated with the final subset of variables.
-
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| warning: false
 #| eval: false
 # create groups
@@ -154,11 +124,9 @@ data_groups <- data.frame(
   # ffs for all, based on variables selected at previous stage
   mutate(ffs2 = ffs_select(variable, data_all, vif2))
 write.csv(data_groups, file = "data/cache/var_selection.csv", row.names = FALSE)
-```
 
-The following variables were selected for each group at the different steps:
 
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| warning: false
 read.csv("data/cache/var_selection.csv") |>
   pivot_longer(cols = paste0(rep(c("vif", "ffs")), rep(1:2, each = 2))) |>
@@ -169,9 +137,9 @@ read.csv("data/cache/var_selection.csv") |>
   kable(col.names = c("Groups",
                       paste(rep(c("VIF", "FFS")),
                             rep(c("group", "all"), each = 2), sep = "_")))
-```
 
-```{r}
+
+## -----------------------------------------------------------------------------------------------------------------------------
 #| eval: false
 formula_soc_ffs <- read.csv("data/cache/var_selection.csv") %>%
   filter(ffs2) %>%
@@ -191,11 +159,9 @@ rf_ffs <- train(
   ntree = 500, importance = TRUE
 )
 save(rf_ffs, file = "data/cache/models/rf_ffs.rda")
-```
 
-Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:
 
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| message: false
 #| warning: false
 #| echo: false
@@ -204,11 +170,9 @@ cat(
   "RMSE:", mean(rf_ffs$resample$RMSE),
   "\nR²:", mean(rf_ffs$resample$Rsquared)
 )
-```
 
-## Comparison of Random forest models performance {.unnumbered}
 
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| message: false
 #| warning: false
 rf_models <- lapply(c("all", "vif", "ffs"), function(model) {
@@ -234,11 +198,9 @@ lapply(rf_models, function(md) md$results) %>%
     color = "Model"
   ) +
   theme_minimal()
-```
 
-## Test - add soil type (HWSD2) and land use (BNEDT)
 
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| message: false
 #| warning: false
 data_all <- read.csv("data/cache/data_stocks.csv") %>%
@@ -249,13 +211,9 @@ data_all <- read.csv("data/cache/data_stocks.csv") %>%
   merge(read.csv("data/cache/soil_data.csv")) %>%
   merge(read.csv("data/cache/bnedt_data.csv")) %>%
   drop_na()
-```
 
-### RandomForest without variable selection {.unnumbered}
 
-A Random Forest (RF) model was implemented using the ranger package in R to predict soil organic carbon stock from environmental and soil covariates.
-
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| eval: false
 formula_soc_all <- colnames(data_all) %>%
   setdiff(c("site", "plot", "lon", "lat", "T_stock")) %>%
@@ -273,11 +231,9 @@ rf_all <- train(
   ntree = 500, importance = TRUE
 )
 save(rf_all, file = "data/cache/models/rf_all_extended.rda")
-```
 
-Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:
 
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| message: false
 #| warning: false
 #| echo: false
@@ -286,13 +242,9 @@ cat(
   "RMSE:", mean(rf_all$resample$RMSE),
   "\nR²:", mean(rf_all$resample$Rsquared)
 )
-```
 
-### RandomForest with variable selection based on VIF {.unnumbered}
 
-Variable selection was done to avoid collinearity, by applying a using a Variance Inflation Factor (VIF) threshold of \< 5 with a stepwise procedure on all variables [@Naimi2014].
-
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| warning: false
 # create groups
 data_groups_vif <- data.frame(
@@ -305,11 +257,9 @@ list_vars <- data_groups_vif |>
   select(variable) |>
   unlist() |>
   paste(collapse = "; ")
-```
 
-The variables kept were: `r list_vars`.
 
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| eval: false
 formula_soc_vif <- data_groups_vif %>%
   filter(vif) %>%
@@ -329,11 +279,9 @@ rf_vif <- train(
   ntree = 500, importance = TRUE
 )
 save(rf_vif, file = "data/cache/models/rf_vif_extended.rda")
-```
 
-Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:
 
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| message: false
 #| warning: false
 #| echo: false
@@ -342,26 +290,12 @@ cat(
   "RMSE:", mean(rf_vif$resample$RMSE),
   "\nR²:", mean(rf_vif$resample$Rsquared)
 )
-```
 
-### RandomForest with variable selection based on VIF + FFS {.unnumbered}
 
-This method was inspired by the work from @Traore2024.
-
--   Environmental variables were grouped as: climate - temperature / climate - precipitation / soil - physical variables / soil - chemical variables / topography / landuse.
-
--   For each group, a first variable selection was done to avoid collinearity, by applying a using a Variance Inflation Factor (VIF) threshold of \< 5 with a stepwise procedure [@Naimi2014].
-
--   A second variable selection step is then performed for each group of variables using a forward feature selection (FFS) procedure [@Meyer2025].
-
--   All selected variables are then grouped, and the VIF + FFS are applied to this subset of variables.
-
--   The RandomForest model is then calibrated with the final subset of variables.
-
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| warning: false
 #| eval: false
-# create groups
+# # create groups
 data_groups <- data.frame(
   variable = setdiff(colnames(data_all),
                      c("site", "plot", "lon", "lat", "T_stock"))
@@ -382,11 +316,9 @@ data_groups <- data.frame(
   mutate(ffs2 = ffs_select(variable, data_all, vif2))
 write.csv(data_groups, file = "data/cache/var_selection_extended.csv",
           row.names = FALSE)
-```
 
-The following variables were selected for each group at the different steps:
 
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| warning: false
 read.csv("data/cache/var_selection_extended.csv") |>
   pivot_longer(cols = paste0(rep(c("vif", "ffs")), rep(1:2, each = 2))) |>
@@ -397,9 +329,9 @@ read.csv("data/cache/var_selection_extended.csv") |>
   kable(col.names = c("Groups",
                       paste(rep(c("VIF", "FFS")),
                             rep(c("group", "all"), each = 2), sep = "_")))
-```
 
-```{r}
+
+## -----------------------------------------------------------------------------------------------------------------------------
 #| eval: false
 formula_soc_ffs <- read.csv("data/cache/var_selection_extended.csv") %>%
   filter(ffs2) %>%
@@ -419,11 +351,9 @@ rf_ffs <- train(
   ntree = 500, importance = TRUE
 )
 save(rf_ffs, file = "data/cache/models/rf_ffs_extended.rda")
-```
 
-Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:
 
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| message: false
 #| warning: false
 #| echo: false
@@ -432,11 +362,9 @@ cat(
   "RMSE:", mean(rf_ffs$resample$RMSE),
   "\nR²:", mean(rf_ffs$resample$Rsquared)
 )
-```
 
-### Comparison of Random forest models performance {.unnumbered}
 
-```{r}
+## -----------------------------------------------------------------------------------------------------------------------------
 #| message: false
 #| warning: false
 rf_models <- lapply(c("all", "vif", "ffs"), function(model) {
@@ -462,4 +390,4 @@ lapply(rf_models, function(md) md$results) %>%
     color = "Model"
   ) +
   theme_minimal()
-```
+

@@ -102,4 +102,3 @@ read.csv("data/cache/partial_predictions.csv") |>
   labs(x = "Variable value",
        y = "Distribution of predicted and observed SOC stocks")
 ```
-

@@ -392,8 +392,8 @@ div.csl-indent {
 <p>Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>RMSE: 14.61644 
-R²: 0.1220424</code></pre>
+<pre><code>RMSE: 14.27713 
+R²: 0.1175586</code></pre>
 </div>
 </div>
 </section>
@@ -443,8 +443,8 @@ R²: 0.1220424</code></pre>
 <p>Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>RMSE: 14.87657 
-R²: 0.1338151</code></pre>
+<pre><code>RMSE: 14.36575 
+R²: 0.09972229</code></pre>
 </div>
 </div>
 </section>
@@ -498,11 +498,11 @@ R²: 0.1338151</code></pre>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 6%">
-<col style="width: 24%">
-<col style="width: 24%">
-<col style="width: 24%">
-<col style="width: 20%">
+<col style="width: 5%">
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 23%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -519,14 +519,14 @@ R²: 0.1338151</code></pre>
 <td style="text-align: left;">bio01, bio06, bio12, Annual_Mean_LST</td>
 <td style="text-align: left;">bio01, bio06, bio12, Annual_Mean_LST</td>
 <td style="text-align: left;">bio01, bio06, bio12, Annual_Mean_LST</td>
-<td style="text-align: left;">bio01, bio12, Annual_Mean_LST</td>
+<td style="text-align: left;">bio01, bio06, bio12, Annual_Mean_LST</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">spectral</td>
 <td style="text-align: left;">Blue_mean, NIR_mean, SWIR1_mean</td>
 <td style="text-align: left;">Blue_mean, NIR_mean, SWIR1_mean</td>
 <td style="text-align: left;">Blue_mean, NIR_mean, SWIR1_mean</td>
-<td style="text-align: left;">Blue_mean</td>
+<td style="text-align: left;">SWIR1_mean</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">topo</td>
@@ -565,8 +565,8 @@ R²: 0.1338151</code></pre>
 <p>Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>RMSE: 14.31626 
-R²: 0.1389633</code></pre>
+<pre><code>RMSE: 14.06704 
+R²: 0.09320797</code></pre>
 </div>
 </div>
 </section>
@@ -650,8 +650,8 @@ R²: 0.1389633</code></pre>
 <p>Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>RMSE: 14.60768 
-R²: 0.1197349</code></pre>
+<pre><code>RMSE: 14.13353 
+R²: 0.08166904</code></pre>
 </div>
 </div>
 </section>
@@ -674,7 +674,7 @@ R²: 0.1197349</code></pre>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">"; "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>The variables kept were: bio01; bio06; bio12; Blue_mean; RedEdge1_mean; RedEdge4_mean; SWIR1_mean; elevation; slope; aspect; twi; Annual_Mean_LST; WRB2; landuse.</p>
+<p>The variables kept were: bio01; bio06; bio12; Blue_mean; RedEdge4_mean; SWIR1_mean; elevation; slope; aspect; twi; Annual_Mean_LST; WRB2; landuse.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -701,8 +701,8 @@ R²: 0.1197349</code></pre>
 <p>Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>RMSE: 14.15249 
-R²: 0.1092524</code></pre>
+<pre><code>RMSE: 14.09795 
+R²: 0.09184958</code></pre>
 </div>
 </div>
 </section>
@@ -787,7 +787,7 @@ R²: 0.1092524</code></pre>
 <td style="text-align: left;">bio01, bio06, bio12, Annual_Mean_LST</td>
 <td style="text-align: left;">bio01, bio06, bio12, Annual_Mean_LST</td>
 <td style="text-align: left;">bio01, bio06, bio12, Annual_Mean_LST</td>
-<td style="text-align: left;">bio01, bio12, Annual_Mean_LST</td>
+<td style="text-align: left;">bio06, bio12, Annual_Mean_LST</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">landuse</td>
@@ -801,7 +801,7 @@ R²: 0.1092524</code></pre>
 <td style="text-align: left;">Blue_mean, NIR_mean, SWIR1_mean</td>
 <td style="text-align: left;">Blue_mean, NIR_mean, SWIR1_mean</td>
 <td style="text-align: left;">Blue_mean, NIR_mean, SWIR1_mean</td>
-<td style="text-align: left;">Blue_mean</td>
+<td style="text-align: left;">NIR_mean</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">topo</td>
@@ -840,8 +840,8 @@ R²: 0.1092524</code></pre>
 <p>Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>RMSE: 14.25085 
-R²: 0.138039</code></pre>
+<pre><code>RMSE: 14.17659 
+R²: 0.1389995</code></pre>
 </div>
 </div>
 </section>

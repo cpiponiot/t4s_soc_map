@@ -78,6 +78,7 @@ read.csv("data/plot_0.2.6.csv") |>
   # add revatene data
   bind_rows(data_tene) |>
   # group sites
+  mutate(plot = paste(site, plot, sep = "_")) |>
   mutate(site = ifelse(grepl("tene", site), "tene", site)) |>
   mutate(site = ifelse(grepl("adzope|mebifon|yaya", site), "adzope", site)) |>
   write.csv("data/cache/data_stocks.csv", row.names = FALSE)

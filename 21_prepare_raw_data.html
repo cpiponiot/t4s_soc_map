@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Climate data – Soil Organic Carbon map of Cote d’Ivoire</title>
+<title>Open and prepare the raw dataset – Soil Organic Carbon map of Cote d’Ivoire</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./32_spectral.html" rel="next">
-<link href="./30_ancillary_data.html" rel="prev">
+<link href="./22_check_errors.html" rel="next">
+<link href="./20_terri4sol_database.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -105,6 +105,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -117,7 +146,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30_ancillary_data.html">Ancillary data</a></li><li class="breadcrumb-item"><a href="./31_climate.html">Climate data</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20_terri4sol_database.html">terri4sol soil database</a></li><li class="breadcrumb-item"><a href="./21_prepare_raw_data.html">Open and prepare the raw dataset</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -165,7 +194,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./21_prepare_raw_data.html" class="sidebar-item-text sidebar-link">
+  <a href="./21_prepare_raw_data.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Open and prepare the raw dataset</span></a>
   </div>
 </li>
@@ -194,7 +223,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./31_climate.html" class="sidebar-item-text sidebar-link active">
+  <a href="./31_climate.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Climate data</span></a>
   </div>
 </li>
@@ -299,9 +328,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30_ancillary_data.html">Ancillary data</a></li><li class="breadcrumb-item"><a href="./31_climate.html">Climate data</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20_terri4sol_database.html">terri4sol soil database</a></li><li class="breadcrumb-item"><a href="./21_prepare_raw_data.html">Open and prepare the raw dataset</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Climate data</h1>
+<h1 class="title">Open and prepare the raw dataset</h1>
 </div>
 
 
@@ -318,98 +347,113 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p>A summary of the data from the terri4sol project is presented below.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggcorrplot)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggfortify)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>The climate data was retrieved from <a href="https://chelsa-climate.org/">Climatologies at high resolution for the earth’s land surface areas (CHELSA; 1981–2010 baseline; 1 km resolution)</a>. We used four bioclimatic variables: mean annual air temperature (bio01), maximum temperature of the warmest month (bio05), minimum temperature of the coldest month (bio06), and annual precipitation (bio12). All layers were resampled to 100 m.</p>
-<p>The values of all Bioclimatic variables are then extracted at the location of all terri4sol plots.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract values for all t4s plots</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>coord_stocks <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># project into EPSG:32630</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vect</span>(<span class="at">crs =</span> <span class="st">"epsg:4326"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">project</span>(<span class="st">"epsg:32630"</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>climate_data <span class="ot">&lt;-</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/01_Data/Environmental_variables/CHELSA_bioclim_1981_2010_100m_CI.tif"</span> <span class="sc">|&gt;</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rast</span>() <span class="sc">|&gt;</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">extract</span>(coord_stocks) <span class="sc">|&gt;</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">"bio"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="fu">select</span>(<span class="fu">as.data.frame</span>(coord_stocks), <span class="st">"site"</span>, <span class="st">"plot"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(site, plot)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(climate_data, <span class="at">file =</span> <span class="st">"data/cache/climate_data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>The following plots have NAs in at least one Bioclim variable.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>climate_data <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">if_any</span>(<span class="fu">contains</span>(<span class="st">"bio"</span>), is.na)) <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(site, plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data_t4s <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/soil_0.2.6.csv"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_t4s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>    site plot bio01 bio05 bio06 bio12
-1 adzope   15    NA    NA    NA    NA
-2 adzope   21    NA    NA    NA    NA
-3 adzope   48    NA    NA    NA    NA
-4 adzope   49    NA    NA    NA    NA
-5 adzope   50    NA    NA    NA    NA
-6 adzope   51    NA    NA    NA    NA
-7 adzope   68    NA    NA    NA    NA
-8 adzope   74    NA    NA    NA    NA</code></pre>
+<pre><code>     site               plot               depth         sampleID        
+ Length:2256        Length:2256        Min.   :1.000   Length:2256       
+ Class :character   Class :character   1st Qu.:1.000   Class :character  
+ Mode  :character   Mode  :character   Median :2.000   Mode  :character  
+                                       Mean   :1.998                     
+                                       3rd Qu.:3.000                     
+                                       Max.   :3.000                     
+                                       NA's   :2                         
+       C                N            bulk_density_g_cm3 coarse_fraction  
+ Min.   :0.1020   Min.   :-0.03744   Min.   :0.1148     Min.   :0.00000  
+ 1st Qu.:0.7046   1st Qu.: 0.06761   1st Qu.:1.3798     1st Qu.:0.01504  
+ Median :1.0512   Median : 0.09187   Median :1.5568     Median :0.14139  
+ Mean   :1.2960   Mean   : 0.11039   Mean   :1.5415     Mean   :0.21625  
+ 3rd Qu.:1.6751   3rd Qu.: 0.13708   3rd Qu.:1.7100     3rd Qu.:0.37532  
+ Max.   :6.6624   Max.   : 0.67775   Max.   :2.6440     Max.   :0.87308  
+ NA's   :2        NA's   :2          NA's   :156        NA's   :135      
+ fine_fraction          K                Ca              Mg        
+ Min.   :0.1269   Min.   :0.0690   Min.   :0.660   Min.   :0.1905  
+ 1st Qu.:0.6247   1st Qu.:0.0970   1st Qu.:1.031   1st Qu.:0.4178  
+ Median :0.8586   Median :0.1130   Median :1.160   Median :0.4820  
+ Mean   :0.7838   Mean   :0.1169   Mean   :1.201   Mean   :0.5998  
+ 3rd Qu.:0.9850   3rd Qu.:0.1270   3rd Qu.:1.314   3rd Qu.:0.6943  
+ Max.   :1.0000   Max.   :0.2380   Max.   :2.689   Max.   :1.5040  
+ NA's   :135      NA's   :2146     NA's   :2146    NA's   :2146    
+       Na         
+ Min.   :0.06325  
+ 1st Qu.:0.08892  
+ Median :0.10358  
+ Mean   :0.10718  
+ 3rd Qu.:0.11642  
+ Max.   :0.21817  
+ NA's   :2146     </code></pre>
 </div>
 </div>
-<p>Below is the result of a Principal Component Analysis with all bioclimatic variables.</p>
+<p>Soil organic carbon stocks were estimated as</p>
+<p><span class="math display">\[ stock = C \cdot (\Delta d \cdot area) \cdot fine \cdot bd\]</span></p>
+<p>where <span class="math inline">\(C\)</span> is the soil organic carbon content, <span class="math inline">\(\Delta d\)</span> is the measurement depth (0.1 m), <span class="math inline">\(area\)</span> is the standardisation area (1 ha = <span class="math inline">\(10^4\)</span> m), <span class="math inline">\(fine\)</span> is the fine fraction of the soil, and <span class="math inline">\(bd\)</span> is the bulk density of the fine fraction (in Mg m<span class="math inline">\(^3\)</span>).</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data_pca <span class="ot">&lt;-</span> climate_data <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">if_any</span>(<span class="fu">everything</span>(), is.na))</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>data_pca <span class="sc">|&gt;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">"bio"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prcomp</span>(<span class="at">scale =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">loadings =</span> <span class="cn">TRUE</span>, <span class="at">loadings.label =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> data_pca, <span class="at">colour =</span> <span class="st">"site"</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data_t4s <span class="ot">&lt;-</span> data_t4s <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stock =</span> C <span class="sc">/</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fl">1e3</span> <span class="sc">*</span> fine_fraction <span class="sc">*</span> bulk_density_g_cm3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>We also added data from the RévaTéné project that collected SOC data in the Téné forest plots.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data_tene <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/BdD_Mathus_TENE.xls"</span>, <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">T_stock =</span> <span class="st">`</span><span class="at">CCOS_0-30cm</span><span class="st">`</span> <span class="sc">/</span> <span class="dv">100</span> <span class="sc">*</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>           (<span class="st">`</span><span class="at">Dapp_0-10cm</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">Dapp_10-20cm</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">Dapp_20-30cm</span><span class="st">`</span>) <span class="sc">/</span> <span class="dv">3</span> <span class="sc">*</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>           (<span class="dv">1</span> <span class="sc">-</span> <span class="st">`</span><span class="at">%EG_0-30cm</span><span class="st">`</span>) <span class="sc">*</span> <span class="fl">1e3</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site =</span> <span class="st">"tene"</span>, <span class="at">plot =</span> SUBPLOT) <span class="sc">|&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(SUBPLOT, <span class="fu">c</span>(<span class="st">"pl"</span>, <span class="st">"sub"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="fu">get_tene_coords</span>(pl, sub), <span class="fu">across</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, lon, lat, T_stock)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>We grouped the following sites because of their spatial overlap: “tene” and “tene_oume”; “adzope”, “adzopeN”, “yaya” and “mebifon”.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.6.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(lat <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> <span class="sc">!</span>(lat <span class="sc">&gt;</span> <span class="fl">6.2</span> <span class="sc">&amp;</span> site <span class="sc">==</span> <span class="st">"yaya"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">"adzope|mebifon|yaya|tene"</span>, site)) <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new_site =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"tene"</span>, site), <span class="st">"tene"</span>, <span class="st">"adzope"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(lon, lat, <span class="at">col =</span> site)) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>new_site, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="31_climate_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="21_prepare_raw_data_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>We can also plot the pairwise correlation of all climate variables.</p>
+<p>We then sum the carbon stocks over all depths at each site to get the total carbon stocks, and save the results.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>climate_data <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">"bio"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>() <span class="sc">|&gt;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggcorrplot</span>(<span class="at">type =</span> <span class="st">"upper"</span>, <span class="at">lab =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.6.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># correct plot coordinates</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lonc =</span> <span class="fu">ifelse</span>(lon <span class="sc">&gt;</span> <span class="dv">0</span>, lat, lon), <span class="at">latc =</span> <span class="fu">ifelse</span>(lat <span class="sc">&lt;</span> <span class="dv">0</span>, lon, lat)) <span class="sc">|&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, lonc, latc) <span class="sc">|&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">lon =</span> lonc, <span class="at">lat =</span> latc) <span class="sc">|&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(data_t4s) <span class="sc">|&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site, plot, lon, lat) <span class="sc">|&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">T_stock =</span> <span class="fu">sum</span>(stock), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add revatene data</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(data_tene) <span class="sc">|&gt;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># group sites</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">plot =</span> <span class="fu">paste</span>(site, plot, <span class="at">sep =</span> <span class="st">"_"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"tene"</span>, site), <span class="st">"tene"</span>, site)) <span class="sc">|&gt;</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"adzope|mebifon|yaya"</span>, site), <span class="st">"adzope"</span>, site)) <span class="sc">|&gt;</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="31_climate_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
 </div>
 
 
@@ -816,13 +860,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./30_ancillary_data.html" class="pagination-link" aria-label="Ancillary data">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Ancillary data</span>
+      <a href="./20_terri4sol_database.html" class="pagination-link" aria-label="terri4sol soil database">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">terri4sol soil database</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./32_spectral.html" class="pagination-link" aria-label="Spectral variables">
-        <span class="nav-page-text">Spectral variables</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./22_check_errors.html" class="pagination-link" aria-label="Error checks">
+        <span class="nav-page-text">Error checks</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
