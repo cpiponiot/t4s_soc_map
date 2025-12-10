@@ -248,6 +248,12 @@ div.csl-indent {
  <span class="menu-text">TMF data</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./37_soil_type.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Soil types</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -410,7 +416,7 @@ R²: 0.1220424</code></pre>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">"; "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>The variables kept were: bio01; bio06; bio12; Blue_mean; RedEdge4_mean; SWIR1_mean; slope; aspect; twi; Annual_Mean_LST.</p>
+<p>The variables kept were: bio01; bio06; bio12; Blue_mean; RedEdge4_mean; SWIR1_mean; elevation; slope; aspect; twi; Annual_Mean_LST.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -668,7 +674,7 @@ R²: 0.1197349</code></pre>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">"; "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>The variables kept were: bio01; bio06; bio12; Blue_mean; RedEdge4_mean; SWIR1_mean; elevation; slope; aspect; twi; Annual_Mean_LST; WRB2; landuse.</p>
+<p>The variables kept were: bio01; bio06; bio12; Blue_mean; RedEdge1_mean; RedEdge4_mean; SWIR1_mean; elevation; slope; aspect; twi; Annual_Mean_LST; WRB2; landuse.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -720,18 +726,20 @@ R²: 0.1092524</code></pre>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"bio|LST"</span>, variable), <span class="st">"clim"</span>, variable)) <span class="sc">|&gt;</span></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"_mean|NDVI"</span>, variable), <span class="st">"spectral"</span>, group)) <span class="sc">|&gt;</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"elev|slope|aspect|twi"</span>, variable), <span class="st">"topo"</span>, group)) <span class="sc">|&gt;</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># vif selection by group, based on variables selected at previous stage</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vif1 =</span> <span class="fu">vif_select</span>(variable, data_all)) <span class="sc">|&gt;</span></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ffs by group, based on variables selected at previous stage</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ffs1 =</span> <span class="fu">ffs_select</span>(variable, data_all, vif1)) <span class="sc">|&gt;</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># vif selection for all, based on variables selected at previous stage</span></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vif2 =</span> <span class="fu">vif_select</span>(variable, data_all, ffs1)) <span class="sc">|&gt;</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ffs for all, based on variables selected at previous stage</span></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ffs2 =</span> <span class="fu">ffs_select</span>(variable, data_all, vif2))</span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(data_groups, <span class="at">file =</span> <span class="st">"data/cache/var_selection_extended.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"elev|slope|aspect|twi"</span>, variable),</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"topo"</span>, group)) <span class="sc">|&gt;</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># vif selection by group, based on variables selected at previous stage</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vif1 =</span> <span class="fu">vif_select</span>(variable, data_all)) <span class="sc">|&gt;</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ffs by group, based on variables selected at previous stage</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ffs1 =</span> <span class="fu">ffs_select</span>(variable, data_all, vif1)) <span class="sc">|&gt;</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># vif selection for all, based on variables selected at previous stage</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vif2 =</span> <span class="fu">vif_select</span>(variable, data_all, ffs1)) <span class="sc">|&gt;</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ffs for all, based on variables selected at previous stage</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ffs2 =</span> <span class="fu">ffs_select</span>(variable, data_all, vif2))</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(data_groups, <span class="at">file =</span> <span class="st">"data/cache/var_selection_extended.csv"</span>,</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>          <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>The following variables were selected for each group at the different steps:</p>

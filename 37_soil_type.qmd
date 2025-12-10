@@ -56,7 +56,6 @@ rast("data/01_Data/Environmental_variables/HWSD2.tif") |>
   plot()
 ```
 
-
 ```{r extract-soil}
 #| message: false
 #| warning: false
@@ -75,7 +74,7 @@ rast("data/01_Data/Environmental_variables/HWSD2.tif") |>
 
 ## Distribution of values in the t4s dataset
 
-Only the following soil types are represented in the t4s database: 
+Only the following soil types are represented in the t4s database:
 
 ```{r}
 #| message: false
@@ -93,4 +92,3 @@ levels(r) <- levels(r)[[1]] |>
   select(ID, new)
 plot(r)
 ```
-
