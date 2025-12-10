@@ -8,3 +8,7 @@
 We tested different methodological choices: (i) adding a variable selection step to reduce the number of predictors; (ii) adding a spatially-explicit component.
 
 We evaluated model performance using a leave-one-site-out cross-validation approach. The dataset was partitioned by sampling sites, such that all observations from a given site were withheld as the test set, while the remaining sites were used for model training. For each iteration, model predictions were compared to observed values in the test fold. Model accuracy was quantified using the root mean squared error (RMSE) and the coefficient of determination (R²), averaged across all validation folds.
+
+To quantify prediction uncertainty while accounting for the spatial aggregation of the calibration data, we combined a leave-one-site-out (LOSO) cross-validation strategy with quantile regression. Specifically, we iteratively excluded one calibration site at a time and fitted a random forest model to the remaining data, yielding a set of *s* models (*s* corresponding to the number of sites). For each model, we generated new predictions by drawing 100 samples from the distribution of its predicted values. The resulting *s* predictive distributions were then pooled into a single aggregated distribution. From this combined distribution, we extracted the 10th, 50th (median), and 90th percentiles to represent the lower, central, and upper bounds of the prediction uncertainty, respectively.
+
+![](figures/diagram_model.png)
