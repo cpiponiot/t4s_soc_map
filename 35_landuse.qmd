@@ -60,10 +60,25 @@ list.files("data/download/BNEDT/", pattern = "tif$", full.names = TRUE) |>
 In the table below we compare the landuse values recorded in the terri4sol database (columns) with the landuse values extracted from the BNEDT map at the same locations (rows).
 
 ```{r}
+land_use_t4s <- read.csv("data/plot_0.2.6.csv") |>
+  mutate(plot = paste(site, plot, sep = "_")) |>
+  mutate(site = ifelse(grepl("tene", site), "tene", site)) |>
+  mutate(site = ifelse(grepl("adzope|mebifon|yaya", site), "adzope", site)) |>
+  right_join(read.csv("data/cache/data_stocks.csv")) |>
+  select(site, plot, present_landuse) |>
+  mutate(present_landuse = ifelse(site == "tene" & is.na(present_landuse),
+    "forest", present_landuse
+  )) |>
+  mutate(present_landuse = ifelse(grepl("foret", present_landuse),
+    "forest", present_landuse
+  ))
+```
+
+```{r}
 #| message: false
 #| warning: false
 read.csv("data/cache/bnedt_data.csv") |>
-  left_join(read.csv("data/plot_0.2.6.csv")) |>
+  left_join(land_use_t4s) |>
   select(landuse, present_landuse) |>
   table()
 ```

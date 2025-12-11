@@ -1,0 +1,355 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Soil Organic Carbon map of Cote d’Ivoire",
+    "section": "",
+    "text": "Introduction\nt4_soc_map is part of the terri4sol project.\nAll t4_soc_map analyses rely on the quarto documents (files.qmd) that can be run with R and associated environment defined with renv.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#project",
+    "href": "index.html#project",
+    "title": "Soil Organic Carbon map of Cote d’Ivoire",
+    "section": "Project",
+    "text": "Project\nt4_soc_map includes:\n\nAnalyse of the data with associated documentation and figures:\n\nReproducible analyses in files.qmd\nResulting pages in docs/\nDocument structure definition in _quarto.yml\n\nData in data/\nR scripts with functions in r/\nIntermediary files in outputs/\nFigures in figures/\nR environment definition with renv in renv/ and renv/lock\nGit and GitHub files (.gitignore , .github/)\nProject documentation (README.qmd , README.md , LICENSE)",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#help",
+    "href": "index.html#help",
+    "title": "Soil Organic Carbon map of Cote d’Ivoire",
+    "section": "Help",
+    "text": "Help\nPlease preferentially create an issue on GitHub for any questions, bugs or help needed regarding t4_soc_map: https://github.com/cpiponiot/t4s_soc_map/issues. However, you can contact us by email through people in the core group (see below).",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#core-group",
+    "href": "index.html#core-group",
+    "title": "Soil Organic Carbon map of Cote d’Ivoire",
+    "section": "Core group",
+    "text": "Core group\n\nBienvenu H. K. Amani (bienvenuh.amani@gmail.com)\nCamille Piponiot (camille.piponiot-laroche@cirad.fr)\nBlandine Ahou Koffi\nEvans Ehouman\nClovis Grinand\nBeatriz Bellon\nLarissa Houphouet\nBruno Herault",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "11_general_framework.html",
+    "href": "11_general_framework.html",
+    "title": "General framework",
+    "section": "",
+    "text": "Context and motivation",
+    "crumbs": [
+      "General framework"
+    ]
+  },
+  {
+    "objectID": "11_general_framework.html#research-questions",
+    "href": "11_general_framework.html#research-questions",
+    "title": "General framework",
+    "section": "Research questions",
+    "text": "Research questions",
+    "crumbs": [
+      "General framework"
+    ]
+  },
+  {
+    "objectID": "11_general_framework.html#methodological-approach",
+    "href": "11_general_framework.html#methodological-approach",
+    "title": "General framework",
+    "section": "Methodological approach",
+    "text": "Methodological approach",
+    "crumbs": [
+      "General framework"
+    ]
+  },
+  {
+    "objectID": "21_prepare_raw_data.html",
+    "href": "21_prepare_raw_data.html",
+    "title": "Open and prepare the raw dataset",
+    "section": "",
+    "text": "A summary of the data from the terri4sol project is presented below.\n\n\nCode\ndata_t4s &lt;- read.csv(\"data/soil_0.2.6.csv\")\nsummary(data_t4s)\n\n\n     site               plot               depth         sampleID        \n Length:2256        Length:2256        Min.   :1.000   Length:2256       \n Class :character   Class :character   1st Qu.:1.000   Class :character  \n Mode  :character   Mode  :character   Median :2.000   Mode  :character  \n                                       Mean   :1.998                     \n                                       3rd Qu.:3.000                     \n                                       Max.   :3.000                     \n                                       NA's   :2                         \n       C                N            bulk_density_g_cm3 coarse_fraction  \n Min.   :0.1020   Min.   :-0.03744   Min.   :0.1148     Min.   :0.00000  \n 1st Qu.:0.7046   1st Qu.: 0.06761   1st Qu.:1.3798     1st Qu.:0.01504  \n Median :1.0512   Median : 0.09187   Median :1.5568     Median :0.14139  \n Mean   :1.2960   Mean   : 0.11039   Mean   :1.5415     Mean   :0.21625  \n 3rd Qu.:1.6751   3rd Qu.: 0.13708   3rd Qu.:1.7100     3rd Qu.:0.37532  \n Max.   :6.6624   Max.   : 0.67775   Max.   :2.6440     Max.   :0.87308  \n NA's   :2        NA's   :2          NA's   :156        NA's   :135      \n fine_fraction          K                Ca              Mg        \n Min.   :0.1269   Min.   :0.0690   Min.   :0.660   Min.   :0.1905  \n 1st Qu.:0.6247   1st Qu.:0.0970   1st Qu.:1.031   1st Qu.:0.4178  \n Median :0.8586   Median :0.1130   Median :1.160   Median :0.4820  \n Mean   :0.7838   Mean   :0.1169   Mean   :1.201   Mean   :0.5998  \n 3rd Qu.:0.9850   3rd Qu.:0.1270   3rd Qu.:1.314   3rd Qu.:0.6943  \n Max.   :1.0000   Max.   :0.2380   Max.   :2.689   Max.   :1.5040  \n NA's   :135      NA's   :2146     NA's   :2146    NA's   :2146    \n       Na         \n Min.   :0.06325  \n 1st Qu.:0.08892  \n Median :0.10358  \n Mean   :0.10718  \n 3rd Qu.:0.11642  \n Max.   :0.21817  \n NA's   :2146     \n\n\nSoil organic carbon stocks were estimated as\n\\[ stock = C \\cdot (\\Delta d \\cdot area) \\cdot fine \\cdot bd\\]\nwhere \\(C\\) is the soil organic carbon content, \\(\\Delta d\\) is the measurement depth (0.1 m), \\(area\\) is the standardisation area (1 ha = \\(10^4\\) m), \\(fine\\) is the fine fraction of the soil, and \\(bd\\) is the bulk density of the fine fraction (in Mg m\\(^3\\)).\n\n\nCode\ndata_t4s &lt;- data_t4s |&gt;\n  mutate(stock = C / 100 * 1e3 * fine_fraction * bulk_density_g_cm3)\n\n\nWe also added data from the RévaTéné project that collected SOC data in the Téné forest plots.\n\n\nCode\ndata_tene &lt;- read_excel(\"data/BdD_Mathus_TENE.xls\", 2) |&gt;\n  mutate(T_stock = `CCOS_0-30cm` / 100 *\n           (`Dapp_0-10cm` + `Dapp_10-20cm` + `Dapp_20-30cm`) / 3 *\n           (1 - `%EG_0-30cm`) * 1e3) |&gt;\n  mutate(site = \"tene\", plot = SUBPLOT) |&gt;\n  separate(SUBPLOT, c(\"pl\", \"sub\")) |&gt;\n  reframe(get_tene_coords(pl, sub), across()) |&gt;\n  select(site, plot, lon, lat, T_stock)\n\n\nWe grouped the following sites because of their spatial overlap: “tene” and “tene_oume”; “adzope”, “adzopeN”, “yaya” and “mebifon”.\n\n\nCode\nread.csv(\"data/plot_0.2.6.csv\") |&gt;\n  filter(lat &gt; 0 & !(lat &gt; 6.2 & site == \"yaya\")) |&gt;\n  filter(grepl(\"adzope|mebifon|yaya|tene\", site)) |&gt;\n  mutate(new_site = ifelse(grepl(\"tene\", site), \"tene\", \"adzope\")) |&gt;\n  ggplot(aes(lon, lat, col = site)) +\n  geom_point() +\n  facet_wrap(~new_site, scales = \"free\") +\n  theme_bw()\n\n\n\n\n\n\n\n\n\nWe then sum the carbon stocks over all depths at each site to get the total carbon stocks, and save the results.\n\n\nCode\nread.csv(\"data/plot_0.2.6.csv\") |&gt;\n  # correct plot coordinates\n  mutate(lonc = ifelse(lon &gt; 0, lat, lon), latc = ifelse(lat &lt; 0, lon, lat)) |&gt;\n  select(site, plot, lonc, latc) |&gt;\n  rename(lon = lonc, lat = latc) |&gt;\n  merge(data_t4s) |&gt;\n  group_by(site, plot, lon, lat) |&gt;\n  summarise(T_stock = sum(stock), .groups = \"drop\") |&gt;\n  # add revatene data\n  bind_rows(data_tene) |&gt;\n  # group sites\n  mutate(plot = paste(site, plot, sep = \"_\")) |&gt;\n  mutate(site = ifelse(grepl(\"tene\", site), \"tene\", site)) |&gt;\n  mutate(site = ifelse(grepl(\"adzope|mebifon|yaya\", site), \"adzope\", site)) |&gt;\n  write.csv(\"data/cache/data_stocks.csv\", row.names = FALSE)",
+    "crumbs": [
+      "terri4sol soil database",
+      "Open and prepare the raw dataset"
+    ]
+  },
+  {
+    "objectID": "22_check_errors.html",
+    "href": "22_check_errors.html",
+    "title": "Error checks",
+    "section": "",
+    "text": "Code\nlibrary(tidyverse)\nlibrary(knitr)\n\n\nThe following sites have missing coordinates:\n\n\nCode\nread.csv(\"data/plot_0.2.6.csv\") |&gt;\n  subset(is.na(lon) | is.na(lat)) |&gt;\n  group_by(site) |&gt;\n  summarise(n()) |&gt;\n  kable(col.names = c(\"site\", \"number of plots\"))\n\n\n\n\n\nsite\nnumber of plots\n\n\n\n\nadzopeN\n8\n\n\nmebifon\n1\n\n\n\n\n\nPlot information is missing in the following sites:\n\n\nCode\nread.csv(\"data/plot_0.2.6.csv\") |&gt;\n  subset(is.na(plot)) |&gt;\n  group_by(site) |&gt;\n  summarise(n()) |&gt;\n  kable(col.names = c(\"site\", \"number of plots\"))\n\n\n\n\n\nsite\nnumber of plots\n\n\n\n\nmebifon\n5\n\n\n\n\n\nPlot area varies as follows (in log-scale):\n\n\nCode\nread.csv(\"data/plot_0.2.6.csv\") |&gt;\n  ggplot(aes(x = plot_area)) +\n  geom_histogram() +\n  labs(x = \"Plot area (ha)\") +\n  theme_classic() +\n  scale_x_log10()\n\n\n`stat_bin()` using `bins = 30`. Pick better value `binwidth`.\n\n\nWarning: Removed 122 rows containing non-finite outside the scale range\n(`stat_bin()`).",
+    "crumbs": [
+      "terri4sol soil database",
+      "Error checks"
+    ]
+  },
+  {
+    "objectID": "23_visualize_data.html",
+    "href": "23_visualize_data.html",
+    "title": "Soil dataset",
+    "section": "",
+    "text": "Site location\nCode\nloc_plots &lt;- read.csv(\"data/cache/data_stocks.csv\") |&gt;\n  select(site, plot, lat, lon) |&gt;\n  drop_na()\nleaflet() |&gt;\n  addProviderTiles(providers$Esri.WorldImagery) |&gt;\n  addMarkers(\n    lng = loc_plots$lon, lat = loc_plots$lat,\n    label = paste(loc_plots$site, loc_plots$plot)\n  )",
+    "crumbs": [
+      "terri4sol soil database",
+      "Soil dataset"
+    ]
+  },
+  {
+    "objectID": "23_visualize_data.html#dataset-size",
+    "href": "23_visualize_data.html#dataset-size",
+    "title": "Soil dataset",
+    "section": "Dataset size",
+    "text": "Dataset size\n\n\nCode\nread.csv(\"data/cache/data_stocks.csv\") |&gt;\n  group_by(site) |&gt;\n  summarise(n = n()) |&gt;\n  kable(col.names = c(\"Site\", \"Number of plots\"))\n\n\n\n\n\nSite\nNumber of plots\n\n\n\n\nadzope\n250\n\n\nagbo\n19\n\n\nagnibilekrou\n16\n\n\nazaguie\n16\n\n\nbadenou\n21\n\n\nbehiri\n87\n\n\nbiankouma\n16\n\n\nble\n16\n\n\nbonon\n16\n\n\nfoumbou\n20\n\n\nfresco\n16\n\n\ngrand_bereby\n16\n\n\ngueyo\n16\n\n\nguiberoua\n16\n\n\nguiglo\n16\n\n\nht_sassandra\n20\n\n\nirobo\n20\n\n\nmafere\n16\n\n\nmeagui\n16\n\n\nniegre\n20\n\n\nsan_pedro\n16\n\n\nsoubre\n16\n\n\ntai\n7\n\n\ntene\n127\n\n\n\n\n\nCode\nread.csv(\"data/plot_0.2.6.csv\") |&gt;\n  subset(!is.na(present_landuse)) |&gt;\n  group_by(present_landuse) |&gt;\n  summarise(n = n()) |&gt;\n  # add revatene data\n  mutate(n = n + ifelse(present_landuse == \"foretanc\", 100, 0)) |&gt;\n  kable(col.names = c(\"Landuse\", \"Number of plots\"))\n\n\n\n\n\nLanduse\nNumber of plots\n\n\n\n\ncassava\n45\n\n\ncocoa\n227\n\n\ndist_for\n7\n\n\nfallow\n191\n\n\nfood_crop\n16\n\n\nforest\n14\n\n\nforetanc\n130\n\n\njvc\n24\n\n\nold_mining\n8\n\n\nothers\n2\n\n\npalm\n8\n\n\nprim_for\n8\n\n\nrubber\n32\n\n\nsec_for\n117\n\n\ntrees plantation\n5",
+    "crumbs": [
+      "terri4sol soil database",
+      "Soil dataset"
+    ]
+  },
+  {
+    "objectID": "23_visualize_data.html#distribution-of-soil-organic-carbon-stocks",
+    "href": "23_visualize_data.html#distribution-of-soil-organic-carbon-stocks",
+    "title": "Soil dataset",
+    "section": "Distribution of soil organic carbon stocks",
+    "text": "Distribution of soil organic carbon stocks\n\n\nCode\nread.csv(\"data/cache/data_stocks.csv\") |&gt;\n  ggplot(aes(x = T_stock)) +\n  geom_histogram() +\n  labs(x = expression(\"Soil organic carbon stocks [ Mg.\" * ha^-1 * \" ]\")) +\n  theme_classic()\n\n\n`stat_bin()` using `bins = 30`. Pick better value `binwidth`.\n\n\nWarning: Removed 16 rows containing non-finite outside the scale range\n(`stat_bin()`).",
+    "crumbs": [
+      "terri4sol soil database",
+      "Soil dataset"
+    ]
+  },
+  {
+    "objectID": "30_ancillary_data.html",
+    "href": "30_ancillary_data.html",
+    "title": "Ancillary data",
+    "section": "",
+    "text": "Code\nlibrary(stringr)\nlibrary(googledrive)\n\n\nWe compiled a suite of topographic, spectral, thermal, and climatic predictors from publicly available remote-sensing products and climate datasets. All variables were processed to a common spatial resolution of 100 m to ensure consistency among layers.",
+    "crumbs": [
+      "Ancillary data"
+    ]
+  },
+  {
+    "objectID": "31_climate.html",
+    "href": "31_climate.html",
+    "title": "Climate data",
+    "section": "",
+    "text": "Code\nlibrary(terra)\nlibrary(tidyverse)\nlibrary(ggcorrplot)\nlibrary(ggfortify)\n\n\nThe climate data was retrieved from Climatologies at high resolution for the earth’s land surface areas (CHELSA; 1981–2010 baseline; 1 km resolution). We used four bioclimatic variables: mean annual air temperature (bio01), maximum temperature of the warmest month (bio05), minimum temperature of the coldest month (bio06), and annual precipitation (bio12). All layers were resampled to 100 m.\nThe values of all Bioclimatic variables are then extracted at the location of all terri4sol plots.\n\n\nCode\n# extract values for all t4s plots\ncoord_stocks &lt;- read.csv(\"data/cache/data_stocks.csv\") |&gt;\n  # project into EPSG:32630\n  vect(crs = \"epsg:4326\") |&gt;\n  terra::project(\"epsg:32630\")\n\nclimate_data &lt;-\n  \"data/01_Data/Environmental_variables/CHELSA_bioclim_1981_2010_100m_CI.tif\" |&gt;\n  rast() |&gt;\n  terra::extract(coord_stocks) |&gt;\n  select(contains(\"bio\")) |&gt;\n  bind_cols(select(as.data.frame(coord_stocks), \"site\", \"plot\")) |&gt;\n  relocate(site, plot)\n\nwrite.csv(climate_data, file = \"data/cache/climate_data.csv\", row.names = FALSE)\n\n\nThe following plots have NAs in at least one Bioclim variable.\n\n\nCode\nclimate_data |&gt;\n  filter(if_any(contains(\"bio\"), is.na)) |&gt;\n  relocate(site, plot)\n\n\n    site       plot bio01 bio05 bio06 bio12\n1 adzope adzopeN_15    NA    NA    NA    NA\n2 adzope adzopeN_21    NA    NA    NA    NA\n3 adzope adzopeN_48    NA    NA    NA    NA\n4 adzope adzopeN_49    NA    NA    NA    NA\n5 adzope adzopeN_50    NA    NA    NA    NA\n6 adzope adzopeN_51    NA    NA    NA    NA\n7 adzope adzopeN_68    NA    NA    NA    NA\n8 adzope adzopeN_74    NA    NA    NA    NA\n\n\nBelow is the result of a Principal Component Analysis with all bioclimatic variables.\n\n\nCode\ndata_pca &lt;- climate_data |&gt;\n  filter(!if_any(everything(), is.na))\n\ndata_pca |&gt;\n  select(contains(\"bio\")) |&gt;\n  prcomp(scale = TRUE) |&gt;\n  autoplot(\n    loadings = TRUE, loadings.label = TRUE,\n    data = data_pca, colour = \"site\"\n  ) +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\nWe can also plot the pairwise correlation of all climate variables.\n\n\nCode\nclimate_data |&gt;\n  select(contains(\"bio\")) |&gt;\n  drop_na() |&gt;\n  cor() |&gt;\n  ggcorrplot(type = \"upper\", lab = TRUE)",
+    "crumbs": [
+      "Ancillary data",
+      "Climate data"
+    ]
+  },
+  {
+    "objectID": "32_spectral.html",
+    "href": "32_spectral.html",
+    "title": "Spectral variables",
+    "section": "",
+    "text": "Code\nlibrary(terra)\nlibrary(gdalUtilities)\nlibrary(tidyverse)\nlibrary(ggcorrplot)\nlibrary(ggfortify)\n\n\nWe obtained surface reflectance data from Sentinel-2, with native spatial resolutions of 10–20 m. Low-quality pixels (e.g., clouds, shadows) were removed using the quality assurance bands. Annual mean composites for 2024 were created for the 10 optical bands (Blue, Green, Red, NIR, four Red Edge bands, and two SWIR bands), which were subsequently resampled to 100 m.\nWe further computed the 2024 Normalized Difference Vegetation Index (NDVI) from the same Sentinel-2 source. After masking low-quality pixels, NDVI was calculated for each image, aggregated to an annual mean, and resampled to 100 m.\n\n\nCode\n# extract values for all t4s plots\ncoord_stocks &lt;- read.csv(\"data/cache/data_stocks.csv\") |&gt;\n  # project into EPSG:32630\n  vect(crs = \"epsg:4326\") |&gt;\n  terra::project(\"epsg:32630\")\n\nspectral_data &lt;- c(\n  \"data/01_Data/Environmental_variables/NDVI_Annual_Mean_2024_100m_CI.tif\",\n  \"data/01_Data/Environmental_variables/S2_Annual_Mean_2024_100m_CI.tif\"\n) |&gt;\n  rast() |&gt;\n  terra::extract(coord_stocks) |&gt;\n  select(-ID) |&gt;\n  bind_cols(select(as.data.frame(coord_stocks), \"site\", \"plot\")) |&gt;\n  relocate(site, plot)\nwrite.csv(spectral_data, file = \"data/cache/spectral_data.csv\",\n          row.names = FALSE)\n\n\nThe following plots have NAs in at least one Bioclim variable.\n\n\nCode\nspectral_data |&gt;\n  filter(if_any(everything(), is.na)) |&gt;\n  select(site, plot, NDVI, Blue_mean, Green_mean, Red_mean)\n\n\n    site       plot NDVI Blue_mean Green_mean Red_mean\n1 adzope adzopeN_15   NA        NA         NA       NA\n2 adzope adzopeN_21   NA        NA         NA       NA\n3 adzope adzopeN_48   NA        NA         NA       NA\n4 adzope adzopeN_49   NA        NA         NA       NA\n5 adzope adzopeN_50   NA        NA         NA       NA\n6 adzope adzopeN_51   NA        NA         NA       NA\n7 adzope adzopeN_68   NA        NA         NA       NA\n8 adzope adzopeN_74   NA        NA         NA       NA\n\n\nBelow is the result of a Principal Component Analysis with all bioclimatic variables.\n\n\nCode\ndata_pca &lt;- spectral_data |&gt;\n  filter(!if_any(everything(), is.na))\n\ndata_pca |&gt;\n  select(-site, -plot) |&gt;\n  prcomp(scale = TRUE) |&gt;\n  autoplot(\n    loadings = TRUE, loadings.label = TRUE,\n    data = data_pca, colour = \"site\"\n  ) +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\nWe can also plot the pairwise correlation of all climate variables.\n\n\nCode\nspectral_data |&gt;\n  select(-site, -plot) |&gt;\n  drop_na() |&gt;\n  cor() |&gt;\n  ggcorrplot(type = \"upper\", lab = TRUE)\n\n\n\n\n\n\n\n\n\nWe could strongly reduce colinearity by reducing the number of variables.\n\n\nCode\nspectral_data |&gt;\n  select(NDVI, Blue_mean, Red_mean, NIR_mean) |&gt;\n  drop_na() |&gt;\n  cor() |&gt;\n  ggcorrplot(type = \"upper\", lab = TRUE)\n\n\n\n\n\n\n\n\n\nCode\nspectral_data |&gt;\n  filter(!if_any(everything(), is.na)) |&gt;\n  select(NDVI, Blue_mean, Red_mean, NIR_mean) |&gt;\n  prcomp(scale = TRUE) |&gt;\n  autoplot(\n    loadings = TRUE, loadings.label = TRUE,\n    data = data_pca, colour = \"site\"\n  ) +\n  theme_minimal()",
+    "crumbs": [
+      "Ancillary data",
+      "Spectral variables"
+    ]
+  },
+  {
+    "objectID": "33_thermal.html",
+    "href": "33_thermal.html",
+    "title": "Thermal variable",
+    "section": "",
+    "text": "Code\nlibrary(terra)\nlibrary(gdalUtilities)\nlibrary(tidyverse)\nlibrary(ggcorrplot)\nlibrary(ggfortify)\n\n\nLand surface temperature (LST) was obtained from the MODIS MOD11A1 v6.1 dataset (1 km native resolution). Low-quality observations were removed using MODIS quality flags, and a 2024 annual mean was calculated. The resulting composite was spatially upscaled to 100 m.\n\n\nCode\nlst &lt;-\n  \"data/01_Data/Environmental_variables/LST_Annual_Mean_2024_100m_CI.tif\" |&gt;\n  rast()\nplot(lst)\n\n\n\n\n\n\n\n\n\n\n\nCode\n# extract values for all t4s plots\ncoord_stocks &lt;- read.csv(\"data/cache/data_stocks.csv\") |&gt;\n  # project into EPSG:32630\n  vect(crs = \"epsg:4326\") |&gt;\n  terra::project(\"epsg:32630\")\nthermal_data &lt;- lst |&gt;\n  terra::extract(coord_stocks) |&gt;\n  select(-ID) |&gt;\n  bind_cols(select(as.data.frame(coord_stocks), \"site\", \"plot\")) |&gt;\n  relocate(site, plot)\nwrite.csv(thermal_data, file = \"data/cache/thermal_data.csv\", row.names = FALSE)\n\n\nThe following plots have NAs in at least one Bioclim variable.\n\n\nCode\nthermal_data |&gt;\n  filter(if_any(everything(), is.na))\n\n\n    site       plot Annual_Mean_LST\n1 adzope adzopeN_15              NA\n2 adzope adzopeN_21              NA\n3 adzope adzopeN_48              NA\n4 adzope adzopeN_49              NA\n5 adzope adzopeN_50              NA\n6 adzope adzopeN_51              NA\n7 adzope adzopeN_68              NA\n8 adzope adzopeN_74              NA",
+    "crumbs": [
+      "Ancillary data",
+      "Thermal variable"
+    ]
+  },
+  {
+    "objectID": "34_topography.html",
+    "href": "34_topography.html",
+    "title": "Topography",
+    "section": "",
+    "text": "Distribution of values in the t4s dataset\nElevation, slope, and aspect were derived from the Shuttle Radar Topography Mission (SRTM v3) digital elevation model (USGS SRTMGL1_003; 30 m resolution). Slope and aspect were computed from the original elevation data in Google Earth Engine, after which all bands were resampled to 100 m.\nTopographical Wetness Index (TWI) was calculated using the same SRTM source. First, the 30 m DEM was aggregated to 100 m using a mean reducer. Sinks in the resampled DEM were filled using the Fill Sinks (Wang and Liu 2006) algorithm implemented in the SAGA GIS library (minimum slope = 0°). The SAGA Wetness Index module was then used to compute TWI (parameters: Suction = 10; Area = Specific Catchment Area; Slope type = Catchment slope; Minimum slope = 0; Offset slope = 0.1; Slope weighting = 1).\nCode\nread.csv(\"data/cache/topo_data.csv\") |&gt;\n  pivot_longer(cols = c(\"elevation\", \"slope\", \"aspect\", \"twi\")) |&gt;\n  ggplot(aes(x = value)) +\n  geom_density() +\n  facet_wrap(~name, scales = \"free\") +\n  theme_classic() +\n  labs(x = NULL)\nCode\nread.csv(\"data/cache/topo_data.csv\") |&gt;\n  ggplot(aes(x = elevation, slope, col = site)) +\n  geom_point() +\n  scale_x_log10() +\n  scale_y_log10() +\n  theme_classic()\nCode\nread.csv(\"data/cache/topo_data.csv\") |&gt;\n  left_join(read.csv(\"data/plot_0.2.6.csv\")) |&gt;\n  filter(!is.na(toposequence) & toposequence != \"\") |&gt;\n  ggplot(aes(x = toposequence, y = slope)) +\n  geom_violin(fill = \"grey\") +\n  theme_classic()",
+    "crumbs": [
+      "Ancillary data",
+      "Topography"
+    ]
+  },
+  {
+    "objectID": "34_topography.html#distribution-of-values-in-the-t4s-dataset",
+    "href": "34_topography.html#distribution-of-values-in-the-t4s-dataset",
+    "title": "Topography",
+    "section": "",
+    "text": "Wang, Lei, and Hongxing Liu. 2006. “An Efficient Method for Identifying and Filling Surface Depressions in Digital Elevation Models for Hydrologic Analysis and Modelling.” International Journal of Geographical Information Science 20 (2): 193–213.",
+    "crumbs": [
+      "Ancillary data",
+      "Topography"
+    ]
+  },
+  {
+    "objectID": "35_landuse.html",
+    "href": "35_landuse.html",
+    "title": "Landuse data",
+    "section": "",
+    "text": "Comparison with landuse recorded in the t4s dataset\nWe used the 2020 land use map of Côte d’Ivoire produced by the Bureau National d’Études Techniques et de Développement (BNEDT).\nIn the table below we compare the landuse values recorded in the terri4sol database (columns) with the landuse values extracted from the BNEDT map at the same locations (rows).\nCode\nland_use_t4s &lt;- read.csv(\"data/plot_0.2.6.csv\") |&gt; \n  mutate(plot = paste(site, plot, sep = \"_\")) |&gt;\n  mutate(site = ifelse(grepl(\"tene\", site), \"tene\", site)) |&gt;\n  mutate(site = ifelse(grepl(\"adzope|mebifon|yaya\", site), \"adzope\", site)) |&gt;\n  right_join(read.csv(\"data/cache/data_stocks.csv\")) |&gt; \n  select(site, plot, present_landuse) |&gt; \n  mutate(present_landuse = ifelse(site == \"tene\" & is.na(present_landuse), \n                                  \"forest\", present_landuse)) |&gt; \n  mutate(present_landuse = ifelse(grepl(\"foret\", present_landuse), \n                                  \"forest\", present_landuse))\n\n\nJoining with `by = join_by(site, plot, lat, lon)`\nCode\nread.csv(\"data/cache/bnedt_data.csv\") |&gt;\n  left_join(land_use_t4s) |&gt;\n  select(landuse, present_landuse) |&gt;\n  table()\n\n\n                                                           present_landuse\nlanduse                                                     cassava cocoa\n  Agricultural development/Other crops/Orchards/Fallow land      20    19\n  Cashew plantation                                               0     4\n  Cocoa Plantation                                                4    97\n  Coconut Plantation                                              0     1\n  Coffee Plantation                                               0     4\n  Dense forest                                                    1    18\n  Forest gallery                                                  1     0\n  Forest plantation/Reforestation                                 0     2\n  Fruit plantation / Arboriculture                                4    10\n  Light forest                                                    0     1\n  Oil palm plantation                                             1     7\n  Rubber plantation                                              10    56\n  Secondary forest/degraded forest                                4     6\n  Swamp forest/Forest on hydromorphic soil                        0     2\n  Tree savannah                                                   0     0\n                                                           present_landuse\nlanduse                                                     dist_for fallow\n  Agricultural development/Other crops/Orchards/Fallow land        0     13\n  Cashew plantation                                                0      0\n  Cocoa Plantation                                                 0     20\n  Coconut Plantation                                               0      0\n  Coffee Plantation                                                0      2\n  Dense forest                                                     2     36\n  Forest gallery                                                   0      4\n  Forest plantation/Reforestation                                  0     19\n  Fruit plantation / Arboriculture                                 0      4\n  Light forest                                                     0      3\n  Oil palm plantation                                              0      8\n  Rubber plantation                                                0     41\n  Secondary forest/degraded forest                                 0     10\n  Swamp forest/Forest on hydromorphic soil                         0      8\n  Tree savannah                                                    0     23\n                                                           present_landuse\nlanduse                                                     food_crop forest\n  Agricultural development/Other crops/Orchards/Fallow land         3      1\n  Cashew plantation                                                 0      0\n  Cocoa Plantation                                                  2      3\n  Coconut Plantation                                                0      0\n  Coffee Plantation                                                 0      0\n  Dense forest                                                      0     14\n  Forest gallery                                                    0      2\n  Forest plantation/Reforestation                                   1    109\n  Fruit plantation / Arboriculture                                  0      0\n  Light forest                                                      0      2\n  Oil palm plantation                                               1      1\n  Rubber plantation                                                 7      3\n  Secondary forest/degraded forest                                  2      0\n  Swamp forest/Forest on hydromorphic soil                          0      2\n  Tree savannah                                                     0      7\n                                                           present_landuse\nlanduse                                                     jvc palm rubber\n  Agricultural development/Other crops/Orchards/Fallow land   0    3      1\n  Cashew plantation                                           0    0      0\n  Cocoa Plantation                                            1    1      2\n  Coconut Plantation                                          0    0      0\n  Coffee Plantation                                           0    0      0\n  Dense forest                                                6    0      7\n  Forest gallery                                              0    0      0\n  Forest plantation/Reforestation                             0    1      0\n  Fruit plantation / Arboriculture                            0    0      0\n  Light forest                                                0    0      0\n  Oil palm plantation                                         3    1      4\n  Rubber plantation                                          12    2     16\n  Secondary forest/degraded forest                            1    0      1\n  Swamp forest/Forest on hydromorphic soil                    1    0      1\n  Tree savannah                                               0    0      0\n                                                           present_landuse\nlanduse                                                     sec_for\n  Agricultural development/Other crops/Orchards/Fallow land       0\n  Cashew plantation                                               0\n  Cocoa Plantation                                                0\n  Coconut Plantation                                              0\n  Coffee Plantation                                               0\n  Dense forest                                                    5\n  Forest gallery                                                  0\n  Forest plantation/Reforestation                                 0\n  Fruit plantation / Arboriculture                                0\n  Light forest                                                    0\n  Oil palm plantation                                             0\n  Rubber plantation                                               0\n  Secondary forest/degraded forest                                0\n  Swamp forest/Forest on hydromorphic soil                        0\n  Tree savannah                                                   0\n                                                           present_landuse\nlanduse                                                     trees plantation\n  Agricultural development/Other crops/Orchards/Fallow land                0\n  Cashew plantation                                                        0\n  Cocoa Plantation                                                         0\n  Coconut Plantation                                                       0\n  Coffee Plantation                                                        0\n  Dense forest                                                             0\n  Forest gallery                                                           0\n  Forest plantation/Reforestation                                          5\n  Fruit plantation / Arboriculture                                         0\n  Light forest                                                             0\n  Oil palm plantation                                                      0\n  Rubber plantation                                                        0\n  Secondary forest/degraded forest                                         0\n  Swamp forest/Forest on hydromorphic soil                                 0\n  Tree savannah                                                            0",
+    "crumbs": [
+      "Ancillary data",
+      "Landuse data"
+    ]
+  },
+  {
+    "objectID": "36_tmf.html",
+    "href": "36_tmf.html",
+    "title": "TMF data",
+    "section": "",
+    "text": "Comparison of TMF and field-based plot classification\nWe used data from the Tropical Moist Forests (TMF) product, which is based on Landsat images (Vancutsem et al. 2021), to estimate the time since deforestation and the age of secondary forests. These classify tropical areas annually as follows: (i) undisturbed forests, (ii) disturbed forests, (iii) deforested areas, (iv) regrowing forests, (v) water, and (vi) other.\nWe estimated the age of secondary forests in 2022 as the number of years a pixel of regrowing forest in 2022 had continuously been classified as such. We estimated the time since deforestation as the time since a pixel that was classified as undisturbed or disturbed forest in 1990 (i.e. the first year of the TMF time series) had changed to another class.\nCode\ntmf2022 &lt;- rast(\"data/download/TMF/JRC_TMF_AnnualChange_v1_2022_RCI.tif\")\nplots &lt;- read.csv(\"data/plot_0.2.6.csv\")\nplots$tmf_class &lt;-\n  c(\"Undisturbed\", \"Degraded\", \"Deforested\", \"Regrowth\", \"Water\", \"Other\")[\n    terra::extract(tmf2022, plots[, c(\"lon\", \"lat\")])$Dec2022\n  ]\nplots |&gt;\n  with(table(tmf_class, present_landuse))\n\n\n             present_landuse\ntmf_class     cassava cocoa dist_for fallow food_crop forest foretanc jvc\n  Deforested       14    53        0     19         7      0        0   7\n  Degraded          3    43        1     60         0      4        5  12\n  Other            24    69        0     41         9      5        2   0\n  Regrowth          3    43        0     17         0      2        0   1\n  Undisturbed       1    19        6     22         0      3       14   4\n  Water             0     0        0      0         0      0        0   0\n             present_landuse\ntmf_class     old_mining others palm prim_for rubber sec_for trees plantation\n  Deforested           0      0    1        0      8       0                0\n  Degraded             4      0    0        1     14      52                0\n  Other                0      1    5        0      2       3                5\n  Regrowth             1      0    2        0      3      38                0\n  Undisturbed          3      0    0        6      5      22                0\n  Water                0      1    0        1      0       2                0",
+    "crumbs": [
+      "Ancillary data",
+      "TMF data"
+    ]
+  },
+  {
+    "objectID": "36_tmf.html#comparison-of-tmf-and-field-based-plot-classification",
+    "href": "36_tmf.html#comparison-of-tmf-and-field-based-plot-classification",
+    "title": "TMF data",
+    "section": "",
+    "text": "Vancutsem, Christelle, Frédéric Achard, J-F Pekel, Ghislain Vieilledent, Silvia Carboni, Dario Simonetti, Javier Gallego, Luiz EOC Aragao, and Robert Nasi. 2021. “Long-Term (1990–2019) Monitoring of Forest Cover Changes in the Humid Tropics.” Science Advances 7 (10): eabe1603.",
+    "crumbs": [
+      "Ancillary data",
+      "TMF data"
+    ]
+  },
+  {
+    "objectID": "37_soil_type.html",
+    "href": "37_soil_type.html",
+    "title": "Soil types",
+    "section": "",
+    "text": "Distribution of values in the t4s dataset\nOnly the following soil types are represented in the t4s database:\nCode\nt4s_levels &lt;- \"data/cache/soil_data.csv\" |&gt;\n  read.csv() |&gt;\n  select(WRB2) |&gt;\n  mutate(new = WRB2) |&gt;\n  unique() |&gt;\n  filter(!is.na(WRB2))\nr &lt;- \"data/01_Data/Environmental_variables/HWSD2.tif\" |&gt;\n  rast()\nlevels(r) &lt;- levels(r)[[1]] |&gt;\n  left_join(t4s_levels) |&gt;\n  select(ID, new)\nplot(r)",
+    "crumbs": [
+      "Ancillary data",
+      "Soil types"
+    ]
+  },
+  {
+    "objectID": "40_methodology.html",
+    "href": "40_methodology.html",
+    "title": "Methodological choices",
+    "section": "",
+    "text": "We tested different methodological choices: (i) adding a variable selection step to reduce the number of predictors; (ii) adding a spatially-explicit component.\nWe evaluated model performance using a leave-one-site-out cross-validation approach. The dataset was partitioned by sampling sites, such that all observations from a given site were withheld as the test set, while the remaining sites were used for model training. For each iteration, model predictions were compared to observed values in the test fold. Model accuracy was quantified using the root mean squared error (RMSE) and the coefficient of determination (R²), averaged across all validation folds.\nTo quantify prediction uncertainty while accounting for the spatial aggregation of the calibration data, we combined a leave-one-site-out (LOSO) cross-validation strategy with quantile regression. Specifically, we iteratively excluded one calibration site at a time and fitted a random forest model to the remaining data, yielding a set of s models (s corresponding to the number of sites). For each model, we generated new predictions by drawing 100 samples from the distribution of its predicted values. The resulting s predictive distributions were then pooled into a single aggregated distribution. From this combined distribution, we extracted the 10th, 50th (median), and 90th percentiles to represent the lower, central, and upper bounds of the prediction uncertainty, respectively.",
+    "crumbs": [
+      "Methodological choices"
+    ]
+  },
+  {
+    "objectID": "41_variable_selection.html",
+    "href": "41_variable_selection.html",
+    "title": "Variable selection",
+    "section": "",
+    "text": "RandomForest without variable selection\nA Random Forest (RF) model was implemented using the ranger package in R to predict soil organic carbon stock from environmental and soil covariates.\nCode\nformula_soc_all &lt;- colnames(data_all) %&gt;%\n  setdiff(c(\"site\", \"plot\", \"lon\", \"lat\", \"T_stock\")) %&gt;%\n  paste(collapse = \" + \") %&gt;%\n  paste(\"T_stock ~\", .) %&gt;%\n  as.formula()\ntraining_index &lt;- lapply(unique(data_all$site),\n                         function(s) which(data_all$site != s))\nrf_all &lt;- train(\n  form = formula_soc_all,\n  data = data_all,\n  method = \"rf\",\n  metric = \"RMSE\",\n  trControl = trainControl(method = \"cv\", index = training_index),\n  ntree = 500, importance = TRUE\n)\nsave(rf_all, file = \"data/cache/models/rf_all.rda\")\nModel performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:\nRMSE: 14.27713 \nR²: 0.1175586",
+    "crumbs": [
+      "Methodological choices",
+      "Variable selection"
+    ]
+  },
+  {
+    "objectID": "41_variable_selection.html#randomforest-with-variable-selection-based-on-vif",
+    "href": "41_variable_selection.html#randomforest-with-variable-selection-based-on-vif",
+    "title": "Variable selection",
+    "section": "RandomForest with variable selection based on VIF",
+    "text": "RandomForest with variable selection based on VIF\nVariable selection was done to avoid collinearity, by applying a using a Variance Inflation Factor (VIF) threshold of &lt; 5 with a stepwise procedure on all variables (Naimi et al. 2014).\n\n\nCode\n# create groups\ndata_groups_vif &lt;- data.frame(\n  variable = setdiff(colnames(data_all),\n                     c(\"site\", \"plot\", \"lon\", \"lat\", \"T_stock\"))\n) |&gt; # vif selection by group, based on variables selected at previous stage\n  mutate(vif = vif_select(variable, data_all))\nlist_vars &lt;- data_groups_vif |&gt;\n  filter(vif) |&gt;\n  select(variable) |&gt;\n  unlist() |&gt;\n  paste(collapse = \"; \")\n\n\nThe variables kept were: bio01; bio06; bio12; Blue_mean; RedEdge4_mean; SWIR1_mean; elevation; slope; aspect; twi; Annual_Mean_LST.\n\n\nCode\nformula_soc_vif &lt;- data_groups_vif %&gt;%\n  filter(vif) %&gt;%\n  select(variable) %&gt;%\n  t() %&gt;%\n  paste(collapse = \" + \") %&gt;%\n  paste(\"T_stock ~\", .) %&gt;%\n  as.formula()\ntraining_index &lt;- lapply(unique(data_all$site),\n                         function(s) which(data_all$site != s))\nrf_vif &lt;- train(\n  form = formula_soc_vif,\n  data = data_all,\n  method = \"rf\",\n  metric = \"RMSE\",\n  trControl = trainControl(method = \"cv\", index = training_index),\n  ntree = 500, importance = TRUE\n)\nsave(rf_vif, file = \"data/cache/models/rf_vif.rda\")\n\n\nModel performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:\n\n\nRMSE: 14.36575 \nR²: 0.09972229",
+    "crumbs": [
+      "Methodological choices",
+      "Variable selection"
+    ]
+  },
+  {
+    "objectID": "41_variable_selection.html#randomforest-with-variable-selection-based-on-vif-ffs",
+    "href": "41_variable_selection.html#randomforest-with-variable-selection-based-on-vif-ffs",
+    "title": "Variable selection",
+    "section": "RandomForest with variable selection based on VIF + FFS",
+    "text": "RandomForest with variable selection based on VIF + FFS\nThis method was inspired by the work from Traoré et al. (2024).\n\nEnvironmental variables were grouped as: climate - temperature / climate - precipitation / soil - physical variables / soil - chemical variables / topography / landuse.\nFor each group, a first variable selection was done to avoid collinearity, by applying a using a Variance Inflation Factor (VIF) threshold of &lt; 5 with a stepwise procedure (Naimi et al. 2014).\nA second variable selection step is then performed for each group of variables using a forward feature selection (FFS) procedure (Meyer et al. 2025).\nAll selected variables are then grouped, and the VIF + FFS are applied to this subset of variables.\nThe RandomForest model is then calibrated with the final subset of variables.\n\n\n\nCode\n# create groups\ndata_groups &lt;- data.frame(\n  variable = setdiff(colnames(data_all),\n                     c(\"site\", \"plot\", \"lon\", \"lat\", \"T_stock\"))\n) |&gt;\n  mutate(group = ifelse(grepl(\"bio|LST\", variable), \"clim\", \"topo\")) |&gt;\n  mutate(group = ifelse(grepl(\"_mean|NDVI\", variable), \"spectral\", group)) |&gt;\n  group_by(group) |&gt;\n  # vif selection by group, based on variables selected at previous stage\n  mutate(vif1 = vif_select(variable, data_all)) |&gt;\n  # ffs by group, based on variables selected at previous stage\n  mutate(ffs1 = ffs_select(variable, data_all, vif1)) |&gt;\n  ungroup() |&gt;\n  # vif selection for all, based on variables selected at previous stage\n  mutate(vif2 = vif_select(variable, data_all, ffs1)) |&gt;\n  # ffs for all, based on variables selected at previous stage\n  mutate(ffs2 = ffs_select(variable, data_all, vif2))\nwrite.csv(data_groups, file = \"data/cache/var_selection.csv\", row.names = FALSE)\n\n\nThe following variables were selected for each group at the different steps:\n\n\nCode\nread.csv(\"data/cache/var_selection.csv\") |&gt;\n  pivot_longer(cols = paste0(rep(c(\"vif\", \"ffs\")), rep(1:2, each = 2))) |&gt;\n  group_by(group, name) |&gt;\n  summarise(vars = paste(variable[value], collapse = \", \")) |&gt;\n  pivot_wider(values_from = \"vars\") |&gt;\n  relocate(group, vif1, ffs1, vif2, ffs2) |&gt;\n  kable(col.names = c(\"Groups\",\n                      paste(rep(c(\"VIF\", \"FFS\")),\n                            rep(c(\"group\", \"all\"), each = 2), sep = \"_\")))\n\n\n\n\n\n\n\n\n\n\n\n\nGroups\nVIF_group\nFFS_group\nVIF_all\nFFS_all\n\n\n\n\nclim\nbio01, bio06, bio12, Annual_Mean_LST\nbio01, bio06, bio12, Annual_Mean_LST\nbio01, bio06, bio12, Annual_Mean_LST\nbio01, bio06, bio12, Annual_Mean_LST\n\n\nspectral\nBlue_mean, NIR_mean, SWIR1_mean\nBlue_mean, NIR_mean, SWIR1_mean\nBlue_mean, NIR_mean, SWIR1_mean\nSWIR1_mean\n\n\ntopo\nelevation, slope, aspect, twi\nelevation, aspect, twi\nelevation, aspect, twi\nelevation, aspect, twi\n\n\n\n\n\n\n\nCode\nformula_soc_ffs &lt;- read.csv(\"data/cache/var_selection.csv\") %&gt;%\n  filter(ffs2) %&gt;%\n  select(variable) %&gt;%\n  t() %&gt;%\n  paste(collapse = \" + \") %&gt;%\n  paste(\"T_stock ~\", .) %&gt;%\n  as.formula()\ntraining_index &lt;- lapply(unique(data_all$site),\n                         function(s) which(data_all$site != s))\nrf_ffs &lt;- train(\n  form = formula_soc_ffs,\n  data = data_all,\n  method = \"rf\",\n  metric = \"RMSE\",\n  trControl = trainControl(method = \"cv\", index = training_index),\n  ntree = 500, importance = TRUE\n)\nsave(rf_ffs, file = \"data/cache/models/rf_ffs.rda\")\n\n\nModel performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:\n\n\nRMSE: 14.06704 \nR²: 0.09320797",
+    "crumbs": [
+      "Methodological choices",
+      "Variable selection"
+    ]
+  },
+  {
+    "objectID": "41_variable_selection.html#comparison-of-random-forest-models-performance",
+    "href": "41_variable_selection.html#comparison-of-random-forest-models-performance",
+    "title": "Variable selection",
+    "section": "Comparison of Random forest models performance",
+    "text": "Comparison of Random forest models performance\n\n\nCode\nrf_models &lt;- lapply(c(\"all\", \"vif\", \"ffs\"), function(model) {\n  load(paste0(\"data/cache/models/rf_\", model, \".rda\"))\n  get(paste0(\"rf_\", model))\n})\nnames(rf_models) &lt;- c(\"All Variables\", \"VIF selection\", \"VIF+FFS selection\")\nlapply(rf_models, function(md) md$results) %&gt;%\n  data.table::rbindlist(idcol = \"model\") %&gt;%\n  select(model, mtry, RMSE, Rsquared, MAE) %&gt;%\n  pivot_longer(\n    cols = c(RMSE, Rsquared, MAE),\n    names_to = \"metric\", values_to = \"value\"\n  ) |&gt;\n  ggplot(aes(x = mtry, y = value, color = model)) +\n  geom_line() +\n  geom_point(size = 2) +\n  facet_wrap(~metric, scales = \"free_y\") +\n  labs(\n    title = \"Comparison of performance by mtry\",\n    x = \"mtry (number of variables sampled)\",\n    y = \"Metric value\",\n    color = \"Model\"\n  ) +\n  theme_minimal()",
+    "crumbs": [
+      "Methodological choices",
+      "Variable selection"
+    ]
+  },
+  {
+    "objectID": "41_variable_selection.html#test---add-soil-type-hwsd2-and-land-use-bnedt",
+    "href": "41_variable_selection.html#test---add-soil-type-hwsd2-and-land-use-bnedt",
+    "title": "Variable selection",
+    "section": "Test - add soil type (HWSD2) and land use (BNEDT)",
+    "text": "Test - add soil type (HWSD2) and land use (BNEDT)\n\n\nCode\ndata_all &lt;- read.csv(\"data/cache/data_stocks.csv\") %&gt;%\n  merge(read.csv(\"data/cache/climate_data.csv\")) %&gt;%\n  merge(read.csv(\"data/cache/spectral_data.csv\")) %&gt;%\n  merge(read.csv(\"data/cache/topo_data.csv\")) %&gt;%\n  merge(read.csv(\"data/cache/thermal_data.csv\")) %&gt;%\n  merge(read.csv(\"data/cache/soil_data.csv\")) %&gt;%\n  merge(read.csv(\"data/cache/bnedt_data.csv\")) %&gt;%\n  drop_na()\n\n\n\nRandomForest without variable selection\nA Random Forest (RF) model was implemented using the ranger package in R to predict soil organic carbon stock from environmental and soil covariates.\n\n\nCode\nformula_soc_all &lt;- colnames(data_all) %&gt;%\n  setdiff(c(\"site\", \"plot\", \"lon\", \"lat\", \"T_stock\")) %&gt;%\n  paste(collapse = \" + \") %&gt;%\n  paste(\"T_stock ~\", .) %&gt;%\n  as.formula()\ntraining_index &lt;- lapply(unique(data_all$site),\n                         function(s) which(data_all$site != s))\nrf_all &lt;- train(\n  form = formula_soc_all,\n  data = data_all,\n  method = \"rf\",\n  metric = \"RMSE\",\n  trControl = trainControl(method = \"cv\", index = training_index),\n  ntree = 500, importance = TRUE\n)\nsave(rf_all, file = \"data/cache/models/rf_all_extended.rda\")\n\n\nModel performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:\n\n\nRMSE: 14.13353 \nR²: 0.08166904\n\n\n\n\nRandomForest with variable selection based on VIF\nVariable selection was done to avoid collinearity, by applying a using a Variance Inflation Factor (VIF) threshold of &lt; 5 with a stepwise procedure on all variables (Naimi et al. 2014).\n\n\nCode\n# create groups\ndata_groups_vif &lt;- data.frame(\n  variable = setdiff(colnames(data_all),\n                     c(\"site\", \"plot\", \"lon\", \"lat\", \"T_stock\"))\n) |&gt; # vif selection by group, based on variables selected at previous stage\n  mutate(vif = vif_select(variable, data_all))\nlist_vars &lt;- data_groups_vif |&gt;\n  filter(vif) |&gt;\n  select(variable) |&gt;\n  unlist() |&gt;\n  paste(collapse = \"; \")\n\n\nThe variables kept were: bio01; bio06; bio12; Blue_mean; RedEdge4_mean; SWIR1_mean; elevation; slope; aspect; twi; Annual_Mean_LST; WRB2; landuse.\n\n\nCode\nformula_soc_vif &lt;- data_groups_vif %&gt;%\n  filter(vif) %&gt;%\n  select(variable) %&gt;%\n  t() %&gt;%\n  paste(collapse = \" + \") %&gt;%\n  paste(\"T_stock ~\", .) %&gt;%\n  as.formula()\ntraining_index &lt;- lapply(unique(data_all$site),\n                         function(s) which(data_all$site != s))\nrf_vif &lt;- train(\n  form = formula_soc_vif,\n  data = data_all,\n  method = \"rf\",\n  metric = \"RMSE\",\n  trControl = trainControl(method = \"cv\", index = training_index),\n  ntree = 500, importance = TRUE\n)\nsave(rf_vif, file = \"data/cache/models/rf_vif_extended.rda\")\n\n\nModel performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:\n\n\nRMSE: 14.09795 \nR²: 0.09184958\n\n\n\n\nRandomForest with variable selection based on VIF + FFS\nThis method was inspired by the work from Traoré et al. (2024).\n\nEnvironmental variables were grouped as: climate - temperature / climate - precipitation / soil - physical variables / soil - chemical variables / topography / landuse.\nFor each group, a first variable selection was done to avoid collinearity, by applying a using a Variance Inflation Factor (VIF) threshold of &lt; 5 with a stepwise procedure (Naimi et al. 2014).\nA second variable selection step is then performed for each group of variables using a forward feature selection (FFS) procedure (Meyer et al. 2025).\nAll selected variables are then grouped, and the VIF + FFS are applied to this subset of variables.\nThe RandomForest model is then calibrated with the final subset of variables.\n\n\n\nCode\n# create groups\ndata_groups &lt;- data.frame(\n  variable = setdiff(colnames(data_all),\n                     c(\"site\", \"plot\", \"lon\", \"lat\", \"T_stock\"))\n) |&gt;\n  mutate(group = ifelse(grepl(\"bio|LST\", variable), \"clim\", variable)) |&gt;\n  mutate(group = ifelse(grepl(\"_mean|NDVI\", variable), \"spectral\", group)) |&gt;\n  mutate(group = ifelse(grepl(\"elev|slope|aspect|twi\", variable),\n                        \"topo\", group)) |&gt;\n  group_by(group) |&gt;\n  # vif selection by group, based on variables selected at previous stage\n  mutate(vif1 = vif_select(variable, data_all)) |&gt;\n  # ffs by group, based on variables selected at previous stage\n  mutate(ffs1 = ffs_select(variable, data_all, vif1)) |&gt;\n  ungroup() |&gt;\n  # vif selection for all, based on variables selected at previous stage\n  mutate(vif2 = vif_select(variable, data_all, ffs1)) |&gt;\n  # ffs for all, based on variables selected at previous stage\n  mutate(ffs2 = ffs_select(variable, data_all, vif2))\nwrite.csv(data_groups, file = \"data/cache/var_selection_extended.csv\",\n          row.names = FALSE)\n\n\nThe following variables were selected for each group at the different steps:\n\n\nCode\nread.csv(\"data/cache/var_selection_extended.csv\") |&gt;\n  pivot_longer(cols = paste0(rep(c(\"vif\", \"ffs\")), rep(1:2, each = 2))) |&gt;\n  group_by(group, name) |&gt;\n  summarise(vars = paste(variable[value], collapse = \", \")) |&gt;\n  pivot_wider(values_from = \"vars\") |&gt;\n  relocate(group, vif1, ffs1, vif2, ffs2) |&gt;\n  kable(col.names = c(\"Groups\",\n                      paste(rep(c(\"VIF\", \"FFS\")),\n                            rep(c(\"group\", \"all\"), each = 2), sep = \"_\")))\n\n\n\n\n\n\n\n\n\n\n\n\nGroups\nVIF_group\nFFS_group\nVIF_all\nFFS_all\n\n\n\n\nWRB2\nWRB2\nWRB2\nWRB2\n\n\n\nclim\nbio01, bio06, bio12, Annual_Mean_LST\nbio01, bio06, bio12, Annual_Mean_LST\nbio01, bio06, bio12, Annual_Mean_LST\nbio06, bio12, Annual_Mean_LST\n\n\nlanduse\nlanduse\nlanduse\nlanduse\n\n\n\nspectral\nBlue_mean, NIR_mean, SWIR1_mean\nBlue_mean, NIR_mean, SWIR1_mean\nBlue_mean, NIR_mean, SWIR1_mean\nNIR_mean\n\n\ntopo\nelevation, slope, aspect, twi\nelevation, aspect, twi\nelevation, aspect, twi\nelevation, aspect, twi\n\n\n\n\n\n\n\nCode\nformula_soc_ffs &lt;- read.csv(\"data/cache/var_selection_extended.csv\") %&gt;%\n  filter(ffs2) %&gt;%\n  select(variable) %&gt;%\n  t() %&gt;%\n  paste(collapse = \" + \") %&gt;%\n  paste(\"T_stock ~\", .) %&gt;%\n  as.formula()\ntraining_index &lt;- lapply(unique(data_all$site),\n                         function(s) which(data_all$site != s))\nrf_ffs &lt;- train(\n  form = formula_soc_ffs,\n  data = data_all,\n  method = \"rf\",\n  metric = \"RMSE\",\n  trControl = trainControl(method = \"cv\", index = training_index),\n  ntree = 500, importance = TRUE\n)\nsave(rf_ffs, file = \"data/cache/models/rf_ffs_extended.rda\")\n\n\nModel performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:\n\n\nRMSE: 14.17659 \nR²: 0.1389995\n\n\n\n\nComparison of Random forest models performance\n\n\nCode\nrf_models &lt;- lapply(c(\"all\", \"vif\", \"ffs\"), function(model) {\n  load(paste0(\"data/cache/models/rf_\", model, \"_extended.rda\"))\n  get(paste0(\"rf_\", model))\n})\nnames(rf_models) &lt;- c(\"All Variables\", \"VIF selection\", \"VIF+FFS selection\")\nlapply(rf_models, function(md) md$results) %&gt;%\n  data.table::rbindlist(idcol = \"model\") %&gt;%\n  select(model, mtry, RMSE, Rsquared, MAE) %&gt;%\n  pivot_longer(\n    cols = c(RMSE, Rsquared, MAE),\n    names_to = \"metric\", values_to = \"value\"\n  ) |&gt;\n  ggplot(aes(x = mtry, y = value, color = model)) +\n  geom_line() +\n  geom_point(size = 2) +\n  facet_wrap(~metric, scales = \"free_y\") +\n  labs(\n    title = \"Comparison of performance by mtry\",\n    x = \"mtry (number of variables sampled)\",\n    y = \"Metric value\",\n    color = \"Model\"\n  ) +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\n\n\nMeyer, Hanna, Carles Milà, Marvin Ludwig, Jan Linnenbrink, and Fabian Schumacher. 2025. CAST: ’Caret’ Applications for Spatial-Temporal Models. https://github.com/HannaMeyer/CAST.\n\n\nNaimi, Babak, Nicholas a.s. Hamm, Thomas A. Groen, Andrew K. Skidmore, and Albertus G. Toxopeus. 2014. “Where Is Positional Uncertainty a Problem for Species Distribution Modelling.” Ecography 37: 191–203. https://doi.org/10.1111/j.1600-0587.2013.00205.x.\n\n\nTraoré, Soulemane, Irie Casimir Zo-Bi, Camille Piponiot, Raphaël Aussenac, and Bruno Hérault. 2024. “Fragmentation is the main driver of residual forest aboveground biomass in West African low forest-high deforestation landscapes.” Trees, Forests and People 15 (March): 100477. https://doi.org/10.1016/j.tfp.2023.100477.",
+    "crumbs": [
+      "Methodological choices",
+      "Variable selection"
+    ]
+  },
+  {
+    "objectID": "42_spatial_rf.html",
+    "href": "42_spatial_rf.html",
+    "title": "Spatial structure",
+    "section": "",
+    "text": "Non-spatial random forest\nAs the samples were grouped by sampling site, our dataset is spatially aggregated. Traditional random forest models do not account for the spatial structure of such data, particularly the presence of spatial autocorrelation. To address this issue, we evaluated the impact of incorporating spatial autocorrelation by using the Random Forest Spatial Interpolation (RFSI) approach (Sekulić et al. 2020). This approach was found to offer slightly improved performance while remaining computationally efficient in a separate national-scale study of soil organic carbon stock mapping (Kmoch et al. 2025).\nA Random Forest model was trained using the ranger package in R. The model was fitted with the response variable (soil organic carbon stock) and the complete set of predictor variables. Model accuracy metrics from the cross validation steps were:\nCode\nload(\"data/cache/models/rf_all.rda\")\ncat(\n  \"RMSE:\", mean(rf_all$resample$RMSE),\n  \"\\nR²:\", mean(rf_all$resample$Rsquared)\n)\n\n\nRMSE: 14.27713 \nR²: 0.1175586",
+    "crumbs": [
+      "Methodological choices",
+      "Spatial structure"
+    ]
+  },
+  {
+    "objectID": "42_spatial_rf.html#random-forest-with-spatial-interpolation-rfsi",
+    "href": "42_spatial_rf.html#random-forest-with-spatial-interpolation-rfsi",
+    "title": "Spatial structure",
+    "section": "Random Forest with Spatial Interpolation (RFSI)",
+    "text": "Random Forest with Spatial Interpolation (RFSI)\nTo account for spatial autocorrelation, a Random Forest Spatial Interpolation (RFSI) model was implemented using the rfsi package. The RFSI model incorporates spatial neighborhood information into the Random Forest framework, allowing predictions that combine covariates with spatial proximity. Model accuracy metrics from the cross validation steps were:\n\n\nCode\ndata_spatial &lt;- st_as_sf(data_all, coords = c(\"lon\", \"lat\"), crs = 4326)\nrfsi_model &lt;- rfsi_llo(data_spatial, formula_soc, data_all$site)\nrfsi_results &lt;- rfsi_model$cv_results\nsave(rfsi_results, file = \"data/cache/models/rfsi_results.rda\")\n\n\n\n\nCode\nload(\"data/cache/models/rfsi_results.rda\")\ncat(\n  \"RMSE:\", rfsi_results[which.min(rfsi_results$RMSE), 2],\n  \"\\nR²:\", rfsi_results[which.min(rfsi_results$RMSE), 3]\n)\n\n\nRMSE: 17.6661 \nR²: -0.002532867\n\n\n\n\n\n\nKmoch, Alexander, Clay Taylor Harrison, Jeonghwan Choi, and Evelyn Uuemaa. 2025. “Spatial Autocorrelation in Machine Learning for Modelling Soil Organic Carbon.” Ecological Informatics 86: 103057.\n\n\nSekulić, Aleksandar, Milan Kilibarda, Gerard BM Heuvelink, Mladen Nikolić, and Branislav Bajat. 2020. “Random Forest Spatial Interpolation.” Remote Sensing 12 (10): 1687.",
+    "crumbs": [
+      "Methodological choices",
+      "Spatial structure"
+    ]
+  },
+  {
+    "objectID": "50_results.html",
+    "href": "50_results.html",
+    "title": "Model results",
+    "section": "",
+    "text": "Based on the tests in the “Methodological choices” section, we used the model with variables selected with the VIF+FFS method and no spatial interpolation.\n\n\nCode\ndata_all &lt;- read.csv(\"data/cache/data_stocks.csv\") %&gt;%\n  merge(read.csv(\"data/cache/climate_data.csv\")) %&gt;%\n  merge(read.csv(\"data/cache/spectral_data.csv\")) %&gt;%\n  merge(read.csv(\"data/cache/topo_data.csv\")) %&gt;%\n  merge(read.csv(\"data/cache/thermal_data.csv\")) %&gt;%\n  drop_na()\nsel_vars &lt;- read.csv(\"data/cache/var_selection.csv\") %&gt;%\n  filter(ffs2) %&gt;%\n  select(variable) %&gt;%\n  unlist()\nqrf_final &lt;- qrf_llo(\n  data = data_all,\n  ycol = \"T_stock\",\n  xcols = sel_vars,\n  site = data_all$site,\n  nodesizes = c(5, 10, 15),\n  ntree = 200\n)\nsave(qrf_final, file = \"data/cache/models/qrf_final.rda\")",
+    "crumbs": [
+      "Model results"
+    ]
+  },
+  {
+    "objectID": "51_variable_effect.html",
+    "href": "51_variable_effect.html",
+    "title": "Effect of explanatory variables",
+    "section": "",
+    "text": "The importance of each selected variable in the final model is represented below.\n\n\nCode\nload(\"data/cache/models/qrf_final.rda\")\nbioclim_names &lt;- data.frame(\n  variable = paste0(\"bio\", paste0(c(rep(\"0\", 9), rep(\"\", 10)), 1:19)),\n  var_name = c(\n    \"Annual Mean Temperature\", \"Mean Diurnal Range\", \"Isothermality\",\n    \"Temperature Seasonality\", \"Max Temperature of Warmest Month\",\n    \"Min Temperature of Coldest Month\", \"Temperature Annual Range\",\n    \"Mean Temperature of Wettest Quarter\", \"Mean Temperature of Driest Quarter\",\n    \"Mean Temperature of Warmest Quarter\",\n    \"Mean Temperature of Coldest Quarter\",\n    \"Annual Precipitation\", \"Precipitation of Wettest Month\",\n    \"Precipitation of Driest Month\", \"Precipitation Seasonality\",\n    \"Precipitation of Wettest Quarter\", \"Precipitation of Driest Quarter\",\n    \"Precipitation of Warmest Quarter\", \"Precipitation of Coldest Quarter\"\n  )\n)\nimportance_qrf_llo(qrf_final, type = 1) |&gt;\n  left_join(bioclim_names) |&gt;\n  merge(read.csv(\"data/cache/var_selection.csv\")) |&gt;\n  mutate(variable = ifelse(is.na(var_name), variable, var_name)) |&gt;\n  ggplot(aes(x = reorder(variable, importance), y = importance, fill = group)) +\n  geom_bar(stat = \"identity\") +\n  coord_flip() +\n  xlab(\"Variables\") +\n  ylab(\"Increase in Node Purity\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\nThe partial dependence plots are represented below.\n\n\nCode\ndata_all &lt;- read.csv(\"data/cache/data_stocks.csv\") %&gt;%\n  merge(read.csv(\"data/cache/climate_data.csv\")) %&gt;%\n  merge(read.csv(\"data/cache/spectral_data.csv\")) %&gt;%\n  merge(read.csv(\"data/cache/topo_data.csv\")) %&gt;%\n  merge(read.csv(\"data/cache/thermal_data.csv\")) %&gt;%\n  drop_na() |&gt;\n  setDT()\n\npreds &lt;- lapply(qrf_final$xcol, function(x) {\n  data.frame(\n    value = seq(\n      min(data_all[[x]]),\n      max(data_all[[x]]),\n      length.out = 50\n    )\n  )\n})\nnames(preds) &lt;- qrf_final$xcol\npreds &lt;- rbindlist(preds, idcol = \"var\")\n\npreds[, c(\"Q10\", \"Q50\", \"Q90\") := qrf_partial(\n  qrf_final, var, value,\n  data_all, c(0.1, 0.5, 0.9)\n), .(var, value)]\nwrite.csv(preds, \"data/cache/partial_predictions.csv\", row.names = FALSE)\n\n\n\n\nCode\nidcols &lt;- c(\"site\", \"plot\", \"lon\", \"lat\", \"T_stock\")\ndata_all &lt;- read.csv(\"data/cache/data_stocks.csv\") %&gt;%\n  merge(read.csv(\"data/cache/climate_data.csv\")) %&gt;%\n  merge(read.csv(\"data/cache/spectral_data.csv\")) %&gt;%\n  merge(read.csv(\"data/cache/topo_data.csv\")) %&gt;%\n  merge(read.csv(\"data/cache/thermal_data.csv\")) %&gt;%\n  drop_na() %&gt;%\n  pivot_longer(-idcols, names_to = \"var\") %&gt;%\n  filter(var %in% qrf_final$xcols)\nread.csv(\"data/cache/partial_predictions.csv\") |&gt;\n  ggplot(aes(value, Q50)) +\n  geom_ribbon(aes(ymin = Q10, ymax = Q90), alpha = 0.1) +\n  geom_point(data = data_all, aes(y = T_stock, col = site), alpha = 0.2) +\n  geom_line() +\n  facet_wrap(~var, scales = \"free\") +\n  theme_classic() +\n  theme(legend.position = \"none\") +\n  labs(x = \"Variable value\",\n       y = \"Distribution of predicted and observed SOC stocks\")\n\n\n\n\n\nPartial dependence plots showing the effect of individual variables on predicted SOC stocks. Solid lines represent the median predictions, while the grey areas represent the 10–90% quantiles. The points represent observations, with each colour representing a different site.",
+    "crumbs": [
+      "Model results",
+      "Effect of explanatory variables"
+    ]
+  },
+  {
+    "objectID": "52_soc_map.html",
+    "href": "52_soc_map.html",
+    "title": "SOC stocks prediction",
+    "section": "",
+    "text": "Code\nload(\"data/cache/models/qrf_final.rda\")\n\npath &lt;- \"data/01_Data/temp\"\n# make tiles (to limit memory usage)\ndir.create(path)\nlist.files(\"data/01_Data/Environmental_variables/\", \"tif\", FALSE, TRUE) |&gt;\n  rast() |&gt;\n  makeTiles(500, paste0(path, \"/tile_.tif\"))\n# if need to upload on server (with max upload size): use optimised zip files\nuse_zip &lt;- TRUE\nif (use_zip) {\n  list.files(path, \"\\\\.tif\", full.names = TRUE) |&gt;\n    file.size() |&gt;\n    optimise_split() |&gt;\n    lapply(function(lst) {\n      zip(\n        zipfile = paste0(path, \"/zip_\", min(lst), \".zip\"),\n        files = list.files(path, \"\\\\.tif\", full.names = TRUE)[lst],\n        mode = \"cherry-pick\"\n      )\n    })\n}\n# apply to all tiles:\ndone &lt;- paste0(\n  \"data/01_Data/temp/tile_\",\n  gsub(\"pred_|\\\\.csv\", \"\", list.files(path, \"pred\")),\n  \".tif\"\n)\nall &lt;- list.files(path, \".tif\", full.names = TRUE)\n\nfuture_lapply(setdiff(all, done), function(fl) {\n  gc()\n  # get predictors\n  n_tile &lt;- strsplit(fl, \"_|\\\\.\")[[1]][3]\n  data_vars &lt;- rast(fl) |&gt;\n    as.data.frame(xy = TRUE) |&gt;\n    rename(twi = b1)\n  if (nrow(select(drop_na(data_vars), -x, -y)) &gt; 0) {\n    # model prediction\n    predict.qrf_llo(\n      qrf_final,\n      parallel = FALSE,\n      newdata = select(drop_na(data_vars), -x, -y)\n    ) |&gt;\n      bind_cols(select(drop_na(data_vars), x, y)) |&gt;\n      right_join(select(data_vars, x, y)) |&gt;\n      write.csv(paste0(path, \"/pred_\", n_tile, \".csv\"), row.names = FALSE)\n  } else {\n    select(data_vars, x, y) |&gt;\n      mutate(Q10 = NA, Q50 = NA, Q90 = NA) |&gt;\n      write.csv(paste0(path, \"/pred_\", n_tile, \".csv\"), row.names = FALSE)\n  }\n})\n\n# join results\nlist.files(path, pattern = \"pred\", full.names = TRUE) |&gt;\n  lapply(fread) |&gt;\n  rbindlist(use.names = TRUE) |&gt;\n  rast(crs = \"EPSG:32630\") |&gt;\n  writeRaster(\"data/cache/map_pred.tif\", overwrite = TRUE)\n\n# remove temporary files\nunlink(path, recursive = TRUE)\n\n\n\n\nCode\nggplot() +\n  geom_spatraster(data = rast(\"data/cache/map_pred.tif\")) +\n  facet_wrap(~lyr) +\n  scale_fill_viridis_c(na.value = \"transparent\") +\n  theme_minimal()",
+    "crumbs": [
+      "Model results",
+      "SOC stocks prediction"
+    ]
+  }
+]
