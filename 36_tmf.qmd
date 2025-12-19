@@ -104,6 +104,45 @@ list.files("data/cache/tiles", "def", full.names = TRUE) |>
   sprc() |>
   mosaic() |>
   writeRaster("data/cache/tmf_def_age.tif", overwrite = TRUE)
+# deforestation history in the region
+def_age <- rast("data/cache/tmf_def_age.tif")
+# undisturbed/degraded forest: deforestation age = 0
+type <-
+  "data/download/TMF/JRC_TMF_AnnualChange_v1_2022_RCI.tif" |>
+  rast() |>
+  crop(def_age)
+weights <- focalMat(rast(ncols = 180, nrows = 180, xmin = 0), 10, "Gauss")
+r0 <- ifel(type %in% c(0, 1), 0, def_age)
+path <- "data/cache/tiles/"
+if (!dir.exists(path)) dir.create(path)
+makeTiles(r0, 2000,
+  filename = paste0(path, "r0_.tif"),
+  buffer = (nrow(weights) - 1) / 2
+)
+
+for (fl in list.files(path, "r0")) {
+  n <- as.numeric(gsub("r0_|.tif", "", fl))
+  i <- ceiling(n / 12)
+  j <- n - 12 * floor((n - 1) / 12)
+  x0 <- -8.561573
+  y0 <- 8.513334
+  ext0 <- c(x0 + 0.5389892 * c(j - 1, j), y0 - 0.5389892 * c(i, i - 1))
+  paste0(path, fl) |>
+    rast() |>
+    focal(weights, fun = mean, na.rm = TRUE) |>
+    crop(ext0) |> # remove buffer from tiles
+    writeRaster(paste0(path, "smooth_", fl), overwrite = TRUE)
+}
+# mosaic, project into UTM and resample raster
+rref <- "data/01_Data/Environmental_variables/TWI_100m_CI.tif" |>
+  rast()
+list.files(path, "smooth", full.names = TRUE) |>
+  lapply(rast) |>
+  sprc() |>
+  mosaic() |>
+  project(crs(rref)) |>
+  resample(rref) |>
+  writeRaster("data/cache/def_age_smooth.tif", overwrite = TRUE)
 # remove tiles to save space
 list.files("data/cache/tiles", full.names = TRUE) |> file.remove()
 ```
@@ -137,17 +176,59 @@ ggplot() +
   theme_minimal()
 ```
 
+We smoothed the time since deforestation (setting time = 0 for remaining forests) by averaging it with a 2D Gaussian kernel moving window. The standard deviation of the Guassian kernel was set to 300 m.
+
+```{r}
+#| message: false
+#| warning: false
+# extract values for all t4s plots
+coord_stocks <- read.csv("data/cache/data_stocks.csv") |>
+  # project into EPSG:32630
+  vect(crs = "epsg:4326") |>
+  terra::project("epsg:32630")
+
+"data/cache/def_age_smooth.tif" |>
+  rast() |>
+  terra::extract(coord_stocks) |>
+  rename(def_age = focal_mean) |>
+  select(def_age) |>
+  bind_cols(select(as.data.frame(coord_stocks), "site", "plot")) |>
+  relocate(site, plot) |>
+  write.csv(file = "data/cache/tmf_data.csv", row.names = FALSE)
+```
+
+
+```{r}
+#| message: false
+#| warning: false
+data_site <- read.csv("data/cache/tmf_data.csv") |>
+  bind_cols(select(geom(coord_stocks, df = TRUE), "x", "y")) |>
+  filter(!is.na(x))
+ggplot() +
+  geom_spatraster(data = rast("data/cache/def_age_smooth.tif")) +
+  scale_fill_viridis_c(na.value = "transparent") +
+  geom_sf(data = area, fill = NA, col = "black") +
+  geom_point(data = data_site, aes(x, y, col = is.na(def_age))) +
+  labs(
+    title = "Smoothed time since deforestation", fill = "Time (yr)",
+    col = "Site has\nnon NA value"
+  ) +
+  theme_minimal()
+```
+
 ## Comparison of TMF and field-based plot classification
 
 ```{r}
 #| message: false
 #| warning: false
-tmf2022 <- rast("data/download/TMF/JRC_TMF_AnnualChange_v1_2022_RCI.tif")
-plots <- read.csv("data/plot_0.2.6.csv")
-plots$tmf_class <-
-  c("Undisturbed", "Degraded", "Deforested", "Regrowth", "Water", "Other")[
-    terra::extract(tmf2022, plots[, c("lon", "lat")])$Dec2022
-  ]
-plots |>
+tmf2022 <- rast("data/download/TMF/JRC_TMF_AnnualChange_v1_2022_RCI.tif") |>
+  terra::extract(read.csv("data/cache/data_stocks.csv")[, c("lon", "lat")]) |>
+  mutate(tmf_class = c(
+    "Undisturbed", "Degraded", "Deforested", "Regrowth", "Water", "Other"
+  )[Dec2022]) |>
+  bind_cols(read.csv("data/cache/data_stocks.csv")) |>
+  select(site, plot, tmf_class)
+read.csv("data/cache/data_landuse.csv") |>
+  inner_join(tmf2022) |>
   with(table(tmf_class, present_landuse))
 ```

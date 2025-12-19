@@ -351,42 +351,50 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data_t4s <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/soil_0.2.6.csv"</span>)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data_t4s <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/soil_0.2.9.csv"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_t4s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>     site               plot               depth         sampleID        
- Length:2256        Length:2256        Min.   :1.000   Length:2256       
- Class :character   Class :character   1st Qu.:1.000   Class :character  
- Mode  :character   Mode  :character   Median :2.000   Mode  :character  
-                                       Mean   :1.998                     
-                                       3rd Qu.:3.000                     
-                                       Max.   :3.000                     
-                                       NA's   :2                         
-       C                N            bulk_density_g_cm3 coarse_fraction  
- Min.   :0.1020   Min.   :-0.03744   Min.   :0.1148     Min.   :0.00000  
- 1st Qu.:0.7046   1st Qu.: 0.06761   1st Qu.:1.3798     1st Qu.:0.01504  
- Median :1.0512   Median : 0.09187   Median :1.5568     Median :0.14139  
- Mean   :1.2960   Mean   : 0.11039   Mean   :1.5415     Mean   :0.21625  
- 3rd Qu.:1.6751   3rd Qu.: 0.13708   3rd Qu.:1.7100     3rd Qu.:0.37532  
- Max.   :6.6624   Max.   : 0.67775   Max.   :2.6440     Max.   :0.87308  
- NA's   :2        NA's   :2          NA's   :156        NA's   :135      
+<pre><code>     site               plot               depth     sampleID        
+ Length:2552        Length:2552        Min.   :1   Length:2552       
+ Class :character   Class :character   1st Qu.:1   Class :character  
+ Mode  :character   Mode  :character   Median :2   Mode  :character  
+                                       Mean   :2                     
+                                       3rd Qu.:3                     
+                                       Max.   :3                     
+                                                                     
+       C                N            bulk_density_g_cm3 coarse_fraction    
+ Min.   :0.1020   Min.   :-0.03744   Min.   :0.1148     Min.   :-0.000278  
+ 1st Qu.:0.7046   1st Qu.: 0.06761   1st Qu.:1.3506     1st Qu.: 0.019063  
+ Median :1.0512   Median : 0.09187   Median :1.5350     Median : 0.160483  
+ Mean   :1.2960   Mean   : 0.11039   Mean   :1.5165     Mean   : 0.227475  
+ 3rd Qu.:1.6751   3rd Qu.: 0.13708   3rd Qu.:1.6963     3rd Qu.: 0.398461  
+ Max.   :6.6624   Max.   : 0.67775   Max.   :2.6440     Max.   : 0.873085  
+ NA's   :298      NA's   :298        NA's   :26         NA's   :5          
  fine_fraction          K                Ca              Mg        
  Min.   :0.1269   Min.   :0.0690   Min.   :0.660   Min.   :0.1905  
- 1st Qu.:0.6247   1st Qu.:0.0970   1st Qu.:1.031   1st Qu.:0.4178  
- Median :0.8586   Median :0.1130   Median :1.160   Median :0.4820  
- Mean   :0.7838   Mean   :0.1169   Mean   :1.201   Mean   :0.5998  
- 3rd Qu.:0.9850   3rd Qu.:0.1270   3rd Qu.:1.314   3rd Qu.:0.6943  
- Max.   :1.0000   Max.   :0.2380   Max.   :2.689   Max.   :1.5040  
- NA's   :135      NA's   :2146     NA's   :2146    NA's   :2146    
-       Na         
- Min.   :0.06325  
- 1st Qu.:0.08892  
- Median :0.10358  
- Mean   :0.10718  
- 3rd Qu.:0.11642  
- Max.   :0.21817  
- NA's   :2146     </code></pre>
+ 1st Qu.:0.6015   1st Qu.:0.0970   1st Qu.:1.031   1st Qu.:0.4178  
+ Median :0.8395   Median :0.1130   Median :1.160   Median :0.4820  
+ Mean   :0.7725   Mean   :0.1169   Mean   :1.201   Mean   :0.5998  
+ 3rd Qu.:0.9809   3rd Qu.:0.1270   3rd Qu.:1.314   3rd Qu.:0.6943  
+ Max.   :1.0003   Max.   :0.2380   Max.   :2.689   Max.   :1.5040  
+ NA's   :5        NA's   :2442     NA's   :2442    NA's   :2442    
+       Na          clay_silt_pct      clay_pct    fine_silt_pct  
+ Min.   :0.06325   Min.   : 4.65   Min.   : 0.5   Min.   : 3.15  
+ 1st Qu.:0.08892   1st Qu.:19.50   1st Qu.: 6.0   1st Qu.:11.50  
+ Median :0.10358   Median :25.00   Median :10.5   Median :14.00  
+ Mean   :0.10718   Mean   :26.96   Mean   :11.1   Mean   :16.01  
+ 3rd Qu.:0.11642   3rd Qu.:31.75   3rd Qu.:15.0   3rd Qu.:19.00  
+ Max.   :0.21817   Max.   :65.23   Max.   :40.5   Max.   :35.50  
+ NA's   :2442      NA's   :2405    NA's   :2406   NA's   :2405   
+ coarse_silt_pct  coarse_sand_pct fine_sand_pct  
+ Min.   : 1.800   Min.   : 6.30   Min.   :10.10  
+ 1st Qu.: 5.650   1st Qu.:22.45   1st Qu.:23.75  
+ Median : 7.800   Median :31.80   Median :29.70  
+ Mean   : 9.318   Mean   :33.31   Mean   :30.37  
+ 3rd Qu.:12.075   3rd Qu.:43.84   3rd Qu.:35.48  
+ Max.   :27.300   Max.   :74.64   Max.   :53.95  
+ NA's   :2405     NA's   :2405    NA's   :2405   </code></pre>
 </div>
 </div>
 <p>Soil organic carbon stocks were estimated as</p>
@@ -417,7 +425,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.6.csv"</span>) <span class="sc">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.9.csv"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(lat <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> <span class="sc">!</span>(lat <span class="sc">&gt;</span> <span class="fl">6.2</span> <span class="sc">&amp;</span> site <span class="sc">==</span> <span class="st">"yaya"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">"adzope|mebifon|yaya|tene"</span>, site)) <span class="sc">|&gt;</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new_site =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"tene"</span>, site), <span class="st">"tene"</span>, <span class="st">"adzope"</span>)) <span class="sc">|&gt;</span></span>
@@ -438,7 +446,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.6.csv"</span>) <span class="sc">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.9.csv"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># correct plot coordinates</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lonc =</span> <span class="fu">ifelse</span>(lon <span class="sc">&gt;</span> <span class="dv">0</span>, lat, lon), <span class="at">latc =</span> <span class="fu">ifelse</span>(lat <span class="sc">&lt;</span> <span class="dv">0</span>, lon, lat)) <span class="sc">|&gt;</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, lonc, latc) <span class="sc">|&gt;</span></span>

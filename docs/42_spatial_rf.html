@@ -320,6 +320,7 @@ div.csl-indent {
   <ul>
   <li><a href="#non-spatial-random-forest" id="toc-non-spatial-random-forest" class="nav-link active" data-scroll-target="#non-spatial-random-forest">Non-spatial random forest</a></li>
   <li><a href="#random-forest-with-spatial-interpolation-rfsi" id="toc-random-forest-with-spatial-interpolation-rfsi" class="nav-link" data-scroll-target="#random-forest-with-spatial-interpolation-rfsi">Random Forest with Spatial Interpolation (RFSI)</a></li>
+  <li><a href="#use-of-spatial-thinning" id="toc-use-of-spatial-thinning" class="nav-link" data-scroll-target="#use-of-spatial-thinning">Use of spatial thinning</a></li>
   </ul>
 </nav>
     </div>
@@ -407,6 +408,69 @@ R²: 0.1175586</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>RMSE: 17.6661 
 R²: -0.002532867</code></pre>
+</div>
+</div>
+</section>
+<section id="use-of-spatial-thinning" class="level2">
+<h2 class="anchored" data-anchor-id="use-of-spatial-thinning">Use of spatial thinning</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>r0 <span class="ot">&lt;-</span> <span class="st">"data/01_Data/Environmental_variables/LST_Annual_Mean_2024_100m_CI.tif"</span> <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rast</span>()</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">values</span>(r0) <span class="ot">&lt;-</span> <span class="fu">seq_len</span>(<span class="fu">ncell</span>(r0))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>coord <span class="ot">&lt;-</span> data_all <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vect</span>(<span class="at">crs =</span> <span class="st">"epsg:4326"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">project</span>(<span class="st">"epsg:32630"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>data_all <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(r0, coord) <span class="sc">|&gt;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">id =</span> Annual_Mean_LST) <span class="sc">|&gt;</span> <span class="fu">select</span>(id) <span class="sc">|&gt;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(data_all) <span class="sc">|&gt;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(site, plot)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>dupl <span class="ot">&lt;-</span> data_all <span class="sc">|&gt;</span> </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span> </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n<span class="sc">&gt;</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Spatial thinning would remove 74 plots (9% of the dataset) located in the 66 pixels.</p>
+<p>We tested the model by taking the average carbon stocks of pixels in the same plot.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data_thinning <span class="ot">&lt;-</span> data_all <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>plot) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site, id) <span class="sc">|&gt;</span> </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), mean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>formula_soc_all <span class="ot">&lt;-</span> <span class="fu">colnames</span>(data_thinning) <span class="sc">%&gt;%</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setdiff</span>(<span class="fu">c</span>(<span class="st">"site"</span>, <span class="st">"plot"</span>, <span class="st">"id"</span>, <span class="st">"lon"</span>, <span class="st">"lat"</span>, <span class="st">"T_stock"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">" + "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">"T_stock ~"</span>, .) <span class="sc">%&gt;%</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.formula</span>()</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>training_index <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">unique</span>(data_thinning<span class="sc">$</span>site),</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>                         <span class="cf">function</span>(s) <span class="fu">which</span>(data_thinning<span class="sc">$</span>site <span class="sc">!=</span> s))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>rf_thinning <span class="ot">&lt;-</span> <span class="fu">train</span>(</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">form =</span> formula_soc_all,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_thinning,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"rf"</span>,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">metric =</span> <span class="st">"RMSE"</span>,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"cv"</span>, <span class="at">index =</span> training_index),</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">ntree =</span> <span class="dv">500</span>, <span class="at">importance =</span> <span class="cn">TRUE</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(rf_thinning, <span class="at">file =</span> <span class="st">"data/cache/models/rf_thinning.rda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"data/cache/models/rf_thinning.rda"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"RMSE:"</span>, <span class="fu">mean</span>(rf_thinning<span class="sc">$</span>resample<span class="sc">$</span>RMSE),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"</span><span class="sc">\n</span><span class="st">R²:"</span>, <span class="fu">mean</span>(rf_thinning<span class="sc">$</span>resample<span class="sc">$</span>Rsquared)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>RMSE: 14.20802 
+R²: 0.1152472</code></pre>
 </div>
 </div>
 

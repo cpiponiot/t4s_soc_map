@@ -60,25 +60,46 @@ list.files("data/download/BNEDT/", pattern = "tif$", full.names = TRUE) |>
 In the table below we compare the landuse values recorded in the terri4sol database (columns) with the landuse values extracted from the BNEDT map at the same locations (rows).
 
 ```{r}
-land_use_t4s <- read.csv("data/plot_0.2.6.csv") |>
+read.csv("data/plot_0.2.9.csv") |>
+  select(site, plot, present_landuse) |>
+  drop_na() |>
   mutate(plot = paste(site, plot, sep = "_")) |>
   mutate(site = ifelse(grepl("tene", site), "tene", site)) |>
   mutate(site = ifelse(grepl("adzope|mebifon|yaya", site), "adzope", site)) |>
-  right_join(read.csv("data/cache/data_stocks.csv")) |>
-  select(site, plot, present_landuse) |>
   mutate(present_landuse = ifelse(site == "tene" & is.na(present_landuse),
     "forest", present_landuse
   )) |>
-  mutate(present_landuse = ifelse(grepl("foret", present_landuse),
+  mutate(present_landuse = ifelse(grepl("for", present_landuse),
     "forest", present_landuse
-  ))
+  )) |>
+  write.csv("data/cache/data_landuse.csv", row.names = FALSE)
 ```
 
 ```{r}
 #| message: false
 #| warning: false
 read.csv("data/cache/bnedt_data.csv") |>
-  left_join(land_use_t4s) |>
+  inner_join(read.csv("data/cache/data_landuse.csv")) |>
   select(landuse, present_landuse) |>
   table()
+```
+
+```{r}
+error_rate <- read.csv("data/cache/bnedt_data.csv") |>
+  inner_join(read.csv("data/cache/data_landuse.csv")) |>
+  mutate(valid = ifelse(
+    present_landuse == "cassava" & grepl("Agricultural development", landuse) |
+      present_landuse == "cocoa" & grepl("Cocoa", landuse) |
+      present_landuse == "fallow" & grepl("Fallow|Secondary|Light", landuse) |
+      present_landuse == "forest" & grepl("orest", landuse) |
+      present_landuse == "food_crop" & grepl("Agricultural", landuse) |
+      present_landuse == "palm" & grepl("palm", landuse) |
+      present_landuse == "rubber" & grepl("Rubber", landuse) |
+      present_landuse == "trees plantation" & grepl("plantation", landuse),
+    TRUE, FALSE
+  )) |>
+  filter(!present_landuse %in% c("jvc", "old_mining", "others"))
+error_rate |>
+  group_by(present_landuse) |>
+  summarise(error_rate = sum(!valid) / length(valid))
 ```

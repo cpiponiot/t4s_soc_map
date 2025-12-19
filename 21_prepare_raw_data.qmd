@@ -15,7 +15,7 @@ A summary of the data from the terri4sol project is presented below.
 ```{r}
 #| message: false
 #| warning: false
-data_t4s <- read.csv("data/soil_0.2.6.csv")
+data_t4s <- read.csv("data/soil_0.2.9.csv")
 summary(data_t4s)
 ```
 
@@ -52,7 +52,7 @@ We grouped the following sites because of their spatial overlap: "tene" and "ten
 ```{r}
 #| message: false
 #| warning: false
-read.csv("data/plot_0.2.6.csv") |>
+read.csv("data/plot_0.2.9.csv") |>
   filter(lat > 0 & !(lat > 6.2 & site == "yaya")) |>
   filter(grepl("adzope|mebifon|yaya|tene", site)) |>
   mutate(new_site = ifelse(grepl("tene", site), "tene", "adzope")) |>
@@ -67,7 +67,7 @@ We then sum the carbon stocks over all depths at each site to get the total carb
 ```{r}
 #| message: false
 #| warning: false
-read.csv("data/plot_0.2.6.csv") |>
+read.csv("data/plot_0.2.9.csv") |>
   # correct plot coordinates
   mutate(lonc = ifelse(lon > 0, lat, lon), latc = ifelse(lat < 0, lon, lat)) |>
   select(site, plot, lonc, latc) |>

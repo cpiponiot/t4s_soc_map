@@ -4,6 +4,7 @@
 #| echo: false
 #| results: 'hide'
 library(tidyverse)
+library(terra)
 library(meteo)
 library(ranger)
 library(sf)
@@ -67,5 +68,70 @@ load("data/cache/models/rfsi_results.rda")
 cat(
   "RMSE:", rfsi_results[which.min(rfsi_results$RMSE), 2],
   "\nR²:", rfsi_results[which.min(rfsi_results$RMSE), 3]
+)
+```
+
+## Use of spatial thinning
+
+```{r}
+#| message: false
+#| warning: false
+r0 <- "data/01_Data/Environmental_variables/LST_Annual_Mean_2024_100m_CI.tif" |>
+  rast()
+values(r0) <- seq_len(ncell(r0))
+coord <- data_all |>
+  vect(crs = "epsg:4326") |>
+  terra::project("epsg:32630")
+data_all <- terra::extract(r0, coord) |>
+  rename(id = Annual_Mean_LST) |>
+  select(id) |>
+  bind_cols(data_all) |>
+  relocate(site, plot)
+dupl <- data_all |>
+  group_by(id) |>
+  summarise(n = n()) |>
+  filter(n > 1)
+```
+
+Spatial thinning would remove `r sum(dupl$n-1)` plots (`r round(sum(dupl$n-1)/nrow(data_all)*100)`% of the dataset) located in the `r nrow(dupl)` pixels.
+
+We tested the model by taking the average carbon stocks of pixels in the same plot.
+
+```{r}
+#| message: false
+#| warning: false
+#| eval: false
+
+data_thinning <- data_all |>
+  select(-plot) |>
+  group_by(site, id) |>
+  summarise(across(everything(), mean, na.rm = TRUE))
+formula_soc_all <- colnames(data_thinning) %>%
+  setdiff(c("site", "plot", "id", "lon", "lat", "T_stock")) %>%
+  paste(collapse = " + ") %>%
+  paste("T_stock ~", .) %>%
+  as.formula()
+training_index <- lapply(
+  unique(data_thinning$site),
+  function(s) which(data_thinning$site != s)
+)
+rf_thinning <- train(
+  form = formula_soc_all,
+  data = data_thinning,
+  method = "rf",
+  metric = "RMSE",
+  trControl = trainControl(method = "cv", index = training_index),
+  ntree = 500, importance = TRUE
+)
+save(rf_thinning, file = "data/cache/models/rf_thinning.rda")
+```
+
+```{r}
+#| message: false
+#| warning: false
+load("data/cache/models/rf_thinning.rda")
+cat(
+  "RMSE:", mean(rf_thinning$resample$RMSE),
+  "\nR²:", mean(rf_thinning$resample$Rsquared)
 )
 ```
