@@ -19,10 +19,13 @@ list.files("r", pattern = "\\.R", full.names = TRUE) |> lapply(source)
 #| message: false
 #| warning: false
 data_all <- read.csv("data/cache/data_stocks.csv") %>%
-  merge(read.csv("data/cache/climate_data.csv")) %>%
-  merge(read.csv("data/cache/spectral_data.csv")) %>%
-  merge(read.csv("data/cache/topo_data.csv")) %>%
-  merge(read.csv("data/cache/thermal_data.csv")) %>%
+  inner_join(read.csv("data/cache/climate_data.csv")) %>%
+  inner_join(read.csv("data/cache/spectral_data.csv")) %>%
+  inner_join(read.csv("data/cache/topo_data.csv")) %>%
+  inner_join(read.csv("data/cache/thermal_data.csv")) %>%
+  inner_join(read.csv("data/cache/data_landuse.csv")) %>%
+  inner_join(read.csv("data/cache/tmf_data.csv")) %>%
+  inner_join(read.csv("data/cache/soil_data.csv")) %>%
   drop_na()
 ```
 
@@ -33,12 +36,14 @@ A Random Forest (RF) model was implemented using the ranger package in R to pred
 ```{r}
 #| eval: false
 formula_soc_all <- colnames(data_all) %>%
-  setdiff(c("site", "plot", "lon", "lat", "T_stock")) %>%
+  setdiff(c("site", "plot", "lon", "lat", "T_stock", "corg")) %>%
   paste(collapse = " + ") %>%
-  paste("T_stock ~", .) %>%
+  paste("corg ~", .) %>%
   as.formula()
-training_index <- lapply(unique(data_all$site),
-                         function(s) which(data_all$site != s))
+training_index <- lapply(
+  unique(data_all$site),
+  function(s) which(data_all$site != s)
+)
 rf_all <- train(
   form = formula_soc_all,
   data = data_all,
@@ -71,8 +76,10 @@ Variable selection was done to avoid collinearity, by applying a using a Varianc
 #| warning: false
 # create groups
 data_groups_vif <- data.frame(
-  variable = setdiff(colnames(data_all),
-                     c("site", "plot", "lon", "lat", "T_stock"))
+  variable = setdiff(
+    colnames(data_all),
+    c("site", "plot", "lon", "lat", "T_stock", "corg")
+  )
 ) |> # vif selection by group, based on variables selected at previous stage
   mutate(vif = vif_select(variable, data_all))
 list_vars <- data_groups_vif |>
@@ -91,10 +98,12 @@ formula_soc_vif <- data_groups_vif %>%
   select(variable) %>%
   t() %>%
   paste(collapse = " + ") %>%
-  paste("T_stock ~", .) %>%
+  paste("corg ~", .) %>%
   as.formula()
-training_index <- lapply(unique(data_all$site),
-                         function(s) which(data_all$site != s))
+training_index <- lapply(
+  unique(data_all$site),
+  function(s) which(data_all$site != s)
+)
 rf_vif <- train(
   form = formula_soc_vif,
   data = data_all,
@@ -138,21 +147,25 @@ This method was inspired by the work from @Traore2024.
 #| eval: false
 # create groups
 data_groups <- data.frame(
-  variable = setdiff(colnames(data_all),
-                     c("site", "plot", "lon", "lat", "T_stock"))
+  variable = setdiff(
+    colnames(data_all),
+    c("site", "plot", "lon", "lat", "T_stock", "corg")
+  )
 ) |>
   mutate(group = ifelse(grepl("bio|LST", variable), "clim", "topo")) |>
   mutate(group = ifelse(grepl("_mean|NDVI", variable), "spectral", group)) |>
+  mutate(group = ifelse(grepl("_age|landuse", variable), "landuse", group)) |>
+  mutate(group = ifelse(grepl("WRB2", variable), "soil", group)) |>
   group_by(group) |>
   # vif selection by group, based on variables selected at previous stage
   mutate(vif1 = vif_select(variable, data_all)) |>
   # ffs by group, based on variables selected at previous stage
-  mutate(ffs1 = ffs_select(variable, data_all, vif1)) |>
+  mutate(ffs1 = ffs_select(variable, data_all, vif1, response = "corg")) |>
   ungroup() |>
   # vif selection for all, based on variables selected at previous stage
   mutate(vif2 = vif_select(variable, data_all, ffs1)) |>
   # ffs for all, based on variables selected at previous stage
-  mutate(ffs2 = ffs_select(variable, data_all, vif2))
+  mutate(ffs2 = ffs_select(variable, data_all, vif2, response = "corg"))
 write.csv(data_groups, file = "data/cache/var_selection.csv", row.names = FALSE)
 ```
 
@@ -166,9 +179,13 @@ read.csv("data/cache/var_selection.csv") |>
   summarise(vars = paste(variable[value], collapse = ", ")) |>
   pivot_wider(values_from = "vars") |>
   relocate(group, vif1, ffs1, vif2, ffs2) |>
-  kable(col.names = c("Groups",
-                      paste(rep(c("VIF", "FFS")),
-                            rep(c("group", "all"), each = 2), sep = "_")))
+  kable(col.names = c(
+    "Groups",
+    paste(rep(c("VIF", "FFS")),
+      rep(c("group", "all"), each = 2),
+      sep = "_"
+    )
+  ))
 ```
 
 ```{r}
@@ -178,10 +195,12 @@ formula_soc_ffs <- read.csv("data/cache/var_selection.csv") %>%
   select(variable) %>%
   t() %>%
   paste(collapse = " + ") %>%
-  paste("T_stock ~", .) %>%
+  paste("corg ~", .) %>%
   as.formula()
-training_index <- lapply(unique(data_all$site),
-                         function(s) which(data_all$site != s))
+training_index <- lapply(
+  unique(data_all$site),
+  function(s) which(data_all$site != s)
+)
 rf_ffs <- train(
   form = formula_soc_ffs,
   data = data_all,
@@ -262,8 +281,10 @@ formula_soc_all <- colnames(data_all) %>%
   paste(collapse = " + ") %>%
   paste("T_stock ~", .) %>%
   as.formula()
-training_index <- lapply(unique(data_all$site),
-                         function(s) which(data_all$site != s))
+training_index <- lapply(
+  unique(data_all$site),
+  function(s) which(data_all$site != s)
+)
 rf_all <- train(
   form = formula_soc_all,
   data = data_all,
@@ -296,8 +317,10 @@ Variable selection was done to avoid collinearity, by applying a using a Varianc
 #| warning: false
 # create groups
 data_groups_vif <- data.frame(
-  variable = setdiff(colnames(data_all),
-                     c("site", "plot", "lon", "lat", "T_stock"))
+  variable = setdiff(
+    colnames(data_all),
+    c("site", "plot", "lon", "lat", "T_stock")
+  )
 ) |> # vif selection by group, based on variables selected at previous stage
   mutate(vif = vif_select(variable, data_all))
 list_vars <- data_groups_vif |>
@@ -318,8 +341,10 @@ formula_soc_vif <- data_groups_vif %>%
   paste(collapse = " + ") %>%
   paste("T_stock ~", .) %>%
   as.formula()
-training_index <- lapply(unique(data_all$site),
-                         function(s) which(data_all$site != s))
+training_index <- lapply(
+  unique(data_all$site),
+  function(s) which(data_all$site != s)
+)
 rf_vif <- train(
   form = formula_soc_vif,
   data = data_all,
@@ -363,13 +388,16 @@ This method was inspired by the work from @Traore2024.
 #| eval: false
 # create groups
 data_groups <- data.frame(
-  variable = setdiff(colnames(data_all),
-                     c("site", "plot", "lon", "lat", "T_stock"))
+  variable = setdiff(
+    colnames(data_all),
+    c("site", "plot", "lon", "lat", "T_stock")
+  )
 ) |>
   mutate(group = ifelse(grepl("bio|LST", variable), "clim", variable)) |>
   mutate(group = ifelse(grepl("_mean|NDVI", variable), "spectral", group)) |>
   mutate(group = ifelse(grepl("elev|slope|aspect|twi", variable),
-                        "topo", group)) |>
+    "topo", group
+  )) |>
   group_by(group) |>
   # vif selection by group, based on variables selected at previous stage
   mutate(vif1 = vif_select(variable, data_all)) |>
@@ -380,8 +408,10 @@ data_groups <- data.frame(
   mutate(vif2 = vif_select(variable, data_all, ffs1)) |>
   # ffs for all, based on variables selected at previous stage
   mutate(ffs2 = ffs_select(variable, data_all, vif2))
-write.csv(data_groups, file = "data/cache/var_selection_extended.csv",
-          row.names = FALSE)
+write.csv(data_groups,
+  file = "data/cache/var_selection_extended.csv",
+  row.names = FALSE
+)
 ```
 
 The following variables were selected for each group at the different steps:
@@ -394,9 +424,13 @@ read.csv("data/cache/var_selection_extended.csv") |>
   summarise(vars = paste(variable[value], collapse = ", ")) |>
   pivot_wider(values_from = "vars") |>
   relocate(group, vif1, ffs1, vif2, ffs2) |>
-  kable(col.names = c("Groups",
-                      paste(rep(c("VIF", "FFS")),
-                            rep(c("group", "all"), each = 2), sep = "_")))
+  kable(col.names = c(
+    "Groups",
+    paste(rep(c("VIF", "FFS")),
+      rep(c("group", "all"), each = 2),
+      sep = "_"
+    )
+  ))
 ```
 
 ```{r}
@@ -408,8 +442,10 @@ formula_soc_ffs <- read.csv("data/cache/var_selection_extended.csv") %>%
   paste(collapse = " + ") %>%
   paste("T_stock ~", .) %>%
   as.formula()
-training_index <- lapply(unique(data_all$site),
-                         function(s) which(data_all$site != s))
+training_index <- lapply(
+  unique(data_all$site),
+  function(s) which(data_all$site != s)
+)
 rf_ffs <- train(
   form = formula_soc_ffs,
   data = data_all,

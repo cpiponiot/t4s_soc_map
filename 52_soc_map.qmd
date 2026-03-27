@@ -14,7 +14,7 @@ source("r/qrf_llo.R")
 plan(multisession, workers = detectCores() - 1)
 ```
 
-# SOC stocks prediction {.unnumbered}
+# SOC prediction {.unnumbered}
 
 ```{r}
 #| message: false
@@ -25,20 +25,19 @@ load("data/cache/models/qrf_final.rda")
 path <- "data/01_Data/temp"
 # make tiles (to limit memory usage)
 dir.create(path)
-list.files("data/01_Data/Environmental_variables/", "tif", FALSE, TRUE) |>
+list.files("data/01_Data/Environmental_variables/", "tif$", FALSE, TRUE) |>
   rast() |>
   makeTiles(500, paste0(path, "/tile_.tif"))
 # if need to upload on server (with max upload size): use optimised zip files
-use_zip <- TRUE
+use_zip <- FALSE
 if (use_zip) {
-  list.files(path, "\\.tif", full.names = TRUE) |>
+  list.files(path, "\\.tif$", full.names = TRUE) |>
     file.size() |>
     optimise_split() |>
     lapply(function(lst) {
       zip(
         zipfile = paste0(path, "/zip_", min(lst), ".zip"),
-        files = list.files(path, "\\.tif", full.names = TRUE)[lst],
-        mode = "cherry-pick"
+        files = list.files(path, "\\.tif$", full.names = TRUE)[lst]
       )
     })
 }
@@ -75,11 +74,12 @@ future_lapply(setdiff(all, done), function(fl) {
 })
 
 # join results
-list.files(path, pattern = "pred", full.names = TRUE) |>
+list.files("data/cache/pred/", pattern = "pred", full.names = TRUE) |>
   lapply(fread) |>
   rbindlist(use.names = TRUE) |>
-  rast(crs = "EPSG:32630") |>
-  writeRaster("data/cache/map_pred.tif", overwrite = TRUE)
+  select(x, y, Q10, Q25, Q50, Q75, Q90) |>
+  rast(crs = "EPSG:32630", type = "xyz") |>
+  writeRaster("data/cache/map_pred_temp.tif", overwrite = TRUE)
 
 # remove temporary files
 unlink(path, recursive = TRUE)
@@ -90,9 +90,18 @@ unlink(path, recursive = TRUE)
 #| warning: false
 #| fig.height: 6
 #| fig.width: 12
-ggplot() +
-  geom_spatraster(data = rast("data/cache/map_pred.tif")) +
-  facet_wrap(~lyr) +
+map <- rast("data/cache/map_pred_temp.tif")
+map_unc <- (map[[4]] - map[[2]]) / (map[[2]] + map[[4]])
+g1 <- ggplot() +
+  geom_spatraster(data = map[[3]]) +
   scale_fill_viridis_c(na.value = "transparent") +
-  theme_minimal()
+  theme_minimal() +
+  labs(fill = "Median SOC\ncontent (%)")
+g2 <- ggplot() +
+  geom_spatraster(data = map_unc) +
+  scale_fill_viridis_c(na.value = "transparent", option = "A") +
+  theme_minimal() +
+  labs(fill = "Quartile coefficient\nof dispersion\nof SOC content")
+ggpubr::ggarrange(g1, g2)
+ggsave("figures/soc_map.pdf", height = 6, width = 15)
 ```

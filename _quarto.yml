@@ -40,7 +40,5 @@ format:
     code-fold: true
     number-depth: -1
 
-editor: visual
-
-# execute:
-#   cache: true
+editor: 
+  mode: source

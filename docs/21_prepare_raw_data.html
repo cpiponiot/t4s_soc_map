@@ -322,8 +322,14 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#add-spectral-measurements" id="toc-add-spectral-measurements" class="nav-link active" data-scroll-target="#add-spectral-measurements">Add spectral measurements</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -418,7 +424,7 @@ window.Quarto = {
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site =</span> <span class="st">"tene"</span>, <span class="at">plot =</span> SUBPLOT) <span class="sc">|&gt;</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(SUBPLOT, <span class="fu">c</span>(<span class="st">"pl"</span>, <span class="st">"sub"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="fu">get_tene_coords</span>(pl, sub), <span class="fu">across</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, lon, lat, T_stock)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, lon, lat, T_stock, <span class="at">corg =</span> <span class="st">`</span><span class="at">CCOS_0-30cm</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>We grouped the following sites because of their spatial overlap: “tene” and “tene_oume”; “adzope”, “adzopeN”, “yaya” and “mebifon”.</p>
@@ -442,7 +448,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>We then sum the carbon stocks over all depths at each site to get the total carbon stocks, and save the results.</p>
+<p>We then sum the carbon stocks over all depths at each site to get the total carbon stocks, and save the results, together with SOC content.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -451,9 +457,9 @@ window.Quarto = {
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lonc =</span> <span class="fu">ifelse</span>(lon <span class="sc">&gt;</span> <span class="dv">0</span>, lat, lon), <span class="at">latc =</span> <span class="fu">ifelse</span>(lat <span class="sc">&lt;</span> <span class="dv">0</span>, lon, lat)) <span class="sc">|&gt;</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, lonc, latc) <span class="sc">|&gt;</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">lon =</span> lonc, <span class="at">lat =</span> latc) <span class="sc">|&gt;</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(data_t4s) <span class="sc">|&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(data_t4s) <span class="sc">|&gt;</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site, plot, lon, lat) <span class="sc">|&gt;</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">T_stock =</span> <span class="fu">sum</span>(stock), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">T_stock =</span> <span class="fu">sum</span>(stock), <span class="at">corg =</span> <span class="fu">mean</span>(C), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add revatene data</span></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(data_tene) <span class="sc">|&gt;</span></span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># group sites</span></span>
@@ -463,8 +469,16 @@ window.Quarto = {
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<section id="add-spectral-measurements" class="level2">
+<h2 class="anchored" data-anchor-id="add-spectral-measurements">Add spectral measurements</h2>
+<!-- ```{r} -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- read.csv("data/spectra_1.0.csv") -->
+<!-- ``` -->
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

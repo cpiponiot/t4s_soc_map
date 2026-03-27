@@ -20,24 +20,26 @@ As the samples were grouped by sampling site, our dataset is spatially aggregate
 #| message: false
 #| warning: false
 data_all <- read.csv("data/cache/data_stocks.csv") %>%
-  merge(read.csv("data/cache/climate_data.csv")) %>%
-  merge(read.csv("data/cache/spectral_data.csv")) %>%
-  merge(read.csv("data/cache/topo_data.csv")) %>%
-  merge(read.csv("data/cache/thermal_data.csv")) %>%
+  inner_join(read.csv("data/cache/climate_data.csv")) %>%
+  inner_join(read.csv("data/cache/spectral_data.csv")) %>%
+  inner_join(read.csv("data/cache/topo_data.csv")) %>%
+  inner_join(read.csv("data/cache/thermal_data.csv")) %>%
+  inner_join(read.csv("data/cache/data_landuse.csv")) %>%
+  inner_join(read.csv("data/cache/tmf_data.csv")) %>%
+  inner_join(read.csv("data/cache/soil_data.csv")) %>%
   drop_na()
 # write rf formula with previously selected variables
 formula_soc <- read.csv("data/cache/var_selection.csv") %>%
-  filter(ffs2) %>%
   select(variable) %>%
   t() %>%
   paste(collapse = " + ") %>%
-  paste("T_stock ~", .) %>%
+  paste("corg ~", .) %>%
   as.formula()
 ```
 
 ## Non-spatial random forest {.unnumbered}
 
-A Random Forest model was trained using the `ranger` package in R. The model was fitted with the response variable (soil organic carbon stock) and the complete set of predictor variables. Model accuracy metrics from the cross validation steps were:
+The model was fitted with the response variable (soil organic carbon stock) and the complete set of predictor variables. Model accuracy metrics from the cross validation steps were:
 
 ```{r}
 #| message: false
@@ -101,22 +103,19 @@ We tested the model by taking the average carbon stocks of pixels in the same pl
 #| message: false
 #| warning: false
 #| eval: false
-
 data_thinning <- data_all |>
   select(-plot) |>
   group_by(site, id) |>
-  summarise(across(everything(), mean, na.rm = TRUE))
-formula_soc_all <- colnames(data_thinning) %>%
-  setdiff(c("site", "plot", "id", "lon", "lat", "T_stock")) %>%
-  paste(collapse = " + ") %>%
-  paste("T_stock ~", .) %>%
-  as.formula()
+  summarise(
+    across(where(is.numeric), mean, na.rm = TRUE),
+    across(where(is.character), first, na.rm = TRUE)
+  )
 training_index <- lapply(
   unique(data_thinning$site),
   function(s) which(data_thinning$site != s)
 )
 rf_thinning <- train(
-  form = formula_soc_all,
+  form = formula_soc,
   data = data_thinning,
   method = "rf",
   metric = "RMSE",

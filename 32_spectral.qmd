@@ -33,8 +33,10 @@ spectral_data <- c(
   select(-ID) |>
   bind_cols(select(as.data.frame(coord_stocks), "site", "plot")) |>
   relocate(site, plot)
-write.csv(spectral_data, file = "data/cache/spectral_data.csv",
-          row.names = FALSE)
+write.csv(spectral_data,
+  file = "data/cache/spectral_data.csv",
+  row.names = FALSE
+)
 ```
 
 The following plots have NAs in at least one Bioclim variable.

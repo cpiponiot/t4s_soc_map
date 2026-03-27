@@ -12,22 +12,21 @@ library(knitr)
 ## Comparison of Random forest models results {.unnumbered}
 
 ```{r}
-data <- read.csv("data/cache/data_stocks.csv") %>% 
-  merge(read.csv("data/cache/climate_data.csv")) %>% 
-  merge(read.csv("data/cache/soilgrids_data.csv")) %>% 
-  merge(read.csv("data/cache/bnedt_data.csv")) %>% 
-  merge(read.csv("data/cache/srtm_data.csv")) %>% 
-  drop_na() 
+data <- read.csv("data/cache/data_stocks.csv") %>%
+  merge(read.csv("data/cache/climate_data.csv")) %>%
+  merge(read.csv("data/cache/soilgrids_data.csv")) %>%
+  merge(read.csv("data/cache/bnedt_data.csv")) %>%
+  merge(read.csv("data/cache/srtm_data.csv")) %>%
+  drop_na()
 
 # partition data in train/validation
 # randomly select 20% of sites for validation
 validation_sites <- data %>%
   group_by(site) %>%
-  summarise(type = c("cal", "val")[1+rbinom(1, 1, 0.2)])
+  summarise(type = c("cal", "val")[1 + rbinom(1, 1, 0.2)])
 
 data <- data %>%
   merge(validation_sites)
-
 
 
 data_groups <- read.csv("data/cache/var_selection.csv")
@@ -40,8 +39,8 @@ data_groups <- read.csv("data/cache/var_selection.csv")
 valid_control <- trainControl(method = "repeatedcv", number = 5, repeats = 3)
 
 # Créer le jeu de données d'entraînement (calibration)
-train_data <- data %>% 
-  filter(type == "cal") %>% 
+train_data <- data %>%
+  filter(type == "cal") %>%
   select(all_of(data_groups$variable[data_groups$ffs2]), T_stock)
 
 # Créer les objets x (variables explicatives) et y (variable réponse)
@@ -60,7 +59,10 @@ caret_rf_model <- train(
 )
 
 # Afficher les résultats
-kable(caret_rf_model$results, digits = 3, caption = "Random Forest Model Performance with Variable Selection")
+kable(caret_rf_model$results,
+  digits = 3,
+  caption = "Random Forest Model Performance with Variable Selection"
+)
 ```
 
 ### Model with all variables
@@ -69,10 +71,12 @@ kable(caret_rf_model$results, digits = 3, caption = "Random Forest Model Perform
 # Définir la stratégie de validation croisée répétée
 valid_control <- trainControl(method = "repeatedcv", number = 5, repeats = 3)
 
-# Créer le jeu de données d'entraînement (calibration) avec les mêmes variables que rf_nosel
+# Créer le jeu de données d'entraînement (calibration) avec les mêmes
+# variables que rf_nosel
 train_data <- data %>%
   filter(type == "cal") %>%
-  select(!contains("plot"), -site, -type, -lon, -lat, -T_stock, T_stock)  # T_stock réajouté à la fin
+  select(!contains("plot"), -site, -type, -lon, -lat, -T_stock, T_stock)
+# T_stock réajouté à la fin
 
 # Créer les objets x (variables explicatives) et y (variable réponse)
 x <- train_data %>% select(-T_stock)
@@ -89,7 +93,10 @@ caret_rf_nosel <- train(
   ntree = 500
 )
 
-kable(caret_rf_nosel$results, digits = 3, caption = "Random Forest Model Performance with All Variable")
+kable(caret_rf_nosel$results,
+  digits = 3,
+  caption = "Random Forest Model Performance with All Variable"
+)
 ```
 
 ```{r}
@@ -106,15 +113,16 @@ res_combined <- bind_rows(res_sel, res_nosel)
 # Passer au format long pour ggplot
 res_long <- res_combined %>%
   select(mtry, RMSE, Rsquared, MAE, Model) %>%
-  pivot_longer(cols = c(RMSE, Rsquared, MAE), names_to = "Metric", values_to = "Value")
-
-
+  pivot_longer(
+    cols = c(RMSE, Rsquared, MAE),
+    names_to = "Metric", values_to = "Value"
+  )
 
 
 ggplot(res_long, aes(x = mtry, y = Value, color = Model)) +
   geom_line() +
   geom_point(size = 2) +
-  facet_wrap(~ Metric, scales = "free_y") +
+  facet_wrap(~Metric, scales = "free_y") +
   labs(
     title = "Comparison of performance by mtry",
     x = "mtry (number of random variables)",
@@ -122,7 +130,6 @@ ggplot(res_long, aes(x = mtry, y = Value, color = Model)) +
     color = "Model"
   ) +
   theme_minimal()
-
 ```
 
 The above graph presents a comparison of the performance of two Random Forest models based on three key metrics : MAE (Mean Absolute Error), RMSE (Root Mean Squared Error), and R² (coefficient of determination).

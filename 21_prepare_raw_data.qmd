@@ -44,7 +44,7 @@ data_tene <- read_excel("data/BdD_Mathus_TENE.xls", 2) |>
   mutate(site = "tene", plot = SUBPLOT) |>
   separate(SUBPLOT, c("pl", "sub")) |>
   reframe(get_tene_coords(pl, sub), across()) |>
-  select(site, plot, lon, lat, T_stock)
+  select(site, plot, lon, lat, T_stock, corg = `CCOS_0-30cm`)
 ```
 
 We grouped the following sites because of their spatial overlap: "tene" and "tene_oume"; "adzope", "adzopeN", "yaya" and "mebifon".
@@ -62,7 +62,7 @@ read.csv("data/plot_0.2.9.csv") |>
   theme_bw()
 ```
 
-We then sum the carbon stocks over all depths at each site to get the total carbon stocks, and save the results.
+We then sum the carbon stocks over all depths at each site to get the total carbon stocks, and save the results, together with SOC content.
 
 ```{r}
 #| message: false
@@ -72,9 +72,9 @@ read.csv("data/plot_0.2.9.csv") |>
   mutate(lonc = ifelse(lon > 0, lat, lon), latc = ifelse(lat < 0, lon, lat)) |>
   select(site, plot, lonc, latc) |>
   rename(lon = lonc, lat = latc) |>
-  merge(data_t4s) |>
+  inner_join(data_t4s) |>
   group_by(site, plot, lon, lat) |>
-  summarise(T_stock = sum(stock), .groups = "drop") |>
+  summarise(T_stock = sum(stock), corg = mean(C), .groups = "drop") |>
   # add revatene data
   bind_rows(data_tene) |>
   # group sites
@@ -83,3 +83,12 @@ read.csv("data/plot_0.2.9.csv") |>
   mutate(site = ifelse(grepl("adzope|mebifon|yaya", site), "adzope", site)) |>
   write.csv("data/cache/data_stocks.csv", row.names = FALSE)
 ```
+
+## Add spectral measurements
+
+<!-- ```{r} -->
+<!-- #| message: false -->
+<!-- #| warning: false -->
+<!-- read.csv("data/spectra_1.0.csv") -->
+<!-- ``` -->
+

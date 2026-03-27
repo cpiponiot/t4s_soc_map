@@ -17,10 +17,13 @@ Based on the tests in the "Methodological choices" section, we used the model wi
 #| warning: false
 #| eval: false
 data_all <- read.csv("data/cache/data_stocks.csv") %>%
-  merge(read.csv("data/cache/climate_data.csv")) %>%
-  merge(read.csv("data/cache/spectral_data.csv")) %>%
-  merge(read.csv("data/cache/topo_data.csv")) %>%
-  merge(read.csv("data/cache/thermal_data.csv")) %>%
+  inner_join(read.csv("data/cache/climate_data.csv")) %>%
+  inner_join(read.csv("data/cache/spectral_data.csv")) %>%
+  inner_join(read.csv("data/cache/topo_data.csv")) %>%
+  inner_join(read.csv("data/cache/thermal_data.csv")) %>%
+  inner_join(read.csv("data/cache/data_landuse.csv")) %>%
+  inner_join(read.csv("data/cache/tmf_data.csv")) %>%
+  inner_join(read.csv("data/cache/soil_data.csv")) %>%
   drop_na()
 sel_vars <- read.csv("data/cache/var_selection.csv") %>%
   filter(ffs2) %>%
@@ -28,7 +31,7 @@ sel_vars <- read.csv("data/cache/var_selection.csv") %>%
   unlist()
 qrf_final <- qrf_llo(
   data = data_all,
-  ycol = "T_stock",
+  ycol = "corg",
   xcols = sel_vars,
   site = data_all$site,
   nodesizes = c(5, 10, 15),

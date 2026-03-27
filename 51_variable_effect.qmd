@@ -5,6 +5,7 @@
 library(tidyverse)
 library(quantregForest)
 library(data.table)
+library(cowplot)
 source("r/qrf_llo.R")
 ```
 
@@ -33,7 +34,7 @@ bioclim_names <- data.frame(
 )
 importance_qrf_llo(qrf_final, type = 1) |>
   left_join(bioclim_names) |>
-  merge(read.csv("data/cache/var_selection.csv")) |>
+  left_join(read.csv("data/cache/var_selection.csv")) |>
   mutate(variable = ifelse(is.na(var_name), variable, var_name)) |>
   ggplot(aes(x = reorder(variable, importance), y = importance, fill = group)) +
   geom_bar(stat = "identity") +
@@ -50,21 +51,28 @@ The partial dependence plots are represented below.
 #| warning: false
 #| eval: false
 data_all <- read.csv("data/cache/data_stocks.csv") %>%
-  merge(read.csv("data/cache/climate_data.csv")) %>%
-  merge(read.csv("data/cache/spectral_data.csv")) %>%
-  merge(read.csv("data/cache/topo_data.csv")) %>%
-  merge(read.csv("data/cache/thermal_data.csv")) %>%
-  drop_na() |>
+  inner_join(read.csv("data/cache/climate_data.csv")) %>%
+  inner_join(read.csv("data/cache/spectral_data.csv")) %>%
+  inner_join(read.csv("data/cache/topo_data.csv")) %>%
+  inner_join(read.csv("data/cache/thermal_data.csv")) %>%
+  inner_join(read.csv("data/cache/data_landuse.csv")) %>%
+  inner_join(read.csv("data/cache/tmf_data.csv")) %>%
+  inner_join(read.csv("data/cache/soil_data.csv")) %>%
+  drop_na() %>%
   setDT()
 
 preds <- lapply(qrf_final$xcol, function(x) {
-  data.frame(
-    value = seq(
-      min(data_all[[x]]),
-      max(data_all[[x]]),
-      length.out = 50
+  if (is.numeric(data_all[[x]])) {
+    data.frame(
+      value = seq(
+        min(data_all[[x]]),
+        max(data_all[[x]]),
+        length.out = 50
+      )
     )
-  )
+  } else {
+    data.frame(value = unique(data_all[[x]]))
+  }
 })
 names(preds) <- qrf_final$xcol
 preds <- rbindlist(preds, idcol = "var")
@@ -82,23 +90,56 @@ write.csv(preds, "data/cache/partial_predictions.csv", row.names = FALSE)
 #| fig.height: 8
 #| fig.width: 8
 #| fig.cap: "Partial dependence plots showing the effect of individual variables on predicted SOC stocks. Solid lines represent the median predictions, while the grey areas represent the 10–90% quantiles. The points represent observations, with each colour representing a different site." #nolint
-idcols <- c("site", "plot", "lon", "lat", "T_stock")
-data_all <- read.csv("data/cache/data_stocks.csv") %>%
-  merge(read.csv("data/cache/climate_data.csv")) %>%
-  merge(read.csv("data/cache/spectral_data.csv")) %>%
-  merge(read.csv("data/cache/topo_data.csv")) %>%
-  merge(read.csv("data/cache/thermal_data.csv")) %>%
+idcols <- c("site", "plot", "lon", "lat", "T_stock", "corg")
+data_quant <- read.csv("data/cache/data_stocks.csv") %>%
+  inner_join(read.csv("data/cache/climate_data.csv")) %>%
+  inner_join(read.csv("data/cache/spectral_data.csv")) %>%
+  inner_join(read.csv("data/cache/topo_data.csv")) %>%
+  inner_join(read.csv("data/cache/thermal_data.csv")) %>%
+  inner_join(read.csv("data/cache/data_landuse.csv")) %>%
+  inner_join(read.csv("data/cache/tmf_data.csv")) %>%
+  inner_join(read.csv("data/cache/soil_data.csv")) %>%
   drop_na() %>%
-  pivot_longer(-idcols, names_to = "var") %>%
+  select(where(is.numeric) | all_of(idcols)) %>%
+  pivot_longer(!idcols, names_to = "var") %>%
   filter(var %in% qrf_final$xcols)
-read.csv("data/cache/partial_predictions.csv") |>
+data_qual <- read.csv("data/cache/data_stocks.csv") %>%
+  inner_join(read.csv("data/cache/data_landuse.csv")) %>%
+  inner_join(read.csv("data/cache/tmf_data.csv")) %>%
+  inner_join(read.csv("data/cache/soil_data.csv")) %>%
+  drop_na() %>%
+  select(where(is.character) | all_of(idcols)) %>%
+  pivot_longer(!idcols, names_to = "var") %>%
+  filter(var %in% qrf_final$xcols)
+
+gquant <- read.csv("data/cache/partial_predictions.csv") |>
+  filter(var %in% unique(data_quant$var)) |>
+  mutate(value = as.numeric(value)) |>
   ggplot(aes(value, Q50)) +
   geom_ribbon(aes(ymin = Q10, ymax = Q90), alpha = 0.1) +
-  geom_point(data = data_all, aes(y = T_stock, col = site), alpha = 0.2) +
+  geom_point(data = data_quant, aes(y = corg, col = site), alpha = 0.2) +
   geom_line() +
   facet_wrap(~var, scales = "free") +
   theme_classic() +
   theme(legend.position = "none") +
-  labs(x = "Variable value",
-       y = "Distribution of predicted and observed SOC stocks")
+  labs(
+    x = "Variable value",
+    y = "Distribution of predicted and observed SOC (%)"
+  )
+gqual <- read.csv("data/cache/partial_predictions.csv") |>
+  filter(var %in% unique(data_qual$var)) |>
+  ggplot(aes(x = value, y = Q50)) +
+  # geom_point(data = data_qual, aes(y = corg, col = site), alpha = 0.2) +
+  # geom_pointrange(aes(ymin = Q10, ymax = Q90)) +
+  geom_point() +
+  facet_wrap(~var, scales = "free") +
+  theme_classic() +
+  theme(
+    legend.position = "none",
+    axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)
+  ) +
+  labs(x = NULL, y = NULL)
+ggdraw() +
+  draw_plot(gquant) +
+  draw_plot(gqual, x = 0.85, y = 0.1, width = .25, height = .25)
 ```
