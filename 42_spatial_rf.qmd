@@ -27,6 +27,7 @@ data_all <- read.csv("data/cache/data_stocks.csv") %>%
   inner_join(read.csv("data/cache/data_landuse.csv")) %>%
   inner_join(read.csv("data/cache/tmf_data.csv")) %>%
   inner_join(read.csv("data/cache/soil_data.csv")) %>%
+  inner_join(read.csv("data/cache/pmem_data.csv")) %>%
   drop_na()
 # write rf formula with previously selected variables
 formula_soc <- read.csv("data/cache/var_selection.csv") %>%
@@ -108,7 +109,7 @@ data_thinning <- data_all |>
   group_by(site, id) |>
   summarise(
     across(where(is.numeric), mean, na.rm = TRUE),
-    across(where(is.character), first, na.rm = TRUE)
+    across(where(is.character), first)
   )
 training_index <- lapply(
   unique(data_thinning$site),

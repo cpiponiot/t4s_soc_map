@@ -13,10 +13,14 @@ library(knitr)
 
 ```{r}
 data <- read.csv("data/cache/data_stocks.csv") %>%
-  merge(read.csv("data/cache/climate_data.csv")) %>%
-  merge(read.csv("data/cache/soilgrids_data.csv")) %>%
-  merge(read.csv("data/cache/bnedt_data.csv")) %>%
-  merge(read.csv("data/cache/srtm_data.csv")) %>%
+  inner_join(read.csv("data/cache/climate_data.csv")) %>%
+  inner_join(read.csv("data/cache/spectral_data.csv")) %>%
+  inner_join(read.csv("data/cache/topo_data.csv")) %>%
+  inner_join(read.csv("data/cache/thermal_data.csv")) %>%
+  inner_join(read.csv("data/cache/data_landuse.csv")) %>%
+  inner_join(read.csv("data/cache/tmf_data.csv")) %>%
+  inner_join(read.csv("data/cache/soil_data.csv")) %>%
+  inner_join(read.csv("data/cache/pmem_data.csv")) %>%
   drop_na()
 
 # partition data in train/validation

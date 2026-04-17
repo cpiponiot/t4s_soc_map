@@ -22,6 +22,7 @@ book:
         - 35_landuse.qmd
         - 36_tmf.qmd
         - 37_soil_type.qmd
+        - 38_mem.qmd
     - part: 40_methodology.qmd
       chapters:
         - 41_variable_selection.qmd

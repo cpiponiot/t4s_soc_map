@@ -24,6 +24,7 @@ data_all <- read.csv("data/cache/data_stocks.csv") %>%
   inner_join(read.csv("data/cache/data_landuse.csv")) %>%
   inner_join(read.csv("data/cache/tmf_data.csv")) %>%
   inner_join(read.csv("data/cache/soil_data.csv")) %>%
+  inner_join(read.csv("data/cache/pmem_data.csv")) %>%
   drop_na()
 sel_vars <- read.csv("data/cache/var_selection.csv") %>%
   filter(ffs2) %>%

@@ -1,0 +1,118 @@
+```{r setup}
+#| message: false
+#| warning: false
+library(terra)
+library(tidyverse)
+library(pMEM)
+source("r/qrf_llo.R")
+```
+
+# Predictive Moran’s Eigenvector Maps {.unnumbered}
+
+These maps describe the spatial structure in the data, and were added as predictors in the Random Forest Model. They are based on the methodology described in @Guenard2024.
+
+```{r}
+#| message: false
+#| warning: false
+#| eval: false
+data <- read.csv("data/cache/data_stocks.csv") %>%
+  drop_na()
+coords <- data %>%
+  vect(geom = c("lon", "lat"), crs = "EPSG:4326") %>%
+  project("EPSG:32630") %>%
+  crds()
+data <- bind_cols(coords, data)
+
+# final grid (100 m resolution)
+new_coords <-
+  "data/01_Data/SRTM.tif" %>%
+  rast() %>%
+  crds()
+
+# define distance metric + weighting (improve by optimizing)
+sites <- unique(data$site)
+train_sites <- sample(sites, size = floor(0.8 * length(sites)))
+train <- which(data$site %in% train_sites)
+test <- which(!data$site %in% train_sites)
+
+dwf_choice <- estimate_sef(
+  x = as.matrix(data[train, c("x", "y")]),
+  xx = as.matrix(data[test, c("x", "y")]),
+  y = data$corg[train],
+  yy = data$corg[test],
+  lower = c(1e3),
+  upper = c(1e5),
+  list_fun = c("exponential", "Gaussian")
+)
+sel <- getMinMSE(
+  y = data$corg[train],
+  yy = data$corg[test],
+  U = as.matrix(dwf_choice$sef),
+  Up = predict(dwf_choice$sef, coords[test, ])
+)
+
+data_sites <- data %>%
+  group_by(site) %>%
+  summarise(x = mean(x), y = mean(y)) %>%
+  mutate(train = site %in% train_sites)
+
+new_coords_vis <- expand.grid(
+  x = seq(-30000, 503000, 1e4),
+  y = seq(520000, 1090000, 1e4)
+)
+predict(dwf_choice$sef, new_coords_vis, wh = sel$ord[1:sel$wh]) %>%
+  bind_cols(data.frame(new_coords)) %>%
+  pivot_longer(cols = contains("pMEM")) %>%
+  ggplot(aes(x, y)) +
+  geom_raster(aes(fill = value)) +
+  geom_point(data = data_sites, aes(col = train)) +
+  facet_wrap(~name) +
+  scale_fill_viridis_c()
+
+# predictions
+if (!dir.exists("data/cache/pmem")) dir.create("data/cache/pmem")
+index <- split(seq_len(nrow(new_coords)), cut(seq_len(nrow(new_coords)), 20))
+for (i in index) {
+  predict(dwf_choice$sef, new_coords[i, ], wh = sel$ord[1:sel$wh]) %>%
+    bind_cols(new_coords[i, ]) %>%
+    write.csv(paste0("data/cache/pmem/tile_", i[1], ".csv"), row.names = FALSE)
+}
+
+# join results
+list.files("data/cache/pmem/", pattern = "tile", full.names = TRUE) |>
+  lapply(fread) |>
+  rbindlist(use.names = TRUE) |>
+  select(x, y, contains("pMEM")) |>
+  rast(crs = "EPSG:32630", type = "xyz") |>
+  writeRaster("data/cache/pMEM.tif", overwrite = TRUE)
+```
+
+```{r extract-pmem}
+#| message: false
+#| warning: false
+#| eval: false
+# extract values for all t4s plots
+coord_stocks <- read.csv("data/cache/data_stocks.csv") |>
+  # project into EPSG:32630
+  vect(crs = "epsg:4326") |>
+  terra::project("epsg:32630")
+pmem_data <-
+  "data/cache/pMEM.tif" |>
+  rast() |>
+  terra::extract(coord_stocks) |>
+  select(contains("pMEM")) |>
+  bind_cols(select(as.data.frame(coord_stocks), "site", "plot")) |>
+  relocate(site, plot)
+write.csv(pmem_data, file = "data/cache/pmem_data.csv", row.names = FALSE)
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-height: 10
+#| fig.width: 10
+"data/cache/pMEM.tif" |>
+  rast() |>
+  plot()
+```
+

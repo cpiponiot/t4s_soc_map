@@ -17,23 +17,34 @@ The importance of each selected variable in the final model is represented below
 #| message: false
 #| warning: false
 load("data/cache/models/qrf_final.rda")
-bioclim_names <- data.frame(
+var_names <- data.frame(
   variable = paste0("bio", paste0(c(rep("0", 9), rep("", 10)), 1:19)),
   var_name = c(
-    "Annual Mean Temperature", "Mean Diurnal Range", "Isothermality",
-    "Temperature Seasonality", "Max Temperature of Warmest Month",
-    "Min Temperature of Coldest Month", "Temperature Annual Range",
-    "Mean Temperature of Wettest Quarter", "Mean Temperature of Driest Quarter",
-    "Mean Temperature of Warmest Quarter",
-    "Mean Temperature of Coldest Quarter",
+    "Annual Mean Temp", "Mean Diurnal Range", "Isothermality",
+    "Temp Seasonality", "Max Temp of Warmest Month",
+    "Min Temp of Coldest Month", "Temp Annual Range",
+    "Mean Temp of Wettest Quarter", "Mean Temp of Driest Quarter",
+    "Mean Temp of Warmest Quarter",
+    "Mean Temp of Coldest Quarter",
     "Annual Precipitation", "Precipitation of Wettest Month",
     "Precipitation of Driest Month", "Precipitation Seasonality",
     "Precipitation of Wettest Quarter", "Precipitation of Driest Quarter",
     "Precipitation of Warmest Quarter", "Precipitation of Coldest Quarter"
   )
-)
+) |>
+  bind_rows(data.frame(
+    variable = c(
+      "twi", "def_age", "Annual_Mean_LST",
+      "present_landuse", "WRB2", "SWIR1_mean", "pMEM_10"
+    ),
+    var_name = c(
+      "Topographic Wetness Index", "Time since deforestation",
+      "Land Surface Temp", "Present Landuse", "Soil type",
+      "Short-wave infrared 1", "Spatial structure"
+    )
+  ))
 importance_qrf_llo(qrf_final, type = 1) |>
-  left_join(bioclim_names) |>
+  left_join(var_names) |>
   left_join(read.csv("data/cache/var_selection.csv")) |>
   mutate(variable = ifelse(is.na(var_name), variable, var_name)) |>
   ggplot(aes(x = reorder(variable, importance), y = importance, fill = group)) +
@@ -58,6 +69,7 @@ data_all <- read.csv("data/cache/data_stocks.csv") %>%
   inner_join(read.csv("data/cache/data_landuse.csv")) %>%
   inner_join(read.csv("data/cache/tmf_data.csv")) %>%
   inner_join(read.csv("data/cache/soil_data.csv")) %>%
+  inner_join(read.csv("data/cache/pmem_data.csv")) %>%
   drop_na() %>%
   setDT()
 
@@ -87,8 +99,8 @@ write.csv(preds, "data/cache/partial_predictions.csv", row.names = FALSE)
 ```{r}
 #| message: false
 #| warning: false
-#| fig.height: 8
-#| fig.width: 8
+#| fig.height: 10
+#| fig.width: 6
 #| fig.cap: "Partial dependence plots showing the effect of individual variables on predicted SOC stocks. Solid lines represent the median predictions, while the grey areas represent the 10–90% quantiles. The points represent observations, with each colour representing a different site." #nolint
 idcols <- c("site", "plot", "lon", "lat", "T_stock", "corg")
 data_quant <- read.csv("data/cache/data_stocks.csv") %>%
@@ -99,10 +111,14 @@ data_quant <- read.csv("data/cache/data_stocks.csv") %>%
   inner_join(read.csv("data/cache/data_landuse.csv")) %>%
   inner_join(read.csv("data/cache/tmf_data.csv")) %>%
   inner_join(read.csv("data/cache/soil_data.csv")) %>%
+  inner_join(read.csv("data/cache/pmem_data.csv")) %>%
   drop_na() %>%
   select(where(is.numeric) | all_of(idcols)) %>%
   pivot_longer(!idcols, names_to = "var") %>%
-  filter(var %in% qrf_final$xcols)
+  filter(var %in% qrf_final$xcols) |>
+  mutate(variable = var) |>
+  left_join(var_names) |>
+  mutate(variable = ifelse(is.na(var_name), variable, var_name))
 data_qual <- read.csv("data/cache/data_stocks.csv") %>%
   inner_join(read.csv("data/cache/data_landuse.csv")) %>%
   inner_join(read.csv("data/cache/tmf_data.csv")) %>%
@@ -110,16 +126,22 @@ data_qual <- read.csv("data/cache/data_stocks.csv") %>%
   drop_na() %>%
   select(where(is.character) | all_of(idcols)) %>%
   pivot_longer(!idcols, names_to = "var") %>%
-  filter(var %in% qrf_final$xcols)
+  filter(var %in% qrf_final$xcols) |>
+  mutate(variable = var) |>
+  left_join(var_names) |>
+  mutate(variable = ifelse(is.na(var_name), variable, var_name))
 
 gquant <- read.csv("data/cache/partial_predictions.csv") |>
   filter(var %in% unique(data_quant$var)) |>
+  rename(variable = var) |>
+  left_join(var_names) |>
+  mutate(variable = ifelse(is.na(var_name), variable, var_name)) |>
   mutate(value = as.numeric(value)) |>
   ggplot(aes(value, Q50)) +
   geom_ribbon(aes(ymin = Q10, ymax = Q90), alpha = 0.1) +
   geom_point(data = data_quant, aes(y = corg, col = site), alpha = 0.2) +
   geom_line() +
-  facet_wrap(~var, scales = "free") +
+  facet_wrap(~variable, scales = "free", nrow = 3) +
   theme_classic() +
   theme(legend.position = "none") +
   labs(
@@ -128,18 +150,25 @@ gquant <- read.csv("data/cache/partial_predictions.csv") |>
   )
 gqual <- read.csv("data/cache/partial_predictions.csv") |>
   filter(var %in% unique(data_qual$var)) |>
+  rename(variable = var) |>
+  left_join(var_names) |>
+  mutate(variable = ifelse(is.na(var_name), variable, var_name)) |>
   ggplot(aes(x = value, y = Q50)) +
   # geom_point(data = data_qual, aes(y = corg, col = site), alpha = 0.2) +
   # geom_pointrange(aes(ymin = Q10, ymax = Q90)) +
   geom_point() +
-  facet_wrap(~var, scales = "free") +
+  facet_wrap(~variable, scales = "free") +
   theme_classic() +
   theme(
     legend.position = "none",
     axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)
   ) +
   labs(x = NULL, y = NULL)
-ggdraw() +
-  draw_plot(gquant) +
-  draw_plot(gqual, x = 0.85, y = 0.1, width = .25, height = .25)
+in_plot <- FALSE
+if (in_plot) {
+  ggdraw() +
+    draw_plot(gquant) +
+    draw_plot(gqual, x = 0.35, y = 0.01, width = .6, height = .33)
+}
+ggpubr::ggarrange(gquant, gqual, ncol = 1, heights = c(3, 1))
 ```
