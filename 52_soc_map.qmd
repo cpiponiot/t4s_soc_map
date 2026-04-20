@@ -10,8 +10,6 @@ library(quantregForest)
 library(data.table)
 library(future.apply)
 source("r/qrf_llo.R")
-
-plan(multisession, workers = detectCores() - 1)
 ```
 
 # SOC prediction {.unnumbered}
@@ -49,6 +47,7 @@ done <- paste0(
 )
 all <- list.files(path, ".tif", full.names = TRUE)
 
+plan(multisession, workers = detectCores() - 1)
 future_lapply(setdiff(all, done), function(fl) {
   gc()
   # get predictors
@@ -79,7 +78,7 @@ list.files("data/cache/pred/", pattern = "pred", full.names = TRUE) |>
   rbindlist(use.names = TRUE) |>
   select(x, y, Q10, Q25, Q50, Q75, Q90) |>
   rast(crs = "EPSG:32630", type = "xyz") |>
-  writeRaster("data/cache/map_pred_temp.tif", overwrite = TRUE)
+  writeRaster("data/cache/map_pred.tif", overwrite = TRUE)
 
 # remove temporary files
 unlink(path, recursive = TRUE)
@@ -88,9 +87,9 @@ unlink(path, recursive = TRUE)
 ```{r}
 #| message: false
 #| warning: false
-#| fig.height: 6
-#| fig.width: 12
-map <- rast("data/cache/map_pred_temp.tif")
+#| fig.height: 12
+#| fig.width: 8
+map <- rast("data/cache/map_pred.tif")
 map_unc <- (map[[4]] - map[[2]]) / (map[[2]] + map[[4]])
 g1 <- ggplot() +
   geom_spatraster(data = map[[3]]) +
@@ -102,6 +101,6 @@ g2 <- ggplot() +
   scale_fill_viridis_c(na.value = "transparent", option = "A") +
   theme_minimal() +
   labs(fill = "Quartile coefficient\nof dispersion\nof SOC content")
-ggpubr::ggarrange(g1, g2)
+ggpubr::ggarrange(g1, g2, nrow = 2)
 ggsave("figures/soc_map.pdf", height = 6, width = 15)
 ```
