@@ -90,7 +90,6 @@ list.files("data/cache/pmem/", pattern = "tile", full.names = TRUE) |>
 ```{r extract-pmem}
 #| message: false
 #| warning: false
-#| eval: false
 # extract values for all t4s plots
 coord_stocks <- read.csv("data/cache/data_stocks.csv") |>
   # project into EPSG:32630

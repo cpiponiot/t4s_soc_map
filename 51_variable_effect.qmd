@@ -99,7 +99,7 @@ write.csv(preds, "data/cache/partial_predictions.csv", row.names = FALSE)
 ```{r}
 #| message: false
 #| warning: false
-#| fig.height: 10
+#| fig.height: 8
 #| fig.width: 6
 #| fig.cap: "Partial dependence plots showing the effect of individual variables on predicted SOC stocks. Solid lines represent the median predictions, while the grey areas represent the 10–90% quantiles. The points represent observations, with each colour representing a different site." #nolint
 idcols <- c("site", "plot", "lon", "lat", "T_stock", "corg")
@@ -111,7 +111,6 @@ data_quant <- read.csv("data/cache/data_stocks.csv") %>%
   inner_join(read.csv("data/cache/data_landuse.csv")) %>%
   inner_join(read.csv("data/cache/tmf_data.csv")) %>%
   inner_join(read.csv("data/cache/soil_data.csv")) %>%
-  inner_join(read.csv("data/cache/pmem_data.csv")) %>%
   drop_na() %>%
   select(where(is.numeric) | all_of(idcols)) %>%
   pivot_longer(!idcols, names_to = "var") %>%
@@ -132,7 +131,7 @@ data_qual <- read.csv("data/cache/data_stocks.csv") %>%
   mutate(variable = ifelse(is.na(var_name), variable, var_name))
 
 gquant <- read.csv("data/cache/partial_predictions.csv") |>
-  filter(var %in% unique(data_quant$var)) |>
+  filter(var %in% unique(data_quant$var) & !grepl("MEM", var)) |>
   rename(variable = var) |>
   left_join(var_names) |>
   mutate(variable = ifelse(is.na(var_name), variable, var_name)) |>
@@ -141,7 +140,7 @@ gquant <- read.csv("data/cache/partial_predictions.csv") |>
   geom_ribbon(aes(ymin = Q10, ymax = Q90), alpha = 0.1) +
   geom_point(data = data_quant, aes(y = corg, col = site), alpha = 0.2) +
   geom_line() +
-  facet_wrap(~variable, scales = "free", nrow = 3) +
+  facet_wrap(~variable, scales = "free", ncol = 3) +
   theme_classic() +
   theme(legend.position = "none") +
   labs(
@@ -154,8 +153,8 @@ gqual <- read.csv("data/cache/partial_predictions.csv") |>
   left_join(var_names) |>
   mutate(variable = ifelse(is.na(var_name), variable, var_name)) |>
   ggplot(aes(x = value, y = Q50)) +
-  # geom_point(data = data_qual, aes(y = corg, col = site), alpha = 0.2) +
-  # geom_pointrange(aes(ymin = Q10, ymax = Q90)) +
+  geom_point(data = data_qual, aes(y = corg, col = site), alpha = 0.2) +
+  geom_pointrange(aes(ymin = Q10, ymax = Q90)) +
   geom_point() +
   facet_wrap(~variable, scales = "free") +
   theme_classic() +
@@ -170,5 +169,5 @@ if (in_plot) {
     draw_plot(gquant) +
     draw_plot(gqual, x = 0.35, y = 0.01, width = .6, height = .33)
 }
-ggpubr::ggarrange(gquant, gqual, ncol = 1, heights = c(3, 1))
+ggpubr::ggarrange(gquant, gqual, ncol = 1, heights = c(2, 1))
 ```

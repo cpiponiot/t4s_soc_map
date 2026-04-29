@@ -178,6 +178,9 @@ ggplot() +
 
 We smoothed the time since deforestation (setting time = 0 for remaining forests) by averaging it with a 2D Gaussian kernel moving window. The standard deviation of the Guassian kernel was set to 300 m.
 
+For plots that were recorded as forest or fallow, we used a deforestation age of 0.
+Plots in areas already deforested in 1990 were attributed a deforestation age of 40.
+
 ```{r}
 #| message: false
 #| warning: false
@@ -193,7 +196,13 @@ coord_stocks <- read.csv("data/cache/data_stocks.csv") |>
   rename(def_age = focal_mean) |>
   select(def_age) |>
   bind_cols(select(as.data.frame(coord_stocks), "site", "plot")) |>
-  relocate(site, plot) |>
+  # deforestation age for forests: 0
+  left_join(read.csv("data/cache/data_landuse.csv")) |>
+  mutate(def_age = ifelse(present_landuse %in% c("forest", "fallow"),
+    0, def_age
+  )) |>
+  mutate(def_age = ifelse(is.na(def_age), 40, def_age)) |>
+  select(site, plot, def_age) |>
   write.csv(file = "data/cache/tmf_data.csv", row.names = FALSE)
 ```
 

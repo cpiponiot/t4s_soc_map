@@ -530,6 +530,7 @@ div.csl-indent {
 </div>
 </div>
 <p>We smoothed the time since deforestation (setting time = 0 for remaining forests) by averaging it with a 2D Gaussian kernel moving window. The standard deviation of the Guassian kernel was set to 300 m.</p>
+<p>For plots that were recorded as forest or fallow, we used a deforestation age of 0. Plots in areas already deforested in 1990 were attributed a deforestation age of 40.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -545,8 +546,13 @@ div.csl-indent {
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">def_age =</span> focal_mean) <span class="sc">|&gt;</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(def_age) <span class="sc">|&gt;</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="fu">select</span>(<span class="fu">as.data.frame</span>(coord_stocks), <span class="st">"site"</span>, <span class="st">"plot"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(site, plot) <span class="sc">|&gt;</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(<span class="at">file =</span> <span class="st">"data/cache/tmf_data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># deforestation age for forests: 0</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/data_landuse.csv"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">def_age =</span> <span class="fu">ifelse</span>(present_landuse <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"forest"</span>, <span class="st">"fallow"</span>),</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                          <span class="dv">0</span>, def_age)) <span class="sc">|&gt;</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">def_age =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(def_age), <span class="dv">40</span>, def_age)) <span class="sc">|&gt;</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, def_age) <span class="sc">|&gt;</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(<span class="at">file =</span> <span class="st">"data/cache/tmf_data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -593,11 +599,11 @@ div.csl-indent {
 <div class="cell-output cell-output-stdout">
 <pre><code>             present_landuse
 tmf_class     cassava cocoa fallow food_crop forest jvc old_mining others palm
-  Deforested       14    53     19         7      0   7          0      0    1
-  Degraded          3    43     60         0     57  12          4      0    0
-  Other            24    69     41         9     10   0          0      1    5
-  Regrowth          3    43     17         0     38   1          1      0    2
-  Undisturbed       1    19     22         0     45   4          3      0    0
+  Deforested       42    59     19         7     28   7          0      0    1
+  Degraded         27    54     60         0     95  12          4      0    0
+  Other            27    70     41         9     38   0          0      1    5
+  Regrowth          4    47     17         0     44   1          1      0    2
+  Undisturbed      14    35     22         0     45   4          3      0    0
   Water             0     0      0         0      3   0          0      1    0
              present_landuse
 tmf_class     rubber trees plantation

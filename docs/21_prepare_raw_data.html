@@ -328,14 +328,8 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#add-spectral-measurements" id="toc-add-spectral-measurements" class="nav-link active" data-scroll-target="#add-spectral-measurements">Add spectral measurements</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -363,7 +357,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data_t4s <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/soil_0.2.9.csv"</span>)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data_t4s <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/soil_1.1.0.csv"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_t4s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -375,38 +369,46 @@ window.Quarto = {
                                        3rd Qu.:3                     
                                        Max.   :3                     
                                                                      
-       C                N            bulk_density_g_cm3 coarse_fraction    
- Min.   :0.1020   Min.   :-0.03744   Min.   :0.1148     Min.   :-0.000278  
- 1st Qu.:0.7046   1st Qu.: 0.06761   1st Qu.:1.3506     1st Qu.: 0.019063  
- Median :1.0512   Median : 0.09187   Median :1.5350     Median : 0.160483  
- Mean   :1.2960   Mean   : 0.11039   Mean   :1.5165     Mean   : 0.227475  
- 3rd Qu.:1.6751   3rd Qu.: 0.13708   3rd Qu.:1.6963     3rd Qu.: 0.398461  
- Max.   :6.6624   Max.   : 0.67775   Max.   :2.6440     Max.   : 0.873085  
- NA's   :298      NA's   :298        NA's   :26         NA's   :5          
- fine_fraction          K                Ca              Mg        
- Min.   :0.1269   Min.   :0.0690   Min.   :0.660   Min.   :0.1905  
- 1st Qu.:0.6015   1st Qu.:0.0970   1st Qu.:1.031   1st Qu.:0.4178  
- Median :0.8395   Median :0.1130   Median :1.160   Median :0.4820  
- Mean   :0.7725   Mean   :0.1169   Mean   :1.201   Mean   :0.5998  
- 3rd Qu.:0.9809   3rd Qu.:0.1270   3rd Qu.:1.314   3rd Qu.:0.6943  
- Max.   :1.0003   Max.   :0.2380   Max.   :2.689   Max.   :1.5040  
- NA's   :5        NA's   :2442     NA's   :2442    NA's   :2442    
-       Na          clay_silt_pct      clay_pct    fine_silt_pct  
- Min.   :0.06325   Min.   : 4.65   Min.   : 0.5   Min.   : 3.15  
- 1st Qu.:0.08892   1st Qu.:19.50   1st Qu.: 6.0   1st Qu.:11.50  
- Median :0.10358   Median :25.00   Median :10.5   Median :14.00  
- Mean   :0.10718   Mean   :26.96   Mean   :11.1   Mean   :16.01  
- 3rd Qu.:0.11642   3rd Qu.:31.75   3rd Qu.:15.0   3rd Qu.:19.00  
- Max.   :0.21817   Max.   :65.23   Max.   :40.5   Max.   :35.50  
- NA's   :2442      NA's   :2405    NA's   :2406   NA's   :2405   
- coarse_silt_pct  coarse_sand_pct fine_sand_pct  
- Min.   : 1.800   Min.   : 6.30   Min.   :10.10  
- 1st Qu.: 5.650   1st Qu.:22.45   1st Qu.:23.75  
- Median : 7.800   Median :31.80   Median :29.70  
- Mean   : 9.318   Mean   :33.31   Mean   :30.37  
- 3rd Qu.:12.075   3rd Qu.:43.84   3rd Qu.:35.48  
- Max.   :27.300   Max.   :74.64   Max.   :53.95  
- NA's   :2405     NA's   :2405    NA's   :2405   </code></pre>
+       C                N              C_spectro        N_spectro       
+ Min.   :0.1020   Min.   :-0.03744   Min.   :0.0245   Min.   :-0.00423  
+ 1st Qu.:0.7046   1st Qu.: 0.06761   1st Qu.:0.7608   1st Qu.: 0.07004  
+ Median :1.0512   Median : 0.09187   Median :1.0614   Median : 0.09227  
+ Mean   :1.2960   Mean   : 0.11039   Mean   :1.2957   Mean   : 0.10718  
+ 3rd Qu.:1.6751   3rd Qu.: 0.13708   3rd Qu.:1.6335   3rd Qu.: 0.13150  
+ Max.   :6.6624   Max.   : 0.67775   Max.   :5.5936   Max.   : 0.57649  
+ NA's   :298      NA's   :298        NA's   :2        NA's   :2         
+ bulk_density_g_cm3 coarse_fraction     fine_fraction          K         
+ Min.   :0.1148     Min.   :-0.000278   Min.   :0.1269   Min.   :0.0690  
+ 1st Qu.:1.3506     1st Qu.: 0.019063   1st Qu.:0.6015   1st Qu.:0.0970  
+ Median :1.5350     Median : 0.160483   Median :0.8395   Median :0.1130  
+ Mean   :1.5165     Mean   : 0.227475   Mean   :0.7725   Mean   :0.1169  
+ 3rd Qu.:1.6963     3rd Qu.: 0.398461   3rd Qu.:0.9809   3rd Qu.:0.1270  
+ Max.   :2.6440     Max.   : 0.873085   Max.   :1.0003   Max.   :0.2380  
+ NA's   :26         NA's   :5           NA's   :5        NA's   :2442    
+       Ca              Mg               Na          clay_silt_pct  
+ Min.   :0.660   Min.   :0.1905   Min.   :0.06325   Min.   : 4.65  
+ 1st Qu.:1.031   1st Qu.:0.4178   1st Qu.:0.08892   1st Qu.:19.50  
+ Median :1.160   Median :0.4820   Median :0.10358   Median :25.00  
+ Mean   :1.201   Mean   :0.5998   Mean   :0.10718   Mean   :26.96  
+ 3rd Qu.:1.314   3rd Qu.:0.6943   3rd Qu.:0.11642   3rd Qu.:31.75  
+ Max.   :2.689   Max.   :1.5040   Max.   :0.21817   Max.   :65.23  
+ NA's   :2442    NA's   :2442     NA's   :2442      NA's   :2405   
+    clay_pct    fine_silt_pct   coarse_silt_pct  coarse_sand_pct
+ Min.   : 0.5   Min.   : 3.15   Min.   : 1.800   Min.   : 6.30  
+ 1st Qu.: 6.0   1st Qu.:11.50   1st Qu.: 5.650   1st Qu.:22.45  
+ Median :10.5   Median :14.00   Median : 7.800   Median :31.80  
+ Mean   :11.1   Mean   :16.01   Mean   : 9.318   Mean   :33.31  
+ 3rd Qu.:15.0   3rd Qu.:19.00   3rd Qu.:12.075   3rd Qu.:43.84  
+ Max.   :40.5   Max.   :35.50   Max.   :27.300   Max.   :74.64  
+ NA's   :2406   NA's   :2405    NA's   :2405     NA's   :2405   
+ fine_sand_pct   coarse_fraction2   fine_fraction2   bulk_density2   
+ Min.   :10.10   Min.   :-0.00016   Min.   :0.2592   Min.   :0.4407  
+ 1st Qu.:23.75   1st Qu.: 0.02475   1st Qu.:0.4431   1st Qu.:1.1307  
+ Median :29.70   Median : 0.25678   Median :0.7432   Median :1.3489  
+ Mean   :30.37   Mean   : 0.29159   Mean   :0.7084   Mean   :1.3477  
+ 3rd Qu.:35.48   3rd Qu.: 0.55690   3rd Qu.:0.9752   3rd Qu.:1.5722  
+ Max.   :53.95   Max.   : 0.74080   Max.   :1.0002   Max.   :2.3654  
+ NA's   :2405    NA's   :2231       NA's   :2231     NA's   :2231    </code></pre>
 </div>
 </div>
 <p>Soil organic carbon stocks were estimated as</p>
@@ -416,7 +418,9 @@ window.Quarto = {
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data_t4s <span class="ot">&lt;-</span> data_t4s <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stock =</span> C <span class="sc">/</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fl">1e3</span> <span class="sc">*</span> fine_fraction <span class="sc">*</span> bulk_density_g_cm3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(C), <span class="st">"spectro"</span>, <span class="st">"chim"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">C =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(C), C_spectro, C)) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stock =</span> C <span class="sc">/</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fl">1e3</span> <span class="sc">*</span> fine_fraction <span class="sc">*</span> bulk_density_g_cm3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>We also added data from the RévaTéné project that collected SOC data in the Téné forest plots.</p>
@@ -437,7 +441,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.9.csv"</span>) <span class="sc">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_1.1.0.csv"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(lat <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> <span class="sc">!</span>(lat <span class="sc">&gt;</span> <span class="fl">6.2</span> <span class="sc">&amp;</span> site <span class="sc">==</span> <span class="st">"yaya"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">"adzope|mebifon|yaya|tene"</span>, site)) <span class="sc">|&gt;</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new_site =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"tene"</span>, site), <span class="st">"tene"</span>, <span class="st">"adzope"</span>)) <span class="sc">|&gt;</span></span>
@@ -458,33 +462,27 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_0.2.9.csv"</span>) <span class="sc">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>(<span class="st">"data/plot_1.1.0.csv"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># correct plot coordinates</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lonc =</span> <span class="fu">ifelse</span>(lon <span class="sc">&gt;</span> <span class="dv">0</span>, lat, lon), <span class="at">latc =</span> <span class="fu">ifelse</span>(lat <span class="sc">&lt;</span> <span class="dv">0</span>, lon, lat)) <span class="sc">|&gt;</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, plot, lonc, latc) <span class="sc">|&gt;</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">lon =</span> lonc, <span class="at">lat =</span> latc) <span class="sc">|&gt;</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(data_t4s) <span class="sc">|&gt;</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site, plot, lon, lat) <span class="sc">|&gt;</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">T_stock =</span> <span class="fu">sum</span>(stock), <span class="at">corg =</span> <span class="fu">mean</span>(C), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add revatene data</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(data_tene) <span class="sc">|&gt;</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># group sites</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">plot =</span> <span class="fu">paste</span>(site, plot, <span class="at">sep =</span> <span class="st">"_"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"tene"</span>, site), <span class="st">"tene"</span>, site)) <span class="sc">|&gt;</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"adzope|mebifon|yaya"</span>, site), <span class="st">"adzope"</span>, site)) <span class="sc">|&gt;</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">T_stock =</span> <span class="fu">sum</span>(stock), <span class="at">corg =</span> <span class="fu">mean</span>(C), <span class="at">.groups =</span> <span class="st">"drop"</span>, </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> <span class="fu">paste</span>(<span class="fu">unique</span>(type), <span class="at">collapse =</span> <span class="st">"+"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add revatene data</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(data_tene) <span class="sc">|&gt;</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># group sites</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">plot =</span> <span class="fu">paste</span>(site, plot, <span class="at">sep =</span> <span class="st">"_"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"tene"</span>, site), <span class="st">"tene"</span>, site)) <span class="sc">|&gt;</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"adzope|mebifon|yaya"</span>, site), <span class="st">"adzope"</span>, site)) <span class="sc">|&gt;</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"adk"</span>, site), <span class="st">"adk"</span>, site)) <span class="sc">|&gt;</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(<span class="st">"data/cache/data_stocks.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<section id="add-spectral-measurements" class="level2">
-<h2 class="anchored" data-anchor-id="add-spectral-measurements">Add spectral measurements</h2>
-<!-- ```{r} -->
-<!-- #| message: false -->
-<!-- #| warning: false -->
-<!-- read.csv("data/spectra_1.0.csv") -->
-<!-- ``` -->
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

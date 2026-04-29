@@ -27,7 +27,8 @@ data_all <- read.csv("data/cache/data_stocks.csv") %>%
   inner_join(read.csv("data/cache/tmf_data.csv")) %>%
   inner_join(read.csv("data/cache/soil_data.csv")) %>%
   inner_join(read.csv("data/cache/pmem_data.csv")) %>%
-  drop_na()
+  drop_na() %>%
+  select(-type)
 ```
 
 ## RandomForest without variable selection {.unnumbered}
@@ -157,6 +158,7 @@ data_groups <- data.frame(
   mutate(group = ifelse(grepl("_mean|NDVI", variable), "spectral", group)) |>
   mutate(group = ifelse(grepl("_age|landuse", variable), "landuse", group)) |>
   mutate(group = ifelse(grepl("WRB2", variable), "soil", group)) |>
+  mutate(group = ifelse(grepl("MEM", variable), "spatial", group)) |>
   group_by(group) |>
   # vif selection by group, based on variables selected at previous stage
   mutate(vif1 = vif_select(variable, data_all)) |>

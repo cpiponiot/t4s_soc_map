@@ -365,7 +365,7 @@ div.csl-indent {
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/tmf_data.csv"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/soil_data.csv"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">read.csv</span>(<span class="st">"data/cache/pmem_data.csv"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <section id="randomforest-without-variable-selection" class="level2 unnumbered">
@@ -397,8 +397,8 @@ div.csl-indent {
 <p>Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>RMSE: 0.4551419 
-R²: 0.1741324</code></pre>
+<pre><code>RMSE: 0.4603164 
+R²: 0.1629922</code></pre>
 </div>
 </div>
 </section>
@@ -423,7 +423,7 @@ R²: 0.1741324</code></pre>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="at">collapse =</span> <span class="st">"; "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>The variables kept were: bio05; bio12; Blue_mean; NIR_mean; SWIR1_mean; elevation; slope; aspect; twi; Annual_Mean_LST; present_landuse; def_age; WRB2; pMEM_10.</p>
+<p>The variables kept were: bio01; bio06; bio12; Blue_mean; RedEdge4_mean; SWIR1_mean; slope; aspect; twi; Annual_Mean_LST; present_landuse; def_age; WRB2; pMEM_2; pMEM_1; pMEM_18; pMEM_10; pMEM_247; pMEM_29; pMEM_119; pMEM_528; pMEM_140; pMEM_219.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -452,8 +452,8 @@ R²: 0.1741324</code></pre>
 <p>Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>RMSE: 0.4545149 
-R²: 0.1859065</code></pre>
+<pre><code>RMSE: 0.4806444 
+R²: 0.159598</code></pre>
 </div>
 </div>
 </section>
@@ -481,17 +481,18 @@ R²: 0.1859065</code></pre>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"_mean|NDVI"</span>, variable), <span class="st">"spectral"</span>, group)) <span class="sc">|&gt;</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"_age|landuse"</span>, variable), <span class="st">"landuse"</span>, group)) <span class="sc">|&gt;</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"WRB2"</span>, variable), <span class="st">"soil"</span>, group)) <span class="sc">|&gt;</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># vif selection by group, based on variables selected at previous stage</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vif1 =</span> <span class="fu">vif_select</span>(variable, data_all)) <span class="sc">|&gt;</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ffs by group, based on variables selected at previous stage</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ffs1 =</span> <span class="fu">ffs_select</span>(variable, data_all, vif1, <span class="at">response =</span> <span class="st">"corg"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># vif selection for all, based on variables selected at previous stage</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vif2 =</span> <span class="fu">vif_select</span>(variable, data_all, ffs1)) <span class="sc">|&gt;</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ffs for all, based on variables selected at previous stage</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ffs2 =</span> <span class="fu">ffs_select</span>(variable, data_all, vif2, <span class="at">response =</span> <span class="st">"corg"</span>))</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(data_groups, <span class="at">file =</span> <span class="st">"data/cache/var_selection.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"MEM"</span>, variable), <span class="st">"spatial"</span>, group)) <span class="sc">|&gt;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># vif selection by group, based on variables selected at previous stage</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vif1 =</span> <span class="fu">vif_select</span>(variable, data_all)) <span class="sc">|&gt;</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ffs by group, based on variables selected at previous stage</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ffs1 =</span> <span class="fu">ffs_select</span>(variable, data_all, vif1, <span class="at">response =</span> <span class="st">"corg"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># vif selection for all, based on variables selected at previous stage</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vif2 =</span> <span class="fu">vif_select</span>(variable, data_all, ffs1)) <span class="sc">|&gt;</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ffs for all, based on variables selected at previous stage</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ffs2 =</span> <span class="fu">ffs_select</span>(variable, data_all, vif2, <span class="at">response =</span> <span class="st">"corg"</span>))</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(data_groups, <span class="at">file =</span> <span class="st">"data/cache/var_selection.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>The following variables were selected for each group at the different steps:</p>
@@ -515,10 +516,10 @@ R²: 0.1859065</code></pre>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 6%">
-<col style="width: 27%">
-<col style="width: 23%">
-<col style="width: 23%">
+<col style="width: 3%">
+<col style="width: 35%">
+<col style="width: 21%">
+<col style="width: 21%">
 <col style="width: 18%">
 </colgroup>
 <thead>
@@ -533,10 +534,10 @@ R²: 0.1859065</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">clim</td>
-<td style="text-align: left;">bio05, bio06, bio12, Annual_Mean_LST</td>
-<td style="text-align: left;">bio05, bio06, Annual_Mean_LST</td>
-<td style="text-align: left;">bio05, Annual_Mean_LST</td>
-<td style="text-align: left;">bio05</td>
+<td style="text-align: left;">bio01, bio06, bio12, Annual_Mean_LST</td>
+<td style="text-align: left;">bio01, bio06, bio12, Annual_Mean_LST</td>
+<td style="text-align: left;">bio01, bio06, bio12, Annual_Mean_LST</td>
+<td style="text-align: left;">bio06</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">landuse</td>
@@ -554,10 +555,10 @@ R²: 0.1859065</code></pre>
 </tr>
 <tr class="even">
 <td style="text-align: left;">spatial</td>
-<td style="text-align: left;">pMEM_10</td>
-<td style="text-align: left;">pMEM_10</td>
-<td style="text-align: left;">pMEM_10</td>
-<td style="text-align: left;">pMEM_10</td>
+<td style="text-align: left;">pMEM_2, pMEM_1, pMEM_18, pMEM_10, pMEM_247, pMEM_29, pMEM_119, pMEM_528, pMEM_140, pMEM_219</td>
+<td style="text-align: left;">pMEM_18, pMEM_10, pMEM_29, pMEM_119, pMEM_528, pMEM_219</td>
+<td style="text-align: left;">pMEM_18, pMEM_10, pMEM_29, pMEM_119, pMEM_528, pMEM_219</td>
+<td style="text-align: left;">pMEM_18, pMEM_10, pMEM_119, pMEM_528, pMEM_219</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">spectral</td>
@@ -605,8 +606,8 @@ R²: 0.1859065</code></pre>
 <p>Model performance was evaluated with a leave-one-site-out cross-validation, which yielded the following metrics:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>RMSE: 0.4470123 
-R²: 0.2001971</code></pre>
+<pre><code>RMSE: 0.4481363 
+R²: 0.1908956</code></pre>
 </div>
 </div>
 </section>

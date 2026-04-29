@@ -15,7 +15,7 @@ A summary of the data from the terri4sol project is presented below.
 ```{r}
 #| message: false
 #| warning: false
-data_t4s <- read.csv("data/soil_0.2.9.csv")
+data_t4s <- read.csv("data/soil_1.1.0.csv")
 summary(data_t4s)
 ```
 
@@ -29,6 +29,8 @@ where $C$ is the soil organic carbon content, $\Delta d$ is the measurement dept
 #| message: false
 #| warning: false
 data_t4s <- data_t4s |>
+  mutate(type = ifelse(is.na(C), "spectro", "chim")) |>
+  mutate(C = ifelse(is.na(C), C_spectro, C)) |>
   mutate(stock = C / 100 * 1e3 * fine_fraction * bulk_density_g_cm3)
 ```
 
@@ -52,7 +54,7 @@ We grouped the following sites because of their spatial overlap: "tene" and "ten
 ```{r}
 #| message: false
 #| warning: false
-read.csv("data/plot_0.2.9.csv") |>
+read.csv("data/plot_1.1.0.csv") |>
   filter(lat > 0 & !(lat > 6.2 & site == "yaya")) |>
   filter(grepl("adzope|mebifon|yaya|tene", site)) |>
   mutate(new_site = ifelse(grepl("tene", site), "tene", "adzope")) |>
@@ -67,28 +69,24 @@ We then sum the carbon stocks over all depths at each site to get the total carb
 ```{r}
 #| message: false
 #| warning: false
-read.csv("data/plot_0.2.9.csv") |>
+read.csv("data/plot_1.1.0.csv") |>
   # correct plot coordinates
   mutate(lonc = ifelse(lon > 0, lat, lon), latc = ifelse(lat < 0, lon, lat)) |>
   select(site, plot, lonc, latc) |>
   rename(lon = lonc, lat = latc) |>
   inner_join(data_t4s) |>
   group_by(site, plot, lon, lat) |>
-  summarise(T_stock = sum(stock), corg = mean(C), .groups = "drop") |>
+  summarise(
+    T_stock = sum(stock), corg = mean(C), .groups = "drop",
+    type = paste(unique(type), collapse = "+")
+  ) |>
   # add revatene data
   bind_rows(data_tene) |>
   # group sites
   mutate(plot = paste(site, plot, sep = "_")) |>
   mutate(site = ifelse(grepl("tene", site), "tene", site)) |>
   mutate(site = ifelse(grepl("adzope|mebifon|yaya", site), "adzope", site)) |>
+  mutate(site = ifelse(grepl("adk", site), "adk", site)) |>
   write.csv("data/cache/data_stocks.csv", row.names = FALSE)
 ```
-
-## Add spectral measurements
-
-<!-- ```{r} -->
-<!-- #| message: false -->
-<!-- #| warning: false -->
-<!-- read.csv("data/spectra_1.0.csv") -->
-<!-- ``` -->
 

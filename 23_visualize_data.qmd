@@ -48,4 +48,9 @@ read.csv("data/cache/data_stocks.csv") |>
   geom_histogram() +
   labs(x = expression("Soil organic carbon stocks [ Mg." * ha^-1 * " ]")) +
   theme_classic()
+read.csv("data/cache/data_stocks.csv") |>
+  ggplot(aes(x = corg)) +
+  geom_histogram() +
+  labs(x = expression("Soil organic carbon content [ % ]")) +
+  theme_classic()
 ```
